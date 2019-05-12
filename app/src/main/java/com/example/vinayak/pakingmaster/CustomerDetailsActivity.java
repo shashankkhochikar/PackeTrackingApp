@@ -1,7 +1,9 @@
 package com.example.vinayak.pakingmaster;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -20,6 +22,9 @@ public class CustomerDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_details);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         assignview();
         items.add("Biscuts");
         items.add("Pen");
@@ -50,5 +55,21 @@ public class CustomerDetailsActivity extends AppCompatActivity {
     private void assignview() {
         listView = (ListView)findViewById(R.id.itemList);
         customerNameSipnner = (Spinner)findViewById(R.id.customerSpinner);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                //  startActivity(new Intent(this, HotoSectionsListActivity.class));
+                return true;
+            /*case R.id.menuDone:
+                submitDetails();
+                finish();
+                startActivity(new Intent(this, ServoStabilizer.class));
+                return true;*/
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

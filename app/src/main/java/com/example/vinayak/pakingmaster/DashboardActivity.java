@@ -18,7 +18,6 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
         assignView();
         init();
     }
@@ -31,6 +30,27 @@ public class DashboardActivity extends AppCompatActivity {
                 Intent intent = new Intent(DashboardActivity.this,CustomerDetailsActivity.class);
                 startActivity(intent);
 
+            }
+        });
+        modifyItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this,PakingListActivity.class);
+                startActivity(intent);
+            }
+        });
+        viewItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this,PakingListActivity.class);
+                startActivity(intent);
+            }
+        });
+        submitItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this,PakingListActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".PakingListActivity">
-
+    tools:context=".CustomerListActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/listviewback"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -20,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:layout_weight="1.4"
+            android:layout_weight="1.9"
             android:orientation="vertical">
 
             <TextView
@@ -28,8 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Customer Name"
-                android:textColor="@color/text_white"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -44,17 +41,11 @@
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Date"
-                android:textColor="@color/text_white"
-                android:textSize="18dp" />
+                android:text="02/05/2019"
+                android:textSize="16dp" />
         </LinearLayout>
 
 
     </LinearLayout>
-    <ListView
-        android:id="@+id/customerList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"/>
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
