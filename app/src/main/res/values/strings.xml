@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Packing Master</string>
+
+    <string-array name="customer_array">
+        <item>Ram Patil</item>
+        <item>Raju Mane</item>
+        <item>Pranav Bandekar</item>
+        <item>Shashank Khochikar</item>
+        <item>Rahul Patil</item>
+        <item>Sagar Kumbhar</item>
+        <item>Ajay Rane</item>
+        <item>Vinod Mane</item>
+    </string-array>
+</resources>
