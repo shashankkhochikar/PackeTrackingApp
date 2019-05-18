@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
@@ -86,7 +87,7 @@ public class LogInActivity extends BaseActivity {
             Log.e(LogInActivity.class.getName(), e.getMessage().toString());
             return;
         }
-        /*GsonRequest<UserLoginResponseData> userLoginEmailRequest = new GsonRequest<>(Request.Method.POST, Constant.CHECK_LOGIN_USER, jo.toString(), UserLoginResponseData.class,
+        GsonRequest<UserLoginResponseData> userLoginEmailRequest = new GsonRequest<>(Request.Method.POST, Constant.CHECK_LOGIN_USER, jo.toString(), UserLoginResponseData.class,
                 new Response.Listener<UserLoginResponseData>() {
                     @Override
                     public void onResponse(@NonNull UserLoginResponseData response) {
@@ -95,7 +96,7 @@ public class LogInActivity extends BaseActivity {
                             showToast(response.getError().getErrorMessage());
                         } else {
                             showToast(response.getMessage());
-                            editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                            /*editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                             editor.putString("id", response.getUser().getId());
                             editor.putString("Username", response.getUser().getUsername());
                             editor.putString("Password", response.getUser().getPassword());
@@ -105,8 +106,8 @@ public class LogInActivity extends BaseActivity {
                             editor.apply();
 
                             SyncStateContract.Constants.userId = response.getUser().getId();
-                            Constants.username = response.getUser().getUsername();
-                            startActivity(new Intent(LoginActivity.this,MembersReadingActivity.class));
+                            SyncStateContract.Constants.username = response.getUser().getUsername();
+                            startActivity(new Intent(LoginActivity.this,MembersReadingActivity.class));*/
                             finish();
                         }
 
@@ -117,10 +118,10 @@ public class LogInActivity extends BaseActivity {
                 hideBusyProgress();
                 showToast(error.getMessage());
             }
-        });*/
-        /*userLoginEmailRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+        });
+        userLoginEmailRequest.setRetryPolicy(Application.getDefaultRetryPolice());
         userLoginEmailRequest.setShouldCache(false);
-        Application.getInstance().addToRequestQueue(userLoginEmailRequest, "login_requests");*/
+        Application.getInstance().addToRequestQueue(userLoginEmailRequest, "login_requests");
 
     }
 
