@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
@@ -38,12 +39,12 @@ public class LogInActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //getSupportActionBar().hide();
-        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().hide();
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        getSupportActionBar().setTitle("Login");
+        /*getSupportActionBar().setTitle("Login");*/
         assignViews();
         init();
     }
@@ -82,11 +83,12 @@ public class LogInActivity extends BaseActivity {
         try {
             jo.put("Username", userName);
             jo.put("Password", password);
+            jo.put("Loginstatus",isUserLogged);
         } catch (JSONException e) {
             Log.e(LogInActivity.class.getName(), e.getMessage().toString());
             return;
         }
-        /*GsonRequest<UserLoginResponseData> userLoginEmailRequest = new GsonRequest<>(Request.Method.POST, Constant.CHECK_LOGIN_USER, jo.toString(), UserLoginResponseData.class,
+        GsonRequest<UserLoginResponseData> userLoginRequest = new GsonRequest<>(Request.Method.POST, Constant.CHECK_LOGIN_USER, jo.toString(), UserLoginResponseData.class,
                 new Response.Listener<UserLoginResponseData>() {
                     @Override
                     public void onResponse(@NonNull UserLoginResponseData response) {
@@ -95,18 +97,11 @@ public class LogInActivity extends BaseActivity {
                             showToast(response.getError().getErrorMessage());
                         } else {
                             showToast(response.getMessage());
-                            editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                            editor.putString("id", response.getUser().getId());
-                            editor.putString("Username", response.getUser().getUsername());
-                            editor.putString("Password", response.getUser().getPassword());
-                            editor.putString("Name", response.getUser().getName());
-                            editor.putString("Mobile", response.getUser().getMobile());
-                            editor.putString("Vehicleno", response.getUser().getVehicleno());
-                            editor.apply();
 
-                            SyncStateContract.Constants.userId = response.getUser().getId();
-                            Constants.username = response.getUser().getUsername();
-                            startActivity(new Intent(LoginActivity.this,MembersReadingActivity.class));
+
+                            Constant.userId = response.getUser().getId();
+                            Constant.userName = response.getUser().getUsername();
+                            startActivity(new Intent(LogInActivity.this,DashboardActivity.class));
                             finish();
                         }
 
@@ -117,10 +112,10 @@ public class LogInActivity extends BaseActivity {
                 hideBusyProgress();
                 showToast(error.getMessage());
             }
-        });*/
-        /*userLoginEmailRequest.setRetryPolicy(Application.getDefaultRetryPolice());
-        userLoginEmailRequest.setShouldCache(false);
-        Application.getInstance().addToRequestQueue(userLoginEmailRequest, "login_requests");*/
+        });
+        userLoginRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+        userLoginRequest.setShouldCache(false);
+        Application.getInstance().addToRequestQueue(userLoginRequest, "login_requests");
 
     }
 
@@ -140,9 +135,5 @@ public class LogInActivity extends BaseActivity {
             return false;
         }
     }
-
-
-
-
-
+    
 }

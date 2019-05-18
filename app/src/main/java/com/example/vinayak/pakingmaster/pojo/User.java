@@ -18,6 +18,11 @@ public class User implements Serializable {
     @Expose
     private String password;
 
+    @SerializedName("Loginstatus")
+    @Expose
+    private String loginstatus;
+
+
 
     private final static long serialVersionUID = -8598494083033615914L;
 
@@ -58,5 +63,13 @@ public class User implements Serializable {
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    public String getLoginstatus() {
+        return loginstatus;
+    }
+
+    public void setLoginstatus(String loginstatus) {
+        this.loginstatus = loginstatus;
     }
 }

@@ -9,7 +9,7 @@ public class Constant {
     public static final String GET_ITEM_LIST = "";
     public static final String UPDATE_ITEM="";
 
-    public static final String UserId = "";
-    public static String username = "";
+    public static String userId = "";
+    public static String userName = "";
 
 }
