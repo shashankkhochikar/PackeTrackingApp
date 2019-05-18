@@ -102,9 +102,10 @@ public class AddNewUserActivity extends BaseActivity {
                 new Response.Listener<RegisterUserResponse>() {
                     @Override
                     public void onResponse(@NonNull RegisterUserResponse response) {
+                        Log.e(AddNewUserActivity.class.getName(),response.toString());
                         hideBusyProgress();
                         if (response.getError() != null) {
-                            showToast(response.getError().getMessage());
+                            showToast(response.getError().getErrorMessage());
                         } else {
                             showToast(response.getMessage());
                             finish();

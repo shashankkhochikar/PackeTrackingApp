@@ -64,7 +64,6 @@ public class LogInActivity extends BaseActivity {
                     }else {
                         showToast("Internet Connection Not Available");
                     }
-                    startActivity(new Intent(LogInActivity.this,DashboardActivity.class));
                 }
             });
 
@@ -92,6 +91,7 @@ public class LogInActivity extends BaseActivity {
                 new Response.Listener<UserLoginResponseData>() {
                     @Override
                     public void onResponse(@NonNull UserLoginResponseData response) {
+                        Log.e(LogInActivity.class.getName(),response.toString());
                         hideBusyProgress();
                         if (response.getError() != null) {
                             showToast(response.getError().getErrorMessage());
