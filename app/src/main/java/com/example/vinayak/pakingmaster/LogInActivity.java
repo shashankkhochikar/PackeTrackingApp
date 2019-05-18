@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.SyncStateContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
+import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
+import com.example.vinayak.pakingmaster.utils.Constant;
+import com.example.vinayak.pakingmaster.volley.GsonRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,7 +86,41 @@ public class LogInActivity extends BaseActivity {
             Log.e(LogInActivity.class.getName(), e.getMessage().toString());
             return;
         }
+        /*GsonRequest<UserLoginResponseData> userLoginEmailRequest = new GsonRequest<>(Request.Method.POST, Constant.CHECK_LOGIN_USER, jo.toString(), UserLoginResponseData.class,
+                new Response.Listener<UserLoginResponseData>() {
+                    @Override
+                    public void onResponse(@NonNull UserLoginResponseData response) {
+                        hideBusyProgress();
+                        if (response.getError() != null) {
+                            showToast(response.getError().getErrorMessage());
+                        } else {
+                            showToast(response.getMessage());
+                            editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                            editor.putString("id", response.getUser().getId());
+                            editor.putString("Username", response.getUser().getUsername());
+                            editor.putString("Password", response.getUser().getPassword());
+                            editor.putString("Name", response.getUser().getName());
+                            editor.putString("Mobile", response.getUser().getMobile());
+                            editor.putString("Vehicleno", response.getUser().getVehicleno());
+                            editor.apply();
 
+                            SyncStateContract.Constants.userId = response.getUser().getId();
+                            Constants.username = response.getUser().getUsername();
+                            startActivity(new Intent(LoginActivity.this,MembersReadingActivity.class));
+                            finish();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideBusyProgress();
+                showToast(error.getMessage());
+            }
+        });*/
+        /*userLoginEmailRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+        userLoginEmailRequest.setShouldCache(false);
+        Application.getInstance().addToRequestQueue(userLoginEmailRequest, "login_requests");*/
 
     }
 
