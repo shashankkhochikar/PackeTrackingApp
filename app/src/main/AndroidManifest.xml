@@ -27,7 +27,6 @@
             android:name=".LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,8 +34,7 @@
         <activity android:name=".CustomerDetailsActivity" />
         <activity android:name=".ListItemActivity" />
         <activity android:name=".PakingListActivity" />
-        <activity android:name=".CustomerListActivity"></activity>
-        <activity android:name=".AddNewUserActivity"></activity>
+        <activity android:name=".CustomerListActivity"/>
     </application>
 
 </manifest>
