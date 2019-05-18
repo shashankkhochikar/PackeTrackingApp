@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,12 +7,13 @@
     tools:context=".LogInActivity">
 
     <LinearLayout
+        android:id="@+id/loginLinear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:orientation="vertical"
         android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:layout_centerInParent="true">
+        android:paddingRight="30dp">
 
         <EditText
             android:id="@+id/username"
@@ -21,9 +21,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@android:color/black"
-            android:hint="User Name"
             android:drawableLeft="@drawable/user"
             android:drawablePadding="10dp"
+            android:hint="User Name"
             android:inputType="textPersonName"
             android:text="" />
 
@@ -33,8 +33,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="@android:color/black"
-            android:drawablePadding="10dp"
             android:drawableLeft="@drawable/password"
+            android:drawablePadding="10dp"
             android:hint="Password"
             android:inputType="textPassword" />
 
@@ -42,10 +42,28 @@
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
             android:background="@color/purple_complete"
-            android:textColor="@color/text_white"
             android:text="Log In"
             android:textAllCaps="true"
-            android:layout_marginTop="18dp"/>
+            android:textColor="@color/text_white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginLinear"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtNewUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New User ?"
+            android:textSize="17dp"
+            android:layout_gravity="right"
+            android:paddingRight="26dp"
+            android:paddingTop="3dp"
+            android:textStyle="bold" />
     </LinearLayout>
 </RelativeLayout>
