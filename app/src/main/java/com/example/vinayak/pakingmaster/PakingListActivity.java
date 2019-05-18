@@ -53,7 +53,7 @@ public class PakingListActivity extends BaseActivity {
         customer.add("Rahul Patil");
         customer.add("Sagar Kumbhar");
         customer.add("Ajay Rane");
-        customer.add("Vinod Mane");
+        customer.add("Vinod Mane");*/
 
         date.add("02/03/2019");
         date.add("12/03/2019");
@@ -62,7 +62,7 @@ public class PakingListActivity extends BaseActivity {
         date.add("01/03/2019");
         date.add("14/03/2019");
         date.add("17/03/2019");
-        date.add("20/03/2019");*/
+        date.add("20/03/2019");
 
         assignview();
         prepareCustomerList();
@@ -83,16 +83,16 @@ public class PakingListActivity extends BaseActivity {
             JSONObject jo = new JSONObject();
             jo.put("", "");
 
-            GsonRequest<GetCustomerListResponse> getCustomerListResquest = new GsonRequest<>(Request.Method.POST, Constant.GET_CUSTOMER_LIST, "", GetCustomerListResponse.class,
+            GsonRequest<GetCustomerListResponse> getCustomerListResquest = new GsonRequest<>(Request.Method.POST, Constant.GET_CUSTOMER_LIST, jo.toString(), GetCustomerListResponse.class,
                     new Response.Listener<GetCustomerListResponse>() {
                         @Override
                         public void onResponse(@NonNull GetCustomerListResponse response) {
                             hideBusyProgress();
-                            //showToast(""+response.getSuccess().toString());
+                            showToast(""+response.getSuccess().toString());
                             if (response.getSuccess() == 1) {
                                 getCustomerListResponse = response;
                                 if (getCustomerListResponse.getCustomerList() != null && getCustomerListResponse.getCustomerList().size() > 0) {
-                                    //txtDataNotFound.setVisibility(View.GONE);
+                                    txtDataNotFound.setVisibility(View.GONE);
                                     customerList.setVisibility(View.VISIBLE);
 
                                     customer = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
@@ -131,7 +131,7 @@ public class PakingListActivity extends BaseActivity {
         titleCustomer = (TextView) findViewById(R.id.cutomerName);
         titleDate = (TextView) findViewById(R.id.date);
         customerList = (ListView) findViewById(R.id.customerList);
-        //txtDataNotFound = (TextView) findViewById(R.id.txtDataNotFound);
+        txtDataNotFound = (TextView) findViewById(R.id.txtDataNotFound);
     }
 
     private void setAdapter(ArrayList<String> customer, ArrayList<String> date) {
