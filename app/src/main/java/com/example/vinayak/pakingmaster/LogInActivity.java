@@ -40,8 +40,9 @@ public class LogInActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().setTitle("Login");
+        //getSupportActionBar().hide();
+        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         /*getSupportActionBar().setTitle("Login");*/
@@ -91,7 +92,7 @@ public class LogInActivity extends BaseActivity {
                 new Response.Listener<UserLoginResponseData>() {
                     @Override
                     public void onResponse(@NonNull UserLoginResponseData response) {
-                        Log.e(LogInActivity.class.getName(), response.getMessage());
+//                        Log.e(LogInActivity.class.getName(), response.getMessage());
                         hideBusyProgress();
                         if (response.getError() != null) {
                             showToast(response.getError().getErrorMessage());

@@ -92,14 +92,17 @@ public class PakingListActivity extends BaseActivity {
                             if (response.getSuccess() == 1) {
                                 getCustomerListResponse = response;
                                 if (getCustomerListResponse.getCustomerList() != null && getCustomerListResponse.getCustomerList().size() > 0) {
-                                    txtDataNotFound.setVisibility(View.GONE);
+                                    //txtDataNotFound.setVisibility(View.GONE);
                                     customerList.setVisibility(View.VISIBLE);
 
-                                    ArrayList<Customer> customers = new ArrayList<Customer>(getCustomerListResponse.getCustomerList().size());
+                                    customer = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
+                                    date  = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
 
                                     for (int i = 0; i < getCustomerListResponse.getCustomerList().size(); i++) {
                                         customer.add(getCustomerListResponse.getCustomerList().get(i).getCustname());
+                                        date.add("18/05/2019");
                                     }
+                                    setAdapter(customer,date);
                                 } else {
                                     customerList.setVisibility(View.GONE);
                                     txtDataNotFound.setVisibility(View.VISIBLE);
@@ -128,7 +131,7 @@ public class PakingListActivity extends BaseActivity {
         titleCustomer = (TextView) findViewById(R.id.cutomerName);
         titleDate = (TextView) findViewById(R.id.date);
         customerList = (ListView) findViewById(R.id.customerList);
-        txtDataNotFound = (TextView) findViewById(R.id.txtDataNotFound);
+        //txtDataNotFound = (TextView) findViewById(R.id.txtDataNotFound);
     }
 
     private void setAdapter(ArrayList<String> customer, ArrayList<String> date) {
