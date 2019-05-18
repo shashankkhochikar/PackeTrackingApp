@@ -69,7 +69,7 @@ public class AddNewUserActivity extends BaseActivity {
             String newConfirmPassword = addNewUserConfirmPassword.getText().toString().trim();
 
             if (newConfirmPassword.equals(newUserPassword)) {
-                Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show();
                 doRegister(newUserName, newConfirmPassword, userType);
             } else {
                 Toast.makeText(this, "Password and confirm password doesn't match", Toast.LENGTH_LONG).show();
@@ -116,6 +116,7 @@ public class AddNewUserActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
                 hideBusyProgress();
                 showToast(error.getMessage());
+                Log.e(AddNewUserActivity.class.getName(),error.getMessage());
             }
         });
         userLoginEmailRequest.setRetryPolicy(Application.getDefaultRetryPolice());

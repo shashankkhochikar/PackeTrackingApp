@@ -1,5 +1,6 @@
 package com.example.vinayak.pakingmaster;
 
+import android.annotation.SuppressLint;
 import android.os.Environment;
 import android.support.annotation.VisibleForTesting;
 import android.support.multidex.MultiDex;
@@ -15,8 +16,17 @@ import com.example.vinayak.pakingmaster.utils.SessionManager;
 import com.example.vinayak.pakingmaster.volley.OkHttpStack;
 
 import java.io.File;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 public class Application extends android.app.Application {
 
@@ -50,6 +60,8 @@ public class Application extends android.app.Application {
         mInstance = this;
 
         sessionManager = new SessionManager(getApplicationContext());
+
+        handleSSLHandshake();
 
 
         // FontsOverride.setDefaultFont(this, "DEFAULT");
@@ -85,6 +97,36 @@ public class Application extends android.app.Application {
     public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
+        }
+    }
+
+    @SuppressLint("TrulyRandom")
+    public static void handleSSLHandshake() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+
+                @Override
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                }
+            }};
+
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String arg0, SSLSession arg1) {
+                    return true;
+                }
+            });
+        } catch (Exception ignored) {
         }
     }
 }
