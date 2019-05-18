@@ -88,7 +88,7 @@ public class AddNewUserActivity extends BaseActivity {
         btnSubmit = (Button) findViewById(R.id.btn_submit);
     }
     private void doRegister(String name, String password, String usertype) {
-        showBusyProgress();
+        //showBusyProgress();
         JSONObject jo = new JSONObject();
         try {
             jo.put("Username", name);
@@ -103,7 +103,7 @@ public class AddNewUserActivity extends BaseActivity {
                     @Override
                     public void onResponse(@NonNull RegisterUserResponse response) {
                         Log.e(AddNewUserActivity.class.getName(),response.toString());
-                        hideBusyProgress();
+                        //hideBusyProgress();
                         if (response.getError() != null) {
                             showToast(response.getError().getErrorMessage());
                         } else {
@@ -115,7 +115,7 @@ public class AddNewUserActivity extends BaseActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                hideBusyProgress();
+               // hideBusyProgress();
                 showToast(error.getMessage());
                 Log.e(AddNewUserActivity.class.getName(),error.getMessage());
             }
