@@ -1,13 +1,29 @@
 package com.example.vinayak.pakingmaster;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AddNewUserActivity extends AppCompatActivity {
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
+import com.example.vinayak.pakingmaster.pojo.RegisterUserResponse;
+import com.example.vinayak.pakingmaster.utils.Constant;
+import com.example.vinayak.pakingmaster.volley.GsonRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class AddNewUserActivity extends BaseActivity {
 
     EditText addNewUserName;
     EditText addNewUserPassword;
@@ -30,11 +46,9 @@ public class AddNewUserActivity extends AppCompatActivity {
     }
 
     private void init() {
-
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 str_UserName = addNewUserName.getText().toString().trim();
                 str_Password = addNewUserPassword.getText().toString().trim();
                 str_ConfirmPassword = addNewUserConfirmPassword.getText().toString().trim();
@@ -49,16 +63,19 @@ public class AddNewUserActivity extends AppCompatActivity {
     }
 
     private void submitDetails() {
+        if (isOnline()) {
+            String newUserName = addNewUserName.getText().toString().trim();
+            String newUserPassword = addNewUserPassword.getText().toString().trim();
+            String newConfirmPassword = addNewUserConfirmPassword.getText().toString().trim();
 
-        String newUserName = addNewUserName.getText().toString().trim();
-        String newUserPassword = addNewUserPassword.getText().toString().trim();
-        String newConfirmPassword = addNewUserConfirmPassword.getText().toString().trim();
-
-        if (newConfirmPassword.equals(newUserPassword)) {
-            Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show();
-
+            if (newConfirmPassword.equals(newUserPassword)) {
+                Toast.makeText(this, "Login successful", Toast.LENGTH_LONG).show();
+                doRegister(newUserName, newConfirmPassword, userType);
+            } else {
+                Toast.makeText(this, "Password and confirm password doesn't match", Toast.LENGTH_LONG).show();
+            }
         } else {
-            Toast.makeText(this, "Password and confirm password doesn't match", Toast.LENGTH_LONG).show();
+            showToast("Internet Connection Not Available");
         }
 
 
@@ -69,5 +86,50 @@ public class AddNewUserActivity extends AppCompatActivity {
         addNewUserPassword = (EditText) findViewById(R.id.addNewUserPassword);
         addNewUserConfirmPassword = (EditText) findViewById(R.id.addNewUserConfirmPassword);
         btnSubmit = (Button) findViewById(R.id.btn_submit);
+    }
+    private void doRegister(String name, String password, String usertype) {
+        showBusyProgress();
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("Username", name);
+            jo.put("Password", password);
+            jo.put("Usertype", usertype);
+        } catch (JSONException e) {
+            Log.e(AddNewUserActivity.class.getName(), e.getMessage().toString());
+            return;
+        }
+        GsonRequest<RegisterUserResponse> userLoginEmailRequest = new GsonRequest<>(Request.Method.POST, Constant.ADD_NEW_USER, jo.toString(), RegisterUserResponse.class,
+                new Response.Listener<RegisterUserResponse>() {
+                    @Override
+                    public void onResponse(@NonNull RegisterUserResponse response) {
+                        hideBusyProgress();
+                        if (response.getError() != null) {
+                            showToast(response.getError().getMessage());
+                        } else {
+                            showToast(response.getMessage());
+                            finish();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideBusyProgress();
+                showToast(error.getMessage());
+            }
+        });
+        userLoginEmailRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+        userLoginEmailRequest.setShouldCache(false);
+        Application.getInstance().addToRequestQueue(userLoginEmailRequest, "login_requests");
+    }
+
+    protected boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
