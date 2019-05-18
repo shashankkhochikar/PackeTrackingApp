@@ -91,7 +91,7 @@ public class LogInActivity extends BaseActivity {
                 new Response.Listener<UserLoginResponseData>() {
                     @Override
                     public void onResponse(@NonNull UserLoginResponseData response) {
-                        Log.e(LogInActivity.class.getName(),response.toString());
+                        Log.e(LogInActivity.class.getName(),response.getMessage());
                         hideBusyProgress();
                         if (response.getError() != null) {
                             showToast(response.getError().getErrorMessage());
