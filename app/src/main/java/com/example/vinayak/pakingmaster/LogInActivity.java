@@ -41,7 +41,7 @@ public class LogInActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         /*getSupportActionBar().setTitle("Login");*/
@@ -50,29 +50,29 @@ public class LogInActivity extends BaseActivity {
     }
 
     private void init() {
-            mBtnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    if(isOnline()){
+                if (isOnline()) {
 
-                        String userName = mUsername.getText().toString().trim();
-                        String password = mPassword.getText().toString().trim();
-                        isUserLogged = "1";
-                        doLogin(userName,password,isUserLogged);
+                    String userName = mUsername.getText().toString().trim();
+                    String password = mPassword.getText().toString().trim();
+                    isUserLogged = "1";
+                    doLogin(userName, password, isUserLogged);
 
-                    }else {
-                        showToast("Internet Connection Not Available");
-                    }
+                } else {
+                    showToast("Internet Connection Not Available");
                 }
-            });
+            }
+        });
 
-            txtNewUser.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(LogInActivity.this,AddNewUserActivity.class));
-                }
-            });
+        txtNewUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LogInActivity.this, AddNewUserActivity.class));
+            }
+        });
     }
 
     private void doLogin(String userName, String password, String isUserLogged) {
@@ -82,7 +82,7 @@ public class LogInActivity extends BaseActivity {
         try {
             jo.put("Username", userName);
             jo.put("Password", password);
-            jo.put("Loginstatus",isUserLogged);
+            jo.put("Loginstatus", isUserLogged);
         } catch (JSONException e) {
             Log.e(LogInActivity.class.getName(), e.getMessage().toString());
             return;
@@ -91,18 +91,21 @@ public class LogInActivity extends BaseActivity {
                 new Response.Listener<UserLoginResponseData>() {
                     @Override
                     public void onResponse(@NonNull UserLoginResponseData response) {
-                        Log.e(LogInActivity.class.getName(),response.getMessage());
+                        Log.e(LogInActivity.class.getName(), response.getMessage());
                         hideBusyProgress();
                         if (response.getError() != null) {
                             showToast(response.getError().getErrorMessage());
                         } else {
-                            showToast(response.getMessage());
 
 
-                            Constant.userId = response.getUser().getId();
-                            Constant.userName = response.getUser().getUsername();
-                            startActivity(new Intent(LogInActivity.this,DashboardActivity.class));
-                            finish();
+                            /*if (response.getMessage().equals("Success")) {*/
+                                Constant.userId = response.getUser().getId();
+                                Constant.userName = response.getUser().getUsername();
+                                startActivity(new Intent(LogInActivity.this, DashboardActivity.class));
+                                finish();
+                            /*} else {
+                                showToast(response.getMessage());
+                            }*/
                         }
 
                     }
@@ -123,11 +126,11 @@ public class LogInActivity extends BaseActivity {
         mUsername = (EditText) findViewById(R.id.username);
         mPassword = (EditText) findViewById(R.id.password);
         mBtnLogin = (Button) findViewById(R.id.btn_login);
-        txtNewUser = (TextView)findViewById(R.id.txtNewUser);
+        txtNewUser = (TextView) findViewById(R.id.txtNewUser);
     }
 
     protected boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         if (netInfo != null && netInfo.isConnectedOrConnecting()) {
             return true;
@@ -135,5 +138,5 @@ public class LogInActivity extends BaseActivity {
             return false;
         }
     }
-    
+
 }
