@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vinayak.pakingmaster.R;
@@ -18,7 +19,7 @@ public class CustomerListAdapter extends BaseAdapter {
     ArrayList<String> customers;
     ArrayList<String> dates;
 
-    public CustomerListAdapter(Activity activity, ArrayList<String> customers, ArrayList<String> dates) {
+    public CustomerListAdapter(Activity activity, ArrayList<String> customers,ArrayList<String> dates) {
         this.activity = activity;
         this.customers = customers;
         this.dates = dates;

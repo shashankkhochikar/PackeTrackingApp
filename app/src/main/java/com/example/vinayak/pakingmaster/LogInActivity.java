@@ -36,6 +36,7 @@ public class LogInActivity extends BaseActivity {
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        getSupportActionBar().setTitle("Login");
         assignViews();
         init();
     }

@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.vinayak.pakingmaster">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/order"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/order"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LogInActivity"
-            android:label="Login">
+            android:name=".LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".DashboardActivity"
-            android:label="Dashboard" />
-        <activity
-            android:name=".CustomerDetailsActivity"
-            android:label="Details" />
-        <activity
-            android:name=".ListItemActivity"
-            android:label="List" />
+        <activity android:name=".DashboardActivity" />
+        <activity android:name=".CustomerDetailsActivity" />
+        <activity android:name=".ListItemActivity" />
         <activity android:name=".PakingListActivity" />
         <activity android:name=".CustomerListActivity"></activity>
         <activity android:name=".AddNewUserActivity"></activity>
