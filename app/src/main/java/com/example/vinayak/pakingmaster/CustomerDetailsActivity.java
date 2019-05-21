@@ -306,7 +306,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
                 String str_slipNo = slipNumber.getText().toString().trim();
 
-                Item item = new Item("", str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo);
+                Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo);
                 items.add(item);
                 setAdapter(items);
                 dialogBuilder.dismiss();
