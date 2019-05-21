@@ -31,11 +31,16 @@ import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScannerBuilder;
 import com.example.vinayak.pakingmaster.adapters.ItemListAdapter;
 import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
+import com.example.vinayak.pakingmaster.pojo.CustomerDetails;
 import com.example.vinayak.pakingmaster.pojo.GetCustomerListResponse;
 import com.example.vinayak.pakingmaster.pojo.Item;
+import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonIOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,9 +63,14 @@ public class CustomerDetailsActivity extends BaseActivity {
     Spinner customerNameSipnner;
     GetCustomerListResponse getCustomerListResponse;
     ArrayList<String> customer = new ArrayList<>();
+    ArrayList<String> customerIds = new ArrayList<>();
     private DatePicker datePicker;
-    private Calendar calendar = Calendar.getInstance();;
+    private Calendar calendar = Calendar.getInstance();
+    ;
     private int year, month, day;
+    Date c = Calendar.getInstance().getTime();
+
+    CustomerDetails customerDetails;
 
     String str_Barcode = "";
 
@@ -70,7 +80,6 @@ public class CustomerDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_customer_details);
         getSupportActionBar().setTitle("Detail");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
 
 
         assignview();
@@ -120,14 +129,12 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     private void generateSlipNumber() {
 
-        Date c = Calendar.getInstance().getTime();
-
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c);
         String tempDate = formattedDate.replace("-", "");
-        int tempNumber = generateRandomIntIntRange(0001,9999);
-        String finalSlipNumber = tempDate+"-"+tempNumber;
-        slipNumber.setText("Slip Number : "+finalSlipNumber);
+        int tempNumber = generateRandomIntIntRange(0001, 9999);
+        String finalSlipNumber = tempDate + "-" + tempNumber;
+        slipNumber.setText("Slip Number : " + finalSlipNumber);
 
     }
 
@@ -145,9 +152,9 @@ public class CustomerDetailsActivity extends BaseActivity {
     private void assignview() {
         listView = (ListView) findViewById(R.id.itemList);
         customerNameSipnner = (Spinner) findViewById(R.id.customerSpinner);
-        slipNumber = (TextView)findViewById(R.id.textViewSlipNumber);
-        edTxtOrderDate = (EditText)findViewById(R.id.edTxtOrderDate);
-        edTxtOrderNumber = (EditText)findViewById(R.id.edTxtOrderNumber);
+        slipNumber = (TextView) findViewById(R.id.textViewSlipNumber);
+        edTxtOrderDate = (EditText) findViewById(R.id.edTxtOrderDate);
+        edTxtOrderNumber = (EditText) findViewById(R.id.edTxtOrderNumber);
     }
 
     @Override
@@ -169,10 +176,10 @@ public class CustomerDetailsActivity extends BaseActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-                               finish();
+                                finish();
                             }
                         });
-                alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
@@ -185,8 +192,71 @@ public class CustomerDetailsActivity extends BaseActivity {
             case R.id.menuAddItem:
                 showDialog();
                 return true;
+
+            case R.id.menuSubmit:
+                submitSlipDetails();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void submitSlipDetails() {
+
+        String str_slipNumber = slipNumber.getText().toString().trim();
+
+        String str_customerName = customerNameSipnner.getSelectedItem().toString();
+        String str_orderDate = edTxtOrderDate.getText().toString().trim();
+        String str_orderNumber = edTxtOrderNumber.getText().toString().trim();
+
+        int indexOfCustomer = customerNameSipnner.getSelectedItemPosition();
+        String cutomerId = customerIds.get(indexOfCustomer).toString();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+        String submitedDate = df.format(c);
+        String str_slipDate = df.format(c);
+        String downloadedDate = df.format(c);
+        String noOfBoxes = "" + items.size();
+
+        customerDetails = new CustomerDetails(str_slipNumber, str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
+                noOfBoxes, "shashank", items);
+
+        Gson gson2 = new GsonBuilder().create();
+        String jsonString = gson2.toJson(customerDetails);
+
+        try {
+            GsonRequest<UserLoginResponseData>
+                    submitSlipDetailsRequest = new GsonRequest<>(Request.Method.POST, Constant.ADD_ORDER, jsonString, UserLoginResponseData.class,
+                    new Response.Listener<UserLoginResponseData>() {
+                        @Override
+                        public void onResponse(@NonNull UserLoginResponseData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    showToast("Order submitted successfully.");
+                                    setResult(RESULT_OK);
+                                    finish();
+                                }
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(error.getMessage());
+                }
+            });
+
+            submitSlipDetailsRequest.setRetryPolicy(Application.getDefaultRetryPolice());
+            submitSlipDetailsRequest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(submitSlipDetailsRequest, "submitSlipDetailsRequest");
+        } catch (Exception e) {
+            Log.e(CustomerDetailsActivity.class.getName(),e.getMessage());
+        }
+
+
     }
 
     private void showDialog() {
@@ -227,15 +297,16 @@ public class CustomerDetailsActivity extends BaseActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String str_itemName = itemName.getText().toString().trim();
-                    String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
-                    String str_itemQty = itemQuantity.getText().toString().trim();
-                    String str_itemBoxNo = itemBoxNo.getText().toString().trim();
+                String str_itemName = itemName.getText().toString().trim();
+                String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
+                String str_itemQty = itemQuantity.getText().toString().trim();
+                String str_itemBoxNo = itemBoxNo.getText().toString().trim();
+                String str_slipNo = slipNumber.getText().toString().trim();
 
-                    Item item = new Item(str_itemName,str_itemBarcode,str_itemQty,str_itemBoxNo);
-                    items.add(item);
-                    setAdapter(items);
-                    dialogBuilder.dismiss();
+                Item item = new Item("", str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo);
+                items.add(item);
+                setAdapter(items);
+                dialogBuilder.dismiss();
             }
         });
         dialogBuilder.setView(dialogView);
@@ -262,8 +333,10 @@ public class CustomerDetailsActivity extends BaseActivity {
                                     //customerList.setVisibility(View.VISIBLE);
 
                                     customer = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
+                                    customerIds = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
                                     for (int i = 0; i < getCustomerListResponse.getCustomerList().size(); i++) {
                                         customer.add(getCustomerListResponse.getCustomerList().get(i).getCustname());
+                                        customerIds.add(getCustomerListResponse.getCustomerList().get(i).getId());
                                     }
                                     ArrayAdapter<String> adapter = new ArrayAdapter<String>
                                             (CustomerDetailsActivity.this, android.R.layout.simple_spinner_item,

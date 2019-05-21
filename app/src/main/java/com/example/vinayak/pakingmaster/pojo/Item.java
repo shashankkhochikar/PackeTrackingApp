@@ -7,6 +7,10 @@ import java.io.Serializable;
 
 public class Item implements Serializable {
 
+    @SerializedName("slipno")
+    @Expose
+    private String slipno;
+
     @SerializedName("itemName")
     @Expose
     private String itemName;
@@ -20,15 +24,19 @@ public class Item implements Serializable {
     private String itemQty;
 
     @SerializedName("itemBoxNo")
-
     @Expose
     private String itemBoxNo;
 
-    public Item(String itemName,String itemBarcode,String itemQty,String itemBoxNo){
+    @SerializedName("uom")
+    @Expose
+    private String uom = "kg";
+
+    public Item(String itemName, String itemBarcode, String itemQty, String itemBoxNo, String str_slipNo){
         this.itemName = itemName;
         this.itemBarcode = itemBarcode;
         this.itemQty = itemQty;
         this.itemBoxNo = itemBoxNo;
+        this.slipno = str_slipNo;
     }
 
     public String getItemName() {
@@ -63,4 +71,19 @@ public class Item implements Serializable {
         this.itemBoxNo = itemBoxNo;
     }
 
+    public String getSlipno() {
+        return slipno;
+    }
+
+    public void setSlipno(String slipno) {
+        this.slipno = slipno;
+    }
+
+    public String getUom() {
+        return uom;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom;
+    }
 }
