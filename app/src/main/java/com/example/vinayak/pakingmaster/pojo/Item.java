@@ -15,15 +15,15 @@ public class Item implements Serializable {
     @Expose
     private String itemName;
 
-    @SerializedName("itemBarcode")
+    @SerializedName("itembacode")
     @Expose
     private String itemBarcode;
 
-    @SerializedName("itemQty")
+    @SerializedName("qty")
     @Expose
     private String itemQty;
 
-    @SerializedName("itemBoxNo")
+    @SerializedName("boxno")
     @Expose
     private String itemBoxNo;
 

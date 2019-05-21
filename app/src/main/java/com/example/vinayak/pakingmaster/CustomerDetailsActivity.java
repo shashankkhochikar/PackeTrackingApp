@@ -34,6 +34,7 @@ import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.CustomerDetails;
 import com.example.vinayak.pakingmaster.pojo.GetCustomerListResponse;
 import com.example.vinayak.pakingmaster.pojo.Item;
+import com.example.vinayak.pakingmaster.pojo.SubmitOrderResponse;
 import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
@@ -224,12 +225,13 @@ public class CustomerDetailsActivity extends BaseActivity {
         String jsonString = gson2.toJson(customerDetails);
 
         try {
-            GsonRequest<UserLoginResponseData>
-                    submitSlipDetailsRequest = new GsonRequest<>(Request.Method.POST, Constant.ADD_ORDER, jsonString, UserLoginResponseData.class,
-                    new Response.Listener<UserLoginResponseData>() {
+            GsonRequest<SubmitOrderResponse>
+                    submitSlipDetailsRequest = new GsonRequest<>(Request.Method.POST, Constant.ADD_ORDER, jsonString, SubmitOrderResponse.class,
+                    new Response.Listener<SubmitOrderResponse>() {
                         @Override
-                        public void onResponse(@NonNull UserLoginResponseData response) {
+                        public void onResponse(@NonNull SubmitOrderResponse response) {
                             hideBusyProgress();
+                            Log.e(CustomerDetailsActivity.class.getName(),""+response.getSuccess());
                             if (response.getError() != null) {
                                 showToast(response.getError().getErrorMessage());
                             } else {
@@ -246,6 +248,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 public void onErrorResponse(VolleyError error) {
                     hideBusyProgress();
                     showToast(error.getMessage());
+                    Log.e(CustomerDetailsActivity.class.getName(),error.getMessage());
                 }
             });
 
