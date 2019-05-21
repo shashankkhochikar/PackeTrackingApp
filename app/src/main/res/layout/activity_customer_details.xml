@@ -45,6 +45,7 @@
                 android:text="Select Member :" />
 
             <Spinner
+                style="@style/Widget.AppCompat.Spinner"
                 android:id="@+id/customerSpinner"
                android:layout_width="match_parent"
                android:layout_height="45dp"
@@ -68,12 +69,14 @@
                 android:weightSum="2">
 
                 <EditText
+                    android:id="@+id/edTxtOrderDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="01/01/1999"
                     android:layout_weight="1"/>
 
                 <EditText
+                    android:id="@+id/edTxtOrderNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Order Number"

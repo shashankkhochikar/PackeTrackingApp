@@ -18,6 +18,7 @@ import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScannerBuilder;
 import com.example.vinayak.pakingmaster.CustomerDetailsActivity;
 import com.example.vinayak.pakingmaster.R;
+import com.example.vinayak.pakingmaster.pojo.Item;
 import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONObject;
@@ -27,10 +28,14 @@ import java.util.ArrayList;
 public class ItemListAdapter extends BaseAdapter {
     Activity activity;
     private static LayoutInflater inflater = null;
-    ArrayList<String>items;
+    ArrayList<Item>items;
     public String strBarcode;
 
-    public ItemListAdapter(Activity activity, ArrayList<String> items) {
+    public ItemListAdapter(){
+
+    }
+
+    public ItemListAdapter(Activity activity, ArrayList<Item> items) {
         this.activity = activity;
         this.items = items;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -52,7 +57,7 @@ public class ItemListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         ViewHolder holder;
         if (view == null) {
@@ -60,6 +65,8 @@ public class ItemListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.itemName = (TextView) view.findViewById(R.id.itemName);
             /*holder.imgModify = (ImageView) view.findViewById(R.id.modifyItem);*/
+            holder.itemQty = (EditText)view.findViewById(R.id.edTxtListItemQty);
+            holder.itemBoxNo = (EditText)view.findViewById(R.id.edTxtListItemBoxNo);
             holder.imgDelete = (ImageView) view.findViewById(R.id.deleteItem);
             holder.scanItem = (ImageView) view.findViewById(R.id.scanItem);
             view.setTag(holder);
@@ -67,22 +74,24 @@ public class ItemListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.itemName.setText(items.get(position).toString());
+        holder.itemName.setText(items.get(position).getItemName().toString());
+        holder.itemQty.setText(items.get(position).getItemQty().toString());
+        holder.itemBoxNo.setText(items.get(position).getItemBoxNo().toString());
 
 
         holder.scanItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog();
+                showDialog(position);
             }
         });
 
-        holder.imgModify.setOnClickListener(new View.OnClickListener() {
+        /*holder.imgModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
 
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +102,8 @@ public class ItemListAdapter extends BaseAdapter {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-
+                                items.remove(position);
+                                notifyDataSetChanged();
                             }
                         });
                 alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
@@ -112,7 +122,9 @@ public class ItemListAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView itemName;
-        ImageView imgModify;
+        /*ImageView imgModify;*/
+        EditText itemQty;
+        EditText itemBoxNo;
         ImageView imgDelete;
         ImageView scanItem;
     }
@@ -124,7 +136,7 @@ public class ItemListAdapter extends BaseAdapter {
 
     }
 
-    private void showDialog(){
+    private void showDialog(int position){
         final AlertDialog dialogBuilder = new AlertDialog.Builder(activity).create();
         LayoutInflater inflater = activity.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_barcode_alert_dialog, null);
@@ -132,6 +144,8 @@ public class ItemListAdapter extends BaseAdapter {
         final EditText editText = (EditText) dialogView.findViewById(R.id.edt_comment);
         final ImageView imageScanBarcode = (ImageView) dialogView.findViewById(R.id.scanBarcode);
         Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
+
+        editText.setText(items.get(position).getItemBarcode().toString());
 
         /*button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,8 +156,7 @@ public class ItemListAdapter extends BaseAdapter {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // DO SOMETHINGS
-                //dialogBuilder.dismiss();
+
             }
         });
         imageScanBarcode.setOnClickListener(new View.OnClickListener() {

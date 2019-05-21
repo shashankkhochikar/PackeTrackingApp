@@ -1,6 +1,8 @@
 package com.example.vinayak.pakingmaster;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.view.MenuItemCompat;
@@ -14,33 +16,53 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
+import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScannerBuilder;
 import com.example.vinayak.pakingmaster.adapters.ItemListAdapter;
 import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.GetCustomerListResponse;
+import com.example.vinayak.pakingmaster.pojo.Item;
 import com.example.vinayak.pakingmaster.utils.Constant;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
+import com.google.android.gms.vision.barcode.Barcode;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
 
 public class CustomerDetailsActivity extends BaseActivity {
+
+    TextView slipNumber;
+    EditText edTxtOrderDate;
+    EditText edTxtOrderNumber;
     ListView listView;
-    ArrayList<String> items = new ArrayList<>();
+    ArrayList<Item> items;
     ItemListAdapter adapter;
     Spinner customerNameSipnner;
     GetCustomerListResponse getCustomerListResponse;
     ArrayList<String> customer = new ArrayList<>();
+    private DatePicker datePicker;
+    private Calendar calendar = Calendar.getInstance();;
+    private int year, month, day;
+
+    String str_Barcode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +71,12 @@ public class CustomerDetailsActivity extends BaseActivity {
         getSupportActionBar().setTitle("Detail");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
         assignview();
-        items.add("Biscuts");
-        items.add("Pen");
-        items.add("Pencil");
-        items.add("Book");
-        items.add("Note-Book");
-        items.add("Campas");
-        items.add("Gometribox");
-        items.add("Sugar");
-        items.add("Washing Pawder");
-        items.add("Banana");
+        generateSlipNumber();
+
+        items = new ArrayList<>();
 
         setAdapter(items);
 
@@ -69,41 +86,102 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         prepareCustomerList();
 
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        edTxtOrderDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(CustomerDetailsActivity.this, date, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 
     }
 
-    private void setAdapter(ArrayList<String> items) {
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        edTxtOrderDate.setText(sdf.format(calendar.getTime()));
+    }
+
+    private void generateSlipNumber() {
+
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c);
+        String tempDate = formattedDate.replace("-", "");
+        int tempNumber = generateRandomIntIntRange(0001,9999);
+        String finalSlipNumber = tempDate+"-"+tempNumber;
+        slipNumber.setText("Slip Number : "+finalSlipNumber);
+
+    }
+
+
+    public static int generateRandomIntIntRange(int min, int max) {
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
+    }
+
+    private void setAdapter(ArrayList<Item> items) {
         adapter = new ItemListAdapter(CustomerDetailsActivity.this, items);
         listView.setAdapter(adapter);
     }
 
     private void assignview() {
-        listView = (ListView)findViewById(R.id.itemList);
-        customerNameSipnner = (Spinner)findViewById(R.id.customerSpinner);
+        listView = (ListView) findViewById(R.id.itemList);
+        customerNameSipnner = (Spinner) findViewById(R.id.customerSpinner);
+        slipNumber = (TextView)findViewById(R.id.textViewSlipNumber);
+        edTxtOrderDate = (EditText)findViewById(R.id.edTxtOrderDate);
+        edTxtOrderNumber = (EditText)findViewById(R.id.edTxtOrderNumber);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.item_add_new, menu);
-        final MenuItem menuItem = menu.findItem(R.id.menuAddItem);
-        View actionView = MenuItemCompat.getActionView(menuItem);
-        actionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onOptionsItemSelected(menuItem);
-            }
-        });
         return true;
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case android.R.id.home:
-                finish();
-                //  startActivity(new Intent(this, HotoSectionsListActivity.class));
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                alertDialogBuilder.setMessage("Are you sure,Do you wanted to cancel this slip ?");
+                alertDialogBuilder.setPositiveButton("yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                               finish();
+                            }
+                        });
+                alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
                 return true;
+
             case R.id.menuAddItem:
                 showDialog();
                 return true;
@@ -116,18 +194,52 @@ public class CustomerDetailsActivity extends BaseActivity {
         LayoutInflater inflater = CustomerDetailsActivity.this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_new_item_alert_dialog, null);
 
-        final EditText itemName = (EditText)dialogView.findViewById(R.id.edTxtItemName);
-        final ImageView imgBarcodeScanner = (ImageView)dialogView.findViewById(R.id.imgBarcodeScanner);
-        final EditText itemQuantity = (EditText)dialogView.findViewById(R.id.edTxtItemQuantity);
-        final EditText itemBoxNo = (EditText)dialogView.findViewById(R.id.edTxtBoxNo);
-        Button btnSubmit = (Button)dialogView.findViewById(R.id.btn_submit);
+        final EditText itemName = (EditText) dialogView.findViewById(R.id.edTxtItemName);
+        final ImageView imgBarcodeScanner = (ImageView) dialogView.findViewById(R.id.imgBarcodeScanner);
+        final EditText itemBarcodeValue = (EditText) dialogView.findViewById(R.id.edTxtItemBarcode);
+        final EditText itemQuantity = (EditText) dialogView.findViewById(R.id.edTxtItemQuantity);
+        final EditText itemBoxNo = (EditText) dialogView.findViewById(R.id.edTxtBoxNo);
+        final Button btnSubmit = (Button) dialogView.findViewById(R.id.buttonSubmitNewItem);
+
+
+        imgBarcodeScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MaterialBarcodeScanner materialBarcodeScanner = new MaterialBarcodeScannerBuilder()
+                        .withActivity(CustomerDetailsActivity.this)
+                        .withEnableAutoFocus(true)
+                        .withBleepEnabled(true)
+                        .withBackfacingCamera()
+                        .withText("Scanning...")
+                        .withResultListener(new MaterialBarcodeScanner.OnResultListener() {
+                            @Override
+                            public void onResult(Barcode barcode) {
+                                Toast.makeText(CustomerDetailsActivity.this, barcode.rawValue, Toast.LENGTH_LONG).show();
+                                str_Barcode = barcode.rawValue;
+                                itemBarcodeValue.setText(str_Barcode);
+                            }
+                        })
+                        .build();
+                materialBarcodeScanner.startScan();
+            }
+        });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                    String str_itemName = itemName.getText().toString().trim();
+                    String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
+                    String str_itemQty = itemQuantity.getText().toString().trim();
+                    String str_itemBoxNo = itemBoxNo.getText().toString().trim();
 
+                    Item item = new Item(str_itemName,str_itemBarcode,str_itemQty,str_itemBoxNo);
+                    items.add(item);
+                    setAdapter(items);
+                    dialogBuilder.dismiss();
             }
         });
+        dialogBuilder.setView(dialogView);
+        dialogBuilder.show();
 
     }
 
@@ -175,7 +287,7 @@ public class CustomerDetailsActivity extends BaseActivity {
             Application.getInstance().addToRequestQueue(getCustomerListResquest, "getCustomerListResquest");
         } catch (JSONException e) {
             hideBusyProgress();
-            Log.e(PakingListActivity.class.getName(),e.getMessage());
+            Log.e(PakingListActivity.class.getName(), e.getMessage());
         }
 
 
