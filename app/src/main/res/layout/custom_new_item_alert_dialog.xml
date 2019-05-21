@@ -5,73 +5,82 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
+        tools:ignore="MissingConstraints">
 
-        <TextView
-            android:id="@+id/textViewScanBarcode"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:text="Scan Barcode"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            tools:ignore="MissingConstraints">
 
-        <ImageView
-            android:id="@+id/imgBarcodeScanner"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:src="@drawable/barcode"
-            tools:ignore="InvalidId,MissingConstraints"
-            app:layout_constraintTop_toBottomOf="@+id/textView"/>
+            <TextView
+                android:id="@+id/textViewScanBarcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:padding="8dp"
+                android:text="Scan Barcode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/edTxtItemBarcode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Barcode"
-            android:inputType="number"
-            app:layout_constraintTop_toBottomOf="@+id/scanBarcode"
-            tools:ignore="MissingConstraints" />
+            <ImageView
+                android:id="@+id/imgBarcodeScanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/barcode"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                tools:ignore="InvalidId,MissingConstraints" />
 
-        <EditText
-            android:id="@+id/edTxtItemName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Item Name"
-            android:inputType="textPersonName" />
+            <EditText
+                android:id="@+id/edTxtItemBarcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Barcode"
+                android:inputType="number"
+                app:layout_constraintTop_toBottomOf="@+id/scanBarcode"
+                tools:ignore="MissingConstraints" />
 
+            <EditText
+                android:id="@+id/edTxtItemName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Item Name"
+                android:inputType="textPersonName" />
 
-        <EditText
-            android:id="@+id/edTxtItemQuantity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Item Quantity" />
+            <EditText
+                android:id="@+id/edTxtItemQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Item Quantity"
+                android:inputType="number" />
 
-        <EditText
-            android:id="@+id/edTxtBoxNo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Box No" />
+            <EditText
+                android:id="@+id/edTxtBoxNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Box No"
+                android:inputType="number" />
 
-        <Button
-            android:id="@+id/buttonSubmitNewItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/rounded_border_edittext"
-            android:text="Submit"
-            app:layout_constraintTop_toBottomOf="@+id/edt_comment"
-            tools:ignore="MissingConstraints" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonSubmitNewItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/rounded_border_edittext"
+                android:text="Submit"
+                app:layout_constraintTop_toBottomOf="@+id/edt_comment"
+                tools:ignore="MissingConstraints" />
+        </LinearLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

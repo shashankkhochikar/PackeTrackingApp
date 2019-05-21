@@ -83,6 +83,8 @@ public class CustomerDetailsActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
+
+
         assignview();
         generateSlipNumber();
 
@@ -136,6 +138,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         int tempNumber = generateRandomIntIntRange(0001, 9999);
         String finalSlipNumber = tempDate + "-" + tempNumber;
         slipNumber.setText("Slip Number : " + finalSlipNumber);
+        getSupportActionBar().setTitle("Slip: "+finalSlipNumber);
 
     }
 
@@ -156,6 +159,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         slipNumber = (TextView) findViewById(R.id.textViewSlipNumber);
         edTxtOrderDate = (EditText) findViewById(R.id.edTxtOrderDate);
         edTxtOrderNumber = (EditText) findViewById(R.id.edTxtOrderNumber);
+        edTxtOrderDate.setFocusable(false);
     }
 
     @Override
