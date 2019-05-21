@@ -1,13 +1,21 @@
 package com.example.vinayak.pakingmaster;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -75,19 +83,52 @@ public class CustomerDetailsActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.item_add_new, menu);
+        final MenuItem menuItem = menu.findItem(R.id.menuAddItem);
+        View actionView = MenuItemCompat.getActionView(menuItem);
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 //  startActivity(new Intent(this, HotoSectionsListActivity.class));
                 return true;
-            /*case R.id.menuDone:
-                submitDetails();
-                finish();
-                startActivity(new Intent(this, ServoStabilizer.class));
-                return true;*/
+            case R.id.menuAddItem:
+                showDialog();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog() {
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this).create();
+        LayoutInflater inflater = CustomerDetailsActivity.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.custom_new_item_alert_dialog, null);
+
+        final EditText itemName = (EditText)dialogView.findViewById(R.id.edTxtItemName);
+        final ImageView imgBarcodeScanner = (ImageView)dialogView.findViewById(R.id.imgBarcodeScanner);
+        final EditText itemQuantity = (EditText)dialogView.findViewById(R.id.edTxtItemQuantity);
+        final EditText itemBoxNo = (EditText)dialogView.findViewById(R.id.edTxtBoxNo);
+        Button btnSubmit = (Button)dialogView.findViewById(R.id.btn_submit);
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     private void prepareCustomerList() {

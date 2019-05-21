@@ -95,15 +95,4 @@
 
     </ListView>
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        app:itemIconTint="@color/text_white"
-        app:itemTextColor="@color/text_white"
-        app:menu="@menu/bottom_navigation_items" />
-
-
 </RelativeLayout>

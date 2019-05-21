@@ -29,7 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Items"
-                android:gravity="center"
+                android:gravity="left"
+                android:paddingLeft="10dp"
                 android:layout_weight="1"
                 android:textSize="20dp"
                 android:visibility="visible"/>
@@ -40,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="6"
+                android:weightSum="4"
                 android:layout_centerInParent="true">
 
                     <ImageView
@@ -68,17 +69,6 @@
                         android:hint="Box No"
                         android:layout_margin="1dp"
                         android:background="@drawable/rounded_border_edittext"/>
-
-
-                    <ImageView
-                        android:id="@+id/modifyItem"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center"
-                        android:src="@drawable/edit"
-                        android:padding="5dp"/>
-
 
                     <ImageView
                         android:id="@+id/deleteItem"
