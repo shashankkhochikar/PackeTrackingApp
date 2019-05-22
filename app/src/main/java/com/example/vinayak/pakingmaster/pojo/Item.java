@@ -7,6 +7,10 @@ import java.io.Serializable;
 
 public class Item implements Serializable {
 
+    @SerializedName("id")
+    @Expose
+    private String id;
+
     @SerializedName("slipno")
     @Expose
     private String slipno;
@@ -42,6 +46,14 @@ public class Item implements Serializable {
         this.itemBoxNo = itemBoxNo;
         this.slipno = str_slipNo;
         this.uom = str_itemUmo;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getItemName() {

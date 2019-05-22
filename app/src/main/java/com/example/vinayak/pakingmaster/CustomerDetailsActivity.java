@@ -35,6 +35,8 @@ import com.example.vinayak.pakingmaster.pojo.BarcodeScanResponse;
 import com.example.vinayak.pakingmaster.pojo.CustomerDetails;
 import com.example.vinayak.pakingmaster.pojo.GetCustomerListResponse;
 import com.example.vinayak.pakingmaster.pojo.Item;
+import com.example.vinayak.pakingmaster.pojo.ItemListData;
+import com.example.vinayak.pakingmaster.pojo.SlipDetailsResponseData;
 import com.example.vinayak.pakingmaster.pojo.SubmitOrderResponse;
 import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
@@ -51,8 +53,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+
+import static com.example.vinayak.pakingmaster.utils.Constant.slipNumberFromList;
 
 public class CustomerDetailsActivity extends BaseActivity {
 
@@ -60,11 +65,13 @@ public class CustomerDetailsActivity extends BaseActivity {
     EditText edTxtOrderDate;
     EditText edTxtOrderNumber;
     ListView listView;
-    ArrayList<Item> items;
+    List<Item> items;
+
     ItemListAdapter adapter;
     Spinner customerNameSipnner;
     GetCustomerListResponse getCustomerListResponse;
     BarcodeScanResponse barcodeScanResponse;
+    SlipDetailsResponseData slipDetailsResponseData;
     ArrayList<String> customer = new ArrayList<>();
     ArrayList<String> customerIds = new ArrayList<>();
     private DatePicker datePicker;
@@ -75,7 +82,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     CustomerDetails customerDetails;
     String finalSlipNumber;
     String str_Barcode = "";
-    String slipNumberFromList = "";
+    /*String slipNumberFromList = "";*/
 
 
     @Override
@@ -90,17 +97,18 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         assignview();
         generateSlipNumber();
+        prepareCustomerList();
 
-        if(!(slipNumberFromList.isEmpty()) || !(slipNumberFromList == null))
+        if(!slipNumberFromList.equals(""))
         {
             prepareSlipDetails(slipNumberFromList);
-        }
 
+        }
 
         items = new ArrayList<>();
 
         setAdapter(items);
-        prepareCustomerList();
+
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -127,8 +135,6 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     }
 
-
-
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -153,7 +159,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         return r.nextInt((max - min) + 1) + min;
     }
 
-    private void setAdapter(ArrayList<Item> items) {
+    private void setAdapter(List<Item> items) {
         adapter = new ItemListAdapter(CustomerDetailsActivity.this, items);
         listView.setAdapter(adapter);
     }
@@ -436,16 +442,55 @@ public class CustomerDetailsActivity extends BaseActivity {
         }
     }
 
-    private void prepareSlipDetails(String slipNumberFromList) {
+    private void prepareSlipDetails(final String slipNumberFromList) {
         try{
             showBusyProgress();
             JSONObject jo = new JSONObject();
             jo.put("Slipno", slipNumberFromList);
 
+            GsonRequest<SlipDetailsResponseData> barcodeScanResquest = new GsonRequest<>(Request.Method.POST, Constant.GET_SLIP_DETAILS, jo.toString(), SlipDetailsResponseData.class,
+                    new Response.Listener<SlipDetailsResponseData>() {
+                        @Override
+                        public void onResponse(@NonNull SlipDetailsResponseData response) {
+                            hideBusyProgress();
 
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    slipDetailsResponseData = response;
+                                    if (slipDetailsResponseData.getItemList() != null && slipDetailsResponseData.getItemList().size() > 0) {
+                                            slipNumber.setText(slipDetailsResponseData.getSlipno().toString());
+                                            String tempCustId = slipDetailsResponseData.getCustid().toString();
+                                            customerNameSipnner.setSelection(customerIds.indexOf(tempCustId));
+                                            edTxtOrderDate.setText(slipDetailsResponseData.getOrderdate().toString());
+                                            edTxtOrderNumber.setText(slipDetailsResponseData.getOrderno().toString());
+
+                                            items = slipDetailsResponseData.getItemList();
+                                            setAdapter(items);
+
+                                    } else {
+                                        showToast("No Item Found");
+                                    }
+                                }
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(error.getMessage());
+                    Log.e(CustomerDetailsActivity.class.getName(), error.getMessage());
+                }
+            });
+            barcodeScanResquest.setRetryPolicy(Application.getDefaultRetryPolice());
+            barcodeScanResquest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(barcodeScanResquest, "barcodeScanResquest");
 
         }catch (Exception e){
-
+            hideBusyProgress();
+            Log.e(CustomerDetailsActivity.class.getName(),e.getMessage());
         }
 
 

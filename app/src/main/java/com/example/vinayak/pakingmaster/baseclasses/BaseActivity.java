@@ -111,7 +111,7 @@ public class BaseActivity extends AppCompatActivity {
         toastMessage.showToastMsg(msg, timeDuration);
     }
 
-    protected void showToast(String msg) {
+    public void showToast(String msg) {
         toastMessage.showToastMsg(msg, Toast.LENGTH_LONG);
     }
 
@@ -127,7 +127,7 @@ public class BaseActivity extends AppCompatActivity {
         return globalMethods;
     }
 
-    protected void showBusyProgress() {
+    public void showBusyProgress() {
         dialogManager.showBusyProgress();
     }
 
@@ -135,7 +135,7 @@ public class BaseActivity extends AppCompatActivity {
         dialogManager.showBusyProgress(message);
     }
 
-    protected void hideBusyProgress() {
+    public void hideBusyProgress() {
         dialogManager.hideBusyProgress();
     }
 

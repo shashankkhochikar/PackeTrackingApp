@@ -46,8 +46,16 @@ public class SlipDetailsResponseData implements Serializable {
     private String enteryby;
     @SerializedName("itemList")
     @Expose
-    private List<ItemListData> itemList = null;
+    private List<Item> itemList = null;
+    @SerializedName("Error")
+    @Expose
+    private Error error;
     private final static long serialVersionUID = 7947346447007442927L;
+
+
+    public SlipDetailsResponseData(){
+
+    }
 
     public Integer getSuccess() {
         return success;
@@ -145,11 +153,23 @@ public class SlipDetailsResponseData implements Serializable {
         this.enteryby = enteryby;
     }
 
-    public List<ItemListData> getItemList() {
+    public List<Item> getItemList() {
         return itemList;
     }
 
-    public void setItemList(List<ItemListData> itemList) {
+    public void setItemList(List<Item> itemList) {
         this.itemList = itemList;
+    }
+
+    public Error getError() {
+        return error;
+    }
+
+    public void setError(Error error) {
+        this.error = error;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

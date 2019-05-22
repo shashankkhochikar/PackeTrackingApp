@@ -29,6 +29,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this,CustomerDetailsActivity.class);
+                intent.putExtra("slipNumber","");
                 startActivity(intent);
 
             }
