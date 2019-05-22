@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,7 @@ public class ItemListAdapter extends BaseAdapter {
             /*holder.imgModify = (ImageView) view.findViewById(R.id.modifyItem);*/
             holder.itemQty = (EditText)view.findViewById(R.id.edTxtListItemQty);
             holder.itemBoxNo = (EditText)view.findViewById(R.id.edTxtListItemBoxNo);
+            holder.itemUmo = (EditText)view.findViewById(R.id.edTxtListItemUmo);
             holder.imgDelete = (ImageView) view.findViewById(R.id.deleteItem);
             holder.scanItem = (ImageView) view.findViewById(R.id.scanItem);
             view.setTag(holder);
@@ -77,6 +79,7 @@ public class ItemListAdapter extends BaseAdapter {
         holder.itemName.setText(items.get(position).getItemName().toString());
         holder.itemQty.setText(items.get(position).getItemQty().toString());
         holder.itemBoxNo.setText(items.get(position).getItemBoxNo().toString());
+        holder.itemUmo.setText(items.get(position).getUom().toString());
 
 
         holder.scanItem.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +128,7 @@ public class ItemListAdapter extends BaseAdapter {
         /*ImageView imgModify;*/
         EditText itemQty;
         EditText itemBoxNo;
+        EditText itemUmo;
         ImageView imgDelete;
         ImageView scanItem;
     }
@@ -136,7 +140,7 @@ public class ItemListAdapter extends BaseAdapter {
 
     }
 
-    private void showDialog(int position){
+    private void showDialog(final int position){
         final AlertDialog dialogBuilder = new AlertDialog.Builder(activity).create();
         LayoutInflater inflater = activity.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_barcode_alert_dialog, null);
@@ -144,6 +148,7 @@ public class ItemListAdapter extends BaseAdapter {
         final EditText editText = (EditText) dialogView.findViewById(R.id.edt_comment);
         final ImageView imageScanBarcode = (ImageView) dialogView.findViewById(R.id.scanBarcode);
         Button button1 = (Button) dialogView.findViewById(R.id.buttonSubmit);
+        Button btnCancel = (Button) dialogView.findViewById(R.id.buttonCancel);
 
         editText.setText(items.get(position).getItemBarcode().toString());
 
@@ -159,11 +164,19 @@ public class ItemListAdapter extends BaseAdapter {
 
             }
         });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        });
+
         imageScanBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //startScan();
-                final MaterialBarcodeScanner materialBarcodeScanner = new MaterialBarcodeScannerBuilder()
+               /* final MaterialBarcodeScanner materialBarcodeScanner = new MaterialBarcodeScannerBuilder()
                         .withActivity(activity)
                         .withEnableAutoFocus(true)
                         .withBleepEnabled(true)
@@ -178,7 +191,7 @@ public class ItemListAdapter extends BaseAdapter {
                             }
                         })
                         .build();
-                materialBarcodeScanner.startScan();
+                materialBarcodeScanner.startScan();*/
 
             }
         });

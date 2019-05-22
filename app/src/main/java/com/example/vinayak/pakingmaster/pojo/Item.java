@@ -11,7 +11,7 @@ public class Item implements Serializable {
     @Expose
     private String slipno;
 
-    @SerializedName("itemName")
+    @SerializedName("itemname")
     @Expose
     private String itemName;
 
@@ -29,14 +29,19 @@ public class Item implements Serializable {
 
     @SerializedName("uom")
     @Expose
-    private String uom = "kg";
+    private String uom;
 
-    public Item(String itemName, String itemBarcode, String itemQty, String itemBoxNo, String str_slipNo){
+    public Item(){
+
+    }
+
+    public Item(String itemName, String itemBarcode, String itemQty, String itemBoxNo, String str_slipNo, String str_itemUmo){
         this.itemName = itemName;
         this.itemBarcode = itemBarcode;
         this.itemQty = itemQty;
         this.itemBoxNo = itemBoxNo;
         this.slipno = str_slipNo;
+        this.uom = str_itemUmo;
     }
 
     public String getItemName() {

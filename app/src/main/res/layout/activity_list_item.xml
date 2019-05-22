@@ -72,6 +72,17 @@
                         android:layout_margin="1dp"
                         android:background="@drawable/rounded_border_edittext"/>
 
+                    <EditText
+                        android:id="@+id/edTxtListItemUmo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:hint="Umo"
+                        android:layout_margin="1dp"
+                        android:background="@drawable/rounded_border_edittext"/>
+
                     <ImageView
                         android:id="@+id/deleteItem"
                         android:layout_width="40dp"

@@ -35,6 +35,7 @@ public class PakingListActivity extends BaseActivity {
     CustomerListAdapter customerListAdapter;
 
     ArrayList<String> customer = new ArrayList<>();
+    ArrayList<String> customerId = new ArrayList<>();
     ArrayList<String> date = new ArrayList<>();
 
     GetCustomerListResponse getCustomerListResponse;
@@ -71,7 +72,10 @@ public class PakingListActivity extends BaseActivity {
         customerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(PakingListActivity.this, CustomerDetailsActivity.class);
+                Intent intent = new Intent(PakingListActivity.this, CustomerSlipListActivity.class);
+                String customerIdVal = customerId.get(position).toString();
+                intent.putExtra("customerId", customerIdVal);
+                intent.putExtra("enterBy", "shashank");
                 startActivity(intent);
             }
         });
@@ -96,10 +100,12 @@ public class PakingListActivity extends BaseActivity {
                                     customerList.setVisibility(View.VISIBLE);
 
                                     customer = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
+                                    customerId = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
                                     date  = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
 
                                     for (int i = 0; i < getCustomerListResponse.getCustomerList().size(); i++) {
                                         customer.add(getCustomerListResponse.getCustomerList().get(i).getCustname());
+                                        customerId.add(getCustomerListResponse.getCustomerList().get(i).getId());
                                         date.add("18/05/2019");
                                     }
                                     setAdapter(customer,date);

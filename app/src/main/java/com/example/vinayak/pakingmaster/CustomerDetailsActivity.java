@@ -31,6 +31,7 @@ import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScanner;
 import com.edwardvanraak.materialbarcodescanner.MaterialBarcodeScannerBuilder;
 import com.example.vinayak.pakingmaster.adapters.ItemListAdapter;
 import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
+import com.example.vinayak.pakingmaster.pojo.BarcodeScanResponse;
 import com.example.vinayak.pakingmaster.pojo.CustomerDetails;
 import com.example.vinayak.pakingmaster.pojo.GetCustomerListResponse;
 import com.example.vinayak.pakingmaster.pojo.Item;
@@ -63,17 +64,19 @@ public class CustomerDetailsActivity extends BaseActivity {
     ItemListAdapter adapter;
     Spinner customerNameSipnner;
     GetCustomerListResponse getCustomerListResponse;
+    BarcodeScanResponse barcodeScanResponse;
     ArrayList<String> customer = new ArrayList<>();
     ArrayList<String> customerIds = new ArrayList<>();
     private DatePicker datePicker;
     private Calendar calendar = Calendar.getInstance();
-    ;
     private int year, month, day;
     Date c = Calendar.getInstance().getTime();
 
     CustomerDetails customerDetails;
-
+    String finalSlipNumber;
     String str_Barcode = "";
+    String slipNumberFromList = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,20 +85,16 @@ public class CustomerDetailsActivity extends BaseActivity {
         getSupportActionBar().setTitle("Detail");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
+        Intent intent = getIntent();
+        slipNumberFromList = intent.getStringExtra("slipNumber");
 
         assignview();
         generateSlipNumber();
 
+
         items = new ArrayList<>();
 
         setAdapter(items);
-
-       /* ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.customer_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        customerNameSipnner.setAdapter(adapter);*/
-
         prepareCustomerList();
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -126,7 +125,6 @@ public class CustomerDetailsActivity extends BaseActivity {
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
         edTxtOrderDate.setText(sdf.format(calendar.getTime()));
     }
 
@@ -136,9 +134,9 @@ public class CustomerDetailsActivity extends BaseActivity {
         String formattedDate = df.format(c);
         String tempDate = formattedDate.replace("-", "");
         int tempNumber = generateRandomIntIntRange(0001, 9999);
-        String finalSlipNumber = tempDate + "-" + tempNumber;
+        finalSlipNumber = tempDate + "-" + tempNumber;
         slipNumber.setText("Slip Number : " + finalSlipNumber);
-        getSupportActionBar().setTitle("Slip: "+finalSlipNumber);
+        getSupportActionBar().setTitle("Slip: " + finalSlipNumber);
 
     }
 
@@ -199,15 +197,18 @@ public class CustomerDetailsActivity extends BaseActivity {
                 return true;
 
             case R.id.menuSubmit:
-                submitSlipDetails();
-                return true;
+                if (checkValidationForFields() == true) {
+                    submitSlipDetails();
+                    return true;
+                }
+
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void submitSlipDetails() {
 
-        String str_slipNumber = slipNumber.getText().toString().trim();
+        String str_slipNumber = finalSlipNumber /*slipNumber.getText().toString().trim()*/;
 
         String str_customerName = customerNameSipnner.getSelectedItem().toString();
         String str_orderDate = edTxtOrderDate.getText().toString().trim();
@@ -235,7 +236,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                         @Override
                         public void onResponse(@NonNull SubmitOrderResponse response) {
                             hideBusyProgress();
-                            Log.e(CustomerDetailsActivity.class.getName(),""+response.getSuccess());
+                            Log.e(CustomerDetailsActivity.class.getName(), "" + response.getSuccess());
                             if (response.getError() != null) {
                                 showToast(response.getError().getErrorMessage());
                             } else {
@@ -252,7 +253,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 public void onErrorResponse(VolleyError error) {
                     hideBusyProgress();
                     showToast(error.getMessage());
-                    Log.e(CustomerDetailsActivity.class.getName(),error.getMessage());
+                    Log.e(CustomerDetailsActivity.class.getName(), error.getMessage());
                 }
             });
 
@@ -260,7 +261,7 @@ public class CustomerDetailsActivity extends BaseActivity {
             submitSlipDetailsRequest.setShouldCache(false);
             Application.getInstance().addToRequestQueue(submitSlipDetailsRequest, "submitSlipDetailsRequest");
         } catch (Exception e) {
-            Log.e(CustomerDetailsActivity.class.getName(),e.getMessage());
+            Log.e(CustomerDetailsActivity.class.getName(), e.getMessage());
         }
 
 
@@ -276,7 +277,9 @@ public class CustomerDetailsActivity extends BaseActivity {
         final EditText itemBarcodeValue = (EditText) dialogView.findViewById(R.id.edTxtItemBarcode);
         final EditText itemQuantity = (EditText) dialogView.findViewById(R.id.edTxtItemQuantity);
         final EditText itemBoxNo = (EditText) dialogView.findViewById(R.id.edTxtBoxNo);
+        final EditText itemUmo = (EditText) dialogView.findViewById(R.id.edTxtUmo);
         final Button btnSubmit = (Button) dialogView.findViewById(R.id.buttonSubmitNewItem);
+        final Button btnCancel = (Button) dialogView.findViewById(R.id.buttonCancelNewItem);
 
 
         imgBarcodeScanner.setOnClickListener(new View.OnClickListener() {
@@ -294,6 +297,50 @@ public class CustomerDetailsActivity extends BaseActivity {
                                 Toast.makeText(CustomerDetailsActivity.this, barcode.rawValue, Toast.LENGTH_LONG).show();
                                 str_Barcode = barcode.rawValue;
                                 itemBarcodeValue.setText(str_Barcode);
+
+                                //get item details by scanning barcode
+                                try {
+                                    showBusyProgress();
+                                    JSONObject jo = new JSONObject();
+                                    jo.put("barcode", str_Barcode);
+
+                                    GsonRequest<BarcodeScanResponse> barcodeScanResquest = new GsonRequest<>(Request.Method.POST, Constant.GET_ITEM_BY_BARCODE, jo.toString(), BarcodeScanResponse.class,
+                                            new Response.Listener<BarcodeScanResponse>() {
+                                                @Override
+                                                public void onResponse(@NonNull BarcodeScanResponse response) {
+                                                    hideBusyProgress();
+                                                    //showToast(""+response.getSuccess().toString());
+                                                    if (response.getError() != null) {
+                                                        showToast(response.getError().getErrorMessage());
+                                                    } else {
+                                                        if (response.getSuccess() == 1) {
+                                                            barcodeScanResponse = response;
+                                                            if (barcodeScanResponse.getItemList() != null && barcodeScanResponse.getItemList().size() > 0) {
+
+                                                                itemName.setText(barcodeScanResponse.getItemList().get(0).getName());
+                                                                itemUmo.setText(barcodeScanResponse.getItemList().get(0).getUom());
+
+                                                            } else {
+                                                                showToast("No Item Found");
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
+                                            }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            hideBusyProgress();
+                                            showToast(error.getMessage());
+                                            Log.e(CustomerDetailsActivity.class.getName(), error.getMessage());
+                                        }
+                                    });
+                                    barcodeScanResquest.setRetryPolicy(Application.getDefaultRetryPolice());
+                                    barcodeScanResquest.setShouldCache(false);
+                                    Application.getInstance().addToRequestQueue(barcodeScanResquest, "barcodeScanResquest");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         })
                         .build();
@@ -308,18 +355,29 @@ public class CustomerDetailsActivity extends BaseActivity {
                 String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
                 String str_itemQty = itemQuantity.getText().toString().trim();
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
-                String str_slipNo = slipNumber.getText().toString().trim();
+                String str_slipNo = finalSlipNumber;
+                String str_itemUmo = itemUmo.getText().toString().trim();
 
-                Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo);
+                Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
                 items.add(item);
                 setAdapter(items);
                 dialogBuilder.dismiss();
             }
         });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogBuilder.dismiss();
+            }
+        });
+
+
         dialogBuilder.setView(dialogView);
         dialogBuilder.show();
 
     }
+
 
     private void prepareCustomerList() {
         try {
@@ -369,7 +427,28 @@ public class CustomerDetailsActivity extends BaseActivity {
             hideBusyProgress();
             Log.e(PakingListActivity.class.getName(), e.getMessage());
         }
+    }
 
 
+    private boolean checkValidationForFields() {
+
+        String customerName = customerNameSipnner.getSelectedItem().toString();
+        String orderDate = edTxtOrderDate.getText().toString().trim();
+        String orderNumber = edTxtOrderNumber.getText().toString().trim();
+
+        if (customerName.isEmpty() || customerName == null) {
+            showToast("Please select cutomer name");
+            return false;
+        } else if (orderDate.isEmpty() || orderDate == null) {
+            showToast("Please select order date");
+            return false;
+        } else if (orderNumber.isEmpty() || orderNumber == null) {
+            showToast("Please enter order number");
+            return false;
+        } else if (items.size() < 0 || items.isEmpty()) {
+            showToast("Please add at least one item");
+            return false;
+        } else
+            return true;
     }
 }

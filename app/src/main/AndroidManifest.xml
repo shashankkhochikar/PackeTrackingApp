@@ -41,6 +41,8 @@
         <activity android:name=".PakingListActivity" />
         <activity android:name=".CustomerListActivity" />
         <activity android:name=".AddNewUserActivity" />
+        <activity android:name=".CustomerSlipListActivity" />
+        <activity android:name=".SlipListActivity"></activity>
     </application>
 
 </manifest>
