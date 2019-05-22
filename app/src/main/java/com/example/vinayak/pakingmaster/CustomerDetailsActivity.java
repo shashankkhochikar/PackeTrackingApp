@@ -91,6 +91,11 @@ public class CustomerDetailsActivity extends BaseActivity {
         assignview();
         generateSlipNumber();
 
+        if(!(slipNumberFromList.isEmpty()) || !(slipNumberFromList == null))
+        {
+            prepareSlipDetails(slipNumberFromList);
+        }
+
 
         items = new ArrayList<>();
 
@@ -121,6 +126,8 @@ public class CustomerDetailsActivity extends BaseActivity {
 
 
     }
+
+
 
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
@@ -427,6 +434,21 @@ public class CustomerDetailsActivity extends BaseActivity {
             hideBusyProgress();
             Log.e(PakingListActivity.class.getName(), e.getMessage());
         }
+    }
+
+    private void prepareSlipDetails(String slipNumberFromList) {
+        try{
+            showBusyProgress();
+            JSONObject jo = new JSONObject();
+            jo.put("Slipno", slipNumberFromList);
+
+
+
+        }catch (Exception e){
+
+        }
+
+
     }
 
 
