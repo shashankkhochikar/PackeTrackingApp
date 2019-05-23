@@ -48,6 +48,7 @@ import com.google.gson.JsonIOException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -306,7 +307,57 @@ public class CustomerDetailsActivity extends BaseActivity {
         final EditText itemUmo = (EditText) dialogView.findViewById(R.id.edTxtUmo);
         final Button btnSubmit = (Button) dialogView.findViewById(R.id.buttonSubmitNewItem);
         final Button btnCancel = (Button) dialogView.findViewById(R.id.buttonCancelNewItem);
+        final TextView textViewCheckBarcode = (TextView) dialogView.findViewById(R.id.textViewCheckBarcode);
 
+        textViewCheckBarcode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                str_Barcode = itemBarcodeValue.getText().toString();
+                //get item details by scanning barcode
+                try {
+                    showBusyProgress();
+                    JSONObject jo = new JSONObject();
+                    jo.put("barcode", str_Barcode);
+
+                    GsonRequest<BarcodeScanResponse> barcodeScanResquest = new GsonRequest<>(Request.Method.POST, Constant.GET_ITEM_BY_BARCODE, jo.toString(), BarcodeScanResponse.class,
+                            new Response.Listener<BarcodeScanResponse>() {
+                                @Override
+                                public void onResponse(@NonNull BarcodeScanResponse response) {
+                                    hideBusyProgress();
+                                    //showToast(""+response.getSuccess().toString());
+                                    if (response.getError() != null) {
+                                        showToast(response.getError().getErrorMessage());
+                                    } else {
+                                        if (response.getSuccess() == 1) {
+                                            barcodeScanResponse = response;
+                                            if (barcodeScanResponse.getItemList() != null && barcodeScanResponse.getItemList().size() > 0) {
+
+                                                itemName.setText(barcodeScanResponse.getItemList().get(0).getName());
+                                                itemUmo.setText(barcodeScanResponse.getItemList().get(0).getUom());
+
+                                            } else {
+                                                showToast("No Item Found");
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            hideBusyProgress();
+                            showToast(error.getMessage());
+                            Log.e(CustomerDetailsActivity.class.getName(), error.getMessage());
+                        }
+                    });
+                    barcodeScanResquest.setRetryPolicy(Application.getDefaultRetryPolice());
+                    barcodeScanResquest.setShouldCache(false);
+                    Application.getInstance().addToRequestQueue(barcodeScanResquest, "barcodeScanResquest");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         imgBarcodeScanner.setOnClickListener(new View.OnClickListener() {
             @Override
