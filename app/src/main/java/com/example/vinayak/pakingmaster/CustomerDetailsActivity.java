@@ -522,13 +522,13 @@ public class CustomerDetailsActivity extends BaseActivity {
                             } else {
                                 if (response.getSuccess() == 1) {
                                     slipDetailsResponseData = response;
-                                    if (slipDetailsResponseData.getItemList() != null && slipDetailsResponseData.getItemList().size() > 0) {
+
                                             slipNumber.setText(slipDetailsResponseData.getSlipno().toString());
                                             String tempCustId = slipDetailsResponseData.getCustid().toString();
                                             customerNameSipnner.setSelection(customerIds.indexOf(tempCustId));
                                             edTxtOrderDate.setText(slipDetailsResponseData.getOrderdate().toString());
                                             edTxtOrderNumber.setText(slipDetailsResponseData.getOrderno().toString());
-
+                                    if (slipDetailsResponseData.getItemList() != null && slipDetailsResponseData.getItemList().size() > 0) {
                                             items = slipDetailsResponseData.getItemList();
                                             setAdapter(items);
                                     } else {
