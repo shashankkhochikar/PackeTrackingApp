@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/menuAddItem"
-        android:title="New Scan"
+        android:title="New Item"
         app:showAsAction="always" />
 
     <item

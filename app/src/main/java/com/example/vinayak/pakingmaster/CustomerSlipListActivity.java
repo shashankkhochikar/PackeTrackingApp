@@ -1,10 +1,13 @@
 package com.example.vinayak.pakingmaster;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -38,7 +41,8 @@ public class CustomerSlipListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_slip_list);
-        this.setTitle("Customer Slip List");
+        getSupportActionBar().setTitle("Packing List");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Intent intent = getIntent();
         String customerId = intent.getStringExtra("customerId");
@@ -70,28 +74,30 @@ public class CustomerSlipListActivity extends BaseActivity {
         try{
             showBusyProgress();
             JSONObject jo = new JSONObject();
-            jo.put("CustomerId", customerId);
-            jo.put("enteryby", enterBy);
+            jo.put("enterby", enterBy);
 
-            GsonRequest<SlipListResponseData> slipListResquest = new GsonRequest<>(Request.Method.POST, Constant.GET_CUSTOMER_ORDER_LIST, jo.toString(), SlipListResponseData.class,
+            GsonRequest<SlipListResponseData> slipListResquest = new GsonRequest<>(Request.Method.POST, Constant.GET_CUSTOMER_PENDING_ORDER_LIST, jo.toString(), SlipListResponseData.class,
                     new Response.Listener<SlipListResponseData>() {
                         @Override
                         public void onResponse(@NonNull SlipListResponseData response) {
                             hideBusyProgress();
-                            showToast(""+response.getSuccess().toString());
-                            if (response.getSuccess() == 1) {
-                                slipListResponseData = response;
-                                if (slipListResponseData.getCustomerOrderList() != null && slipListResponseData.getCustomerOrderList().size() > 0) {
-                                    txtDataNotFoundForSlip.setVisibility(View.GONE);
-                                    slipList.setVisibility(View.VISIBLE);
-                                    customerOrderListData = slipListResponseData.getCustomerOrderList();
-                                    slipListAdapter = new SlipListAdapter(CustomerSlipListActivity.this,customerOrderListData);
-                                    slipList.setAdapter(slipListAdapter);
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    slipListResponseData = response;
+                                    if (slipListResponseData.getCustomerOrderList() != null && slipListResponseData.getCustomerOrderList().size() > 0) {
+                                        txtDataNotFoundForSlip.setVisibility(View.GONE);
+                                        slipList.setVisibility(View.VISIBLE);
+                                        customerOrderListData = slipListResponseData.getCustomerOrderList();
+                                        slipListAdapter = new SlipListAdapter(CustomerSlipListActivity.this,customerOrderListData);
+                                        slipList.setAdapter(slipListAdapter);
 
-                                } else {
-                                    slipList.setVisibility(View.GONE);
-                                    txtDataNotFoundForSlip.setText("Data Not Found");
-                                    txtDataNotFoundForSlip.setVisibility(View.VISIBLE);
+                                    } else {
+                                        slipList.setVisibility(View.GONE);
+                                        txtDataNotFoundForSlip.setText("Data Not Found");
+                                        txtDataNotFoundForSlip.setVisibility(View.VISIBLE);
+                                    }
                                 }
                             }
                         }
@@ -110,5 +116,16 @@ public class CustomerSlipListActivity extends BaseActivity {
             hideBusyProgress();
             Log.e(CustomerSlipListActivity.class.getName(),e.getMessage());
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                                finish();
+                                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

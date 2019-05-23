@@ -62,6 +62,7 @@ public class SlipListAdapter extends BaseAdapter {
             holder.orderNo = (TextView)view.findViewById(R.id.textViewOrderNoVal);
             holder.orderDate = (TextView)view.findViewById(R.id.textViewOrderDateVal);
             holder.submitDate = (TextView)view.findViewById(R.id.textViewSubmitDateVal);
+            holder.customerName = (TextView)view.findViewById(R.id.textViewCustomerNameVal);
             view.setTag(holder);
 
         } else {
@@ -73,6 +74,7 @@ public class SlipListAdapter extends BaseAdapter {
         holder.orderNo.setText(customerOrderListData.get(position).getOrderno());
         holder.orderDate.setText(customerOrderListData.get(position).getOrderdate());
         holder.submitDate.setText(customerOrderListData.get(position).getSubmitdate());
+        holder.customerName.setText(customerOrderListData.get(position).getCustname());
 
         return view;
     }
@@ -84,5 +86,6 @@ public class SlipListAdapter extends BaseAdapter {
         TextView orderNo;
         TextView orderDate;
         TextView submitDate;
+        TextView customerName;
     }
 }

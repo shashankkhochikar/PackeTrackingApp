@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.vinayak.pakingmaster.utils.Constant;
+
 public class DashboardActivity extends AppCompatActivity {
 
     LinearLayout newItem;
@@ -44,7 +46,9 @@ public class DashboardActivity extends AppCompatActivity {
         viewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this,PakingListActivity.class);
+                Intent intent = new Intent(DashboardActivity.this,CustomerSlipListActivity.class);
+                intent.putExtra("customerId", Constant.userId);
+                intent.putExtra("enterBy", Constant.userName);
                 startActivity(intent);
             }
         });

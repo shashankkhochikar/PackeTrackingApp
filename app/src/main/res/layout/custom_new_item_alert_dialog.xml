@@ -67,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Box No"
+                android:maxLength="2"
                 android:inputType="number" />
 
             <EditText

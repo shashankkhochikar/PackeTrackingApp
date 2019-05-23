@@ -12,7 +12,7 @@ public class Constant {
     public static final String DELETE_ITEM = BASE_URL.concat("deleteOrderItem.php");
     public static final String GET_ITEM_BY_BARCODE = BASE_URL.concat("getStockItemByBarcode.php");
     public static final String ADD_ORDER = BASE_URL.concat("addorder.php");
-    public static final String GET_CUSTOMER_ORDER_LIST = BASE_URL.concat("getCustomerOrderList.php");
+    public static final String GET_CUSTOMER_PENDING_ORDER_LIST = BASE_URL.concat("getPendingOrderlist.php");
     public static final String GET_SLIP_DETAILS = BASE_URL.concat("getSlipDetails.php");
 
     public static String userId = "";

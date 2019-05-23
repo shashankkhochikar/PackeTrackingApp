@@ -47,15 +47,6 @@ public class PakingListActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-       /* customer.add("Ram Patil");
-        customer.add("Raju Mane");
-        customer.add("Pranav Bandekar");
-        customer.add("Shashank Khochikar");
-        customer.add("Rahul Patil");
-        customer.add("Sagar Kumbhar");
-        customer.add("Ajay Rane");
-        customer.add("Vinod Mane");*/
-
         date.add("02/03/2019");
         date.add("12/03/2019");
         date.add("05/03/2019");
@@ -75,7 +66,7 @@ public class PakingListActivity extends BaseActivity {
                 Intent intent = new Intent(PakingListActivity.this, CustomerSlipListActivity.class);
                 String customerIdVal = customerId.get(position).toString();
                 intent.putExtra("customerId", customerIdVal);
-                intent.putExtra("enterBy", "shashank");
+                intent.putExtra("enterBy", Constant.userName);
                 startActivity(intent);
             }
         });

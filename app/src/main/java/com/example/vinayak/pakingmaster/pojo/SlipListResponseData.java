@@ -22,6 +22,22 @@ public class SlipListResponseData implements Serializable {
     private List<CustomerOrderListData> customerOrderList = null;
     private final static long serialVersionUID = -3664097911706904744L;
 
+    @SerializedName("Error")
+    @Expose
+    private Error error;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Error getError() {
+        return error;
+    }
+
+    public void setError(Error error) {
+        this.error = error;
+    }
+
     public Integer getSuccess() {
         return success;
     }

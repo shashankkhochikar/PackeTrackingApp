@@ -58,6 +58,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import static com.example.vinayak.pakingmaster.utils.Constant.slipNumberFromList;
+import static com.example.vinayak.pakingmaster.utils.Constant.userName;
 
 public class CustomerDetailsActivity extends BaseActivity {
 
@@ -82,6 +83,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     CustomerDetails customerDetails;
     String finalSlipNumber;
     String str_Barcode = "";
+    String entryBy;
     /*String slipNumberFromList = "";*/
 
 
@@ -96,13 +98,17 @@ public class CustomerDetailsActivity extends BaseActivity {
         slipNumberFromList = intent.getStringExtra("slipNumber");
 
         assignview();
-        generateSlipNumber();
+
         prepareCustomerList();
 
         if(!slipNumberFromList.equals(""))
         {
+            slipNumber.setText(slipNumberFromList);
+            getSupportActionBar().setTitle(slipNumberFromList);
             prepareSlipDetails(slipNumberFromList);
 
+        } else {
+            generateSlipNumber();
         }
 
         items = new ArrayList<>();
@@ -132,7 +138,7 @@ public class CustomerDetailsActivity extends BaseActivity {
             }
         });
 
-
+        entryBy = userName;
     }
 
     private void updateLabel() {
@@ -148,8 +154,8 @@ public class CustomerDetailsActivity extends BaseActivity {
         String tempDate = formattedDate.replace("-", "");
         int tempNumber = generateRandomIntIntRange(0001, 9999);
         finalSlipNumber = tempDate + "-" + tempNumber;
-        slipNumber.setText("Slip Number : " + finalSlipNumber);
-        getSupportActionBar().setTitle("Slip: " + finalSlipNumber);
+        slipNumber.setText("" + finalSlipNumber);
+        getSupportActionBar().setTitle("" + finalSlipNumber);
 
     }
 
@@ -186,23 +192,29 @@ public class CustomerDetailsActivity extends BaseActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-                alertDialogBuilder.setMessage("Are you sure,Do you wanted to cancel this slip ?");
-                alertDialogBuilder.setPositiveButton("yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                finish();
-                            }
-                        });
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                if(slipNumberFromList.equals(""))
+                {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                    alertDialogBuilder.setMessage("Are you sure,Do you wanted to cancel this slip ?");
+                    alertDialogBuilder.setPositiveButton("yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    finish();
+                                }
+                            });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                } else{
+                    finish();
+                }
                 return true;
 
             case R.id.menuAddItem:
@@ -221,11 +233,12 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     private void submitSlipDetails() {
 
-        String str_slipNumber = finalSlipNumber /*slipNumber.getText().toString().trim()*/;
+        String str_slipNumber = slipNumber.getText().toString().trim();
 
         String str_customerName = customerNameSipnner.getSelectedItem().toString();
         String str_orderDate = edTxtOrderDate.getText().toString().trim();
         String str_orderNumber = edTxtOrderNumber.getText().toString().trim();
+
 
         int indexOfCustomer = customerNameSipnner.getSelectedItemPosition();
         String cutomerId = customerIds.get(indexOfCustomer).toString();
@@ -237,7 +250,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         String noOfBoxes = "" + items.size();
 
         customerDetails = new CustomerDetails(str_slipNumber, str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
-                noOfBoxes, "shashank", items);
+                noOfBoxes, entryBy, items);
 
         Gson gson2 = new GsonBuilder().create();
         String jsonString = gson2.toJson(customerDetails);
@@ -368,7 +381,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
                 String str_itemQty = itemQuantity.getText().toString().trim();
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
-                String str_slipNo = finalSlipNumber;
+                String str_slipNo = slipNumber.getText().toString().trim();
                 String str_itemUmo = itemUmo.getText().toString().trim();
 
                 Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
@@ -407,8 +420,6 @@ public class CustomerDetailsActivity extends BaseActivity {
                             if (response.getSuccess() == 1) {
                                 getCustomerListResponse = response;
                                 if (getCustomerListResponse.getCustomerList() != null && getCustomerListResponse.getCustomerList().size() > 0) {
-                                    //txtDataNotFound.setVisibility(View.GONE);
-                                    //customerList.setVisibility(View.VISIBLE);
 
                                     customer = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
                                     customerIds = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
@@ -456,6 +467,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                             if (response.getError() != null) {
                                 showToast(response.getError().getErrorMessage());
+                                Log.e(CustomerDetailsActivity.class.getName(),response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
                                     slipDetailsResponseData = response;

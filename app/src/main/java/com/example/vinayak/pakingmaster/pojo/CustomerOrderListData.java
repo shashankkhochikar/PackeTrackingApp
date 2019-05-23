@@ -22,6 +22,11 @@ public class CustomerOrderListData implements Serializable {
     @SerializedName("submitdate")
     @Expose
     private String submitdate;
+
+    @SerializedName("custname")
+    @Expose
+    private String custname;
+
     private final static long serialVersionUID = 6765925792596527187L;
 
     public String getSlipno() {
@@ -64,4 +69,15 @@ public class CustomerOrderListData implements Serializable {
         this.submitdate = submitdate;
     }
 
+    public String getCustname() {
+        return custname;
+    }
+
+    public void setCustname(String custname) {
+        this.custname = custname;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 }

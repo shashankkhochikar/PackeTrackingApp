@@ -131,7 +131,6 @@ public class ItemListAdapter extends BaseAdapter {
                                                     @Override
                                                     public void onResponse(@NonNull DeleteItemResponseData response) {
 
-
                                                         if (response.getError() != null) {
                                                             Log.e(ItemListAdapter.class.getName(),response.getError().getErrorMessage());
                                                         } else {
