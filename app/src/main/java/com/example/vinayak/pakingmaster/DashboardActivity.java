@@ -39,8 +39,8 @@ public class DashboardActivity extends AppCompatActivity {
         modifyItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this,PakingListActivity.class);
-                startActivity(intent);
+               /* Intent intent = new Intent(DashboardActivity.this,PakingListActivity.class);
+                startActivity(intent);*/
             }
         });
         viewItem.setOnClickListener(new View.OnClickListener() {
@@ -49,13 +49,27 @@ public class DashboardActivity extends AppCompatActivity {
                 Intent intent = new Intent(DashboardActivity.this,CustomerSlipListActivity.class);
                 intent.putExtra("customerId", Constant.userId);
                 intent.putExtra("enterBy", Constant.userName);
+                intent.putExtra("modeOfOpration","1");
                 startActivity(intent);
             }
         });
         submitItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DashboardActivity.this,PakingListActivity.class);
+                Intent intent = new Intent(DashboardActivity.this,CustomerSlipListActivity.class);
+                intent.putExtra("customerId", Constant.userId);
+                intent.putExtra("enterBy", Constant.userName);
+                intent.putExtra("modeOfOpration","2");
+                startActivity(intent);
+            }
+        });
+        deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this,CustomerSlipListActivity.class);
+                intent.putExtra("customerId", Constant.userId);
+                intent.putExtra("enterBy", Constant.userName);
+                intent.putExtra("modeOfOpration","3");
                 startActivity(intent);
             }
         });

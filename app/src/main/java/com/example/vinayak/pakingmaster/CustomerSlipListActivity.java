@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,8 +21,12 @@ import com.android.volley.VolleyError;
 import com.example.vinayak.pakingmaster.adapters.SlipListAdapter;
 import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.CustomerOrderListData;
+import com.example.vinayak.pakingmaster.pojo.DeleteSlipResponseData;
 import com.example.vinayak.pakingmaster.pojo.GetCustomerListResponse;
+import com.example.vinayak.pakingmaster.pojo.SlipDetailsResponseData;
 import com.example.vinayak.pakingmaster.pojo.SlipListResponseData;
+import com.example.vinayak.pakingmaster.pojo.SubmitOrderResponse;
+import com.example.vinayak.pakingmaster.pojo.SubmitSlipResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
 
@@ -31,11 +37,16 @@ import java.util.List;
 
 public class CustomerSlipListActivity extends BaseActivity {
 
+    private static final String TAG = CustomerSlipListActivity.class.getName();
+
     SlipListResponseData slipListResponseData;
     ListView slipList;
     TextView txtDataNotFoundForSlip;
     List<CustomerOrderListData> customerOrderListData;
     SlipListAdapter slipListAdapter;
+    String modeOfOpration = "";
+    String customerId = "";
+    String enterBy = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +56,70 @@ public class CustomerSlipListActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final Intent intent = getIntent();
-        String customerId = intent.getStringExtra("customerId");
-        String enterBy = intent.getStringExtra("enterBy");
+
+        modeOfOpration = intent.getStringExtra("modeOfOpration");
+        customerId = intent.getStringExtra("customerId");
+        enterBy = intent.getStringExtra("enterBy");
 
         assignView();
-        prepareCustomerSlipList(customerId,enterBy);
+        prepareCustomerSlipList(customerId, enterBy);
 
         slipList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
-                Intent slipDetailsIntent = new Intent(CustomerSlipListActivity.this,CustomerDetailsActivity.class);
-                slipDetailsIntent.putExtra("slipNumber",customerOrderListData.get(position).getSlipno());
-                startActivity(slipDetailsIntent);
+                if (modeOfOpration.equals("1")) {
+
+                    Intent slipDetailsIntent = new Intent(CustomerSlipListActivity.this, CustomerDetailsActivity.class);
+                    slipDetailsIntent.putExtra("slipNumber", customerOrderListData.get(position).getSlipno());
+                    startActivity(slipDetailsIntent);
+
+                } else if (modeOfOpration.equals("2")) {// when mode of opration submit
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerSlipListActivity.this);
+                    alertDialogBuilder.setMessage("Are you sure, Do you wanted to submit this slip ?");
+                    alertDialogBuilder.setPositiveButton("yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+
+                                    submitCustomerSlip(customerOrderListData.get(position).getSlipno(),position);
+
+                                }
+                            });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
+
+                } else if (modeOfOpration.equals("3")) { //when mode of opration is delete
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerSlipListActivity.this);
+                    alertDialogBuilder.setMessage("Are you sure, Do you wanted to delete this slip ?");
+                    alertDialogBuilder.setPositiveButton("yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+
+                                    deleteCustomerSlip(customerOrderListData.get(position).getSlipno(),position);
+
+                                }
+                            });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+
+                }
             }
         });
 
@@ -65,13 +127,13 @@ public class CustomerSlipListActivity extends BaseActivity {
     }
 
     private void assignView() {
-        slipList = (ListView)findViewById(R.id.slipList);
-        txtDataNotFoundForSlip = (TextView)findViewById(R.id.txtDataNotFoundForSlip);
+        slipList = (ListView) findViewById(R.id.slipList);
+        txtDataNotFoundForSlip = (TextView) findViewById(R.id.txtDataNotFoundForSlip);
     }
 
     private void prepareCustomerSlipList(String customerId, String enterBy) {
 
-        try{
+        try {
             showBusyProgress();
             JSONObject jo = new JSONObject();
             jo.put("enterby", enterBy);
@@ -90,7 +152,7 @@ public class CustomerSlipListActivity extends BaseActivity {
                                         txtDataNotFoundForSlip.setVisibility(View.GONE);
                                         slipList.setVisibility(View.VISIBLE);
                                         customerOrderListData = slipListResponseData.getCustomerOrderList();
-                                        slipListAdapter = new SlipListAdapter(CustomerSlipListActivity.this,customerOrderListData);
+                                        slipListAdapter = new SlipListAdapter(CustomerSlipListActivity.this, customerOrderListData);
                                         slipList.setAdapter(slipListAdapter);
 
                                     } else {
@@ -112,10 +174,96 @@ public class CustomerSlipListActivity extends BaseActivity {
             slipListResquest.setShouldCache(false);
             Application.getInstance().addToRequestQueue(slipListResquest, "slipListResquest");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             hideBusyProgress();
-            Log.e(CustomerSlipListActivity.class.getName(),e.getMessage());
+            Log.e(CustomerSlipListActivity.class.getName(), e.getMessage());
         }
+    }
+
+    private void deleteCustomerSlip(final String slipno, final int position) {
+
+        try {
+            showBusyProgress();
+            JSONObject jo = new JSONObject();
+            jo.put("Slipno", slipno);
+
+            GsonRequest<DeleteSlipResponseData> barcodeScanResquest = new GsonRequest<>(Request.Method.POST, Constant.DELETE_SLIP, jo.toString(), DeleteSlipResponseData.class,
+                    new Response.Listener<DeleteSlipResponseData>() {
+                        @Override
+                        public void onResponse(@NonNull DeleteSlipResponseData response) {
+                            hideBusyProgress();
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                                Log.e(TAG, response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    showToast("Slip "+slipno+" deleted successfully");
+                                    customerOrderListData.remove(position);
+                                    slipListAdapter.notifyDataSetChanged();
+
+
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(error.getMessage());
+                    Log.e(TAG, error.getMessage());
+                }
+            });
+            barcodeScanResquest.setRetryPolicy(Application.getDefaultRetryPolice());
+            barcodeScanResquest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(barcodeScanResquest, "barcodeScanResquest");
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+    }
+
+    private void submitCustomerSlip(final String slipno, final int position) {
+
+        try {
+            showBusyProgress();
+            JSONObject jo = new JSONObject();
+            jo.put("Slipno", slipno);
+
+            GsonRequest<SubmitSlipResponseData> submitSlipResquest = new GsonRequest<>(Request.Method.POST, Constant.SUBMIT_SLIP, jo.toString(), SubmitSlipResponseData.class,
+                    new Response.Listener<SubmitSlipResponseData>() {
+                        @Override
+                        public void onResponse(@NonNull SubmitSlipResponseData response) {
+                            hideBusyProgress();
+
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                                Log.e(TAG, response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    showToast("Slip "+slipno+" submitted successfully");
+                                    customerOrderListData.remove(position);
+                                    slipListAdapter.notifyDataSetChanged();
+
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(error.getMessage());
+                    Log.e(TAG, error.getMessage());
+                }
+            });
+            submitSlipResquest.setRetryPolicy(Application.getDefaultRetryPolice());
+            submitSlipResquest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(submitSlipResquest, "submitSlipResquest");
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
     }
 
     @Override
@@ -123,8 +271,8 @@ public class CustomerSlipListActivity extends BaseActivity {
         switch (item.getItemId()) {
 
             case android.R.id.home:
-                                finish();
-                                return true;
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

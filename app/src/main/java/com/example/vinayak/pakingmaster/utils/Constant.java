@@ -14,8 +14,11 @@ public class Constant {
     public static final String ADD_ORDER = BASE_URL.concat("addorder.php");
     public static final String GET_CUSTOMER_PENDING_ORDER_LIST = BASE_URL.concat("getPendingOrderlist.php");
     public static final String GET_SLIP_DETAILS = BASE_URL.concat("getSlipDetails.php");
+    public static final String SUBMIT_SLIP = BASE_URL.concat("submitOrder.php");
+    public static final String DELETE_SLIP = BASE_URL.concat("deleteOrder.php");
 
-    public static String userId = "";
+
+ public static String userId = "";
     public static String userName = "";
     public static String slipNumberFromList = "";
 
