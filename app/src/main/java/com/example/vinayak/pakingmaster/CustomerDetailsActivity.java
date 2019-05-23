@@ -194,7 +194,26 @@ public class CustomerDetailsActivity extends BaseActivity {
 
             case android.R.id.home:
 
-                if(slipNumberFromList.equals(""))
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                alertDialogBuilder.setMessage("Do you want to submit this slip ?");
+                alertDialogBuilder.setPositiveButton("yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                submitSlipDetails();
+                            }
+                        });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //super.onBackPressed();
+                        finish();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                /*if(slipNumberFromList.equals(""))
                 {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
                     alertDialogBuilder.setMessage("Are you sure,Do you wanted to cancel this slip ?");
@@ -215,7 +234,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                     alertDialog.show();
                 } else{
                     finish();
-                }
+                }*/
                 return true;
 
             case R.id.menuAddItem:
@@ -232,8 +251,33 @@ public class CustomerDetailsActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void submitSlipDetails() {
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+        alertDialogBuilder.setMessage("Do you want to submit this slip ?");
+        alertDialogBuilder.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        submitSlipDetails();
+                    }
+                });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //super.onBackPressed();
+                finish();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
+
+        //super.onBackPressed();
+    }
+
+    private void submitSlipDetails() {
+        showBusyProgress();
         String str_slipNumber = slipNumber.getText().toString().trim();
 
         String str_customerName = customerNameSipnner.getSelectedItem().toString();

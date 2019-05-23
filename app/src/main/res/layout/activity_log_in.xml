@@ -64,6 +64,7 @@
             android:layout_gravity="right"
             android:paddingRight="26dp"
             android:paddingTop="3dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone"/>
     </LinearLayout>
 </RelativeLayout>
