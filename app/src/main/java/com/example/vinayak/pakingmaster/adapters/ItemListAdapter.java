@@ -59,7 +59,7 @@ public class ItemListAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.activity_list_item, null);
             holder = new ViewHolder();
             holder.itemName = (TextView) view.findViewById(R.id.itemName);
-            holder.imgModify = (ImageView) view.findViewById(R.id.modifyItem);
+            //holder.imgModify = (ImageView) view.findViewById(R.id.modifyItem);
             holder.imgDelete = (ImageView) view.findViewById(R.id.deleteItem);
             holder.scanItem = (ImageView) view.findViewById(R.id.scanItem);
             view.setTag(holder);
@@ -77,12 +77,12 @@ public class ItemListAdapter extends BaseAdapter {
             }
         });
 
-        holder.imgModify.setOnClickListener(new View.OnClickListener() {
+       /* holder.imgModify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
 
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,7 +112,7 @@ public class ItemListAdapter extends BaseAdapter {
 
     static class ViewHolder {
         TextView itemName;
-        ImageView imgModify;
+        //ImageView imgModify;
         ImageView imgDelete;
         ImageView scanItem;
     }
