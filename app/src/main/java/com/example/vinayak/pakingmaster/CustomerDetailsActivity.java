@@ -531,7 +531,6 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                                             items = slipDetailsResponseData.getItemList();
                                             setAdapter(items);
-
                                     } else {
                                         showToast("No Item Found");
                                     }
