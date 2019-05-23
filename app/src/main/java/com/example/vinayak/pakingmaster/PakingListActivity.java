@@ -35,6 +35,7 @@ public class PakingListActivity extends BaseActivity {
     CustomerListAdapter customerListAdapter;
 
     ArrayList<String> customer = new ArrayList<>();
+    ArrayList<String> customerId = new ArrayList<>();
     ArrayList<String> date = new ArrayList<>();
 
     GetCustomerListResponse getCustomerListResponse;
@@ -45,15 +46,6 @@ public class PakingListActivity extends BaseActivity {
         setContentView(R.layout.activity_paking_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-       /* customer.add("Ram Patil");
-        customer.add("Raju Mane");
-        customer.add("Pranav Bandekar");
-        customer.add("Shashank Khochikar");
-        customer.add("Rahul Patil");
-        customer.add("Sagar Kumbhar");
-        customer.add("Ajay Rane");
-        customer.add("Vinod Mane");*/
 
         date.add("02/03/2019");
         date.add("12/03/2019");
@@ -71,7 +63,10 @@ public class PakingListActivity extends BaseActivity {
         customerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(PakingListActivity.this, CustomerDetailsActivity.class);
+                Intent intent = new Intent(PakingListActivity.this, CustomerSlipListActivity.class);
+                String customerIdVal = customerId.get(position).toString();
+                intent.putExtra("customerId", customerIdVal);
+                intent.putExtra("enterBy", Constant.userName);
                 startActivity(intent);
             }
         });
@@ -96,10 +91,12 @@ public class PakingListActivity extends BaseActivity {
                                     customerList.setVisibility(View.VISIBLE);
 
                                     customer = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
+                                    customerId = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
                                     date  = new ArrayList<>(getCustomerListResponse.getCustomerList().size());
 
                                     for (int i = 0; i < getCustomerListResponse.getCustomerList().size(); i++) {
                                         customer.add(getCustomerListResponse.getCustomerList().get(i).getCustname());
+                                        customerId.add(getCustomerListResponse.getCustomerList().get(i).getId());
                                         date.add("18/05/2019");
                                     }
                                     setAdapter(customer,date);

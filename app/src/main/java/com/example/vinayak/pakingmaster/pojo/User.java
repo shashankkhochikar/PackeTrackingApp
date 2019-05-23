@@ -10,17 +10,21 @@ public class User implements Serializable {
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("Username")
+    @SerializedName("username")
     @Expose
     private String username;
 
-    @SerializedName("Password")
+    @SerializedName("password")
     @Expose
     private String password;
 
-    @SerializedName("Loginstatus")
+    @SerializedName("loginstatus")
     @Expose
     private String loginstatus;
+
+    @SerializedName("usertype")
+    @Expose
+    private String usertype;
 
 
 
@@ -71,5 +75,13 @@ public class User implements Serializable {
 
     public void setLoginstatus(String loginstatus) {
         this.loginstatus = loginstatus;
+    }
+
+    public String getUsertype() {
+        return usertype;
+    }
+
+    public void setUsertype(String usertype) {
+        this.usertype = usertype;
     }
 }

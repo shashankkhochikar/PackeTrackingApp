@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="8dp">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,12 +18,12 @@
             tools:ignore="MissingConstraints">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textViewScanBarcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:padding="8dp"
                 android:text="Scan Barcode"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -32,63 +31,108 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/scanBarcode"
+                android:id="@+id/imgBarcodeScanner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/barcode"
                 app:layout_constraintTop_toBottomOf="@+id/textView"
                 tools:ignore="InvalidId,MissingConstraints" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <EditText
+                    android:layout_weight="0.4"
+                    android:id="@+id/edTxtItemBarcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter Barcode"
+                    android:inputType="number"
+                    app:layout_constraintTop_toBottomOf="@+id/scanBarcode"
+                    tools:ignore="MissingConstraints" />
+
+                <TextView
+                    android:layout_weight="1.6"
+                    android:id="@+id/textViewCheckBarcode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Check"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"/>
+
+            </LinearLayout>
+
+
             <EditText
-                android:id="@+id/edt_comment"
+                android:id="@+id/edTxtItemName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:hint="Enter Barcode"
-                android:inputType="number"
-                android:enabled="false"
-                app:layout_constraintTop_toBottomOf="@+id/scanBarcode"
-                tools:ignore="MissingConstraints" />
+                android:ems="10"
+                android:hint="Item Name"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/edTxtItemQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Item Quantity"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/edTxtBoxNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Box No"
+                android:maxLength="2"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/edTxtUmo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Umo"
+                android:visibility="gone"
+                android:inputType="number" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="2">
-
                 <Button
-                    android:id="@+id/buttonSubmit"
+                    android:id="@+id/buttonSubmitNewItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/rounded_border_edittext"
                     android:text="Submit"
-                    android:enabled="false"
-                    android:layout_weight="1"
                     android:textAllCaps="false"
+                    android:layout_weight="1"
                     app:layout_constraintTop_toBottomOf="@+id/edt_comment"
                     tools:ignore="MissingConstraints" />
 
                 <Button
-                    android:id="@+id/buttonCancel"
+                    android:id="@+id/buttonCancelNewItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/rounded_border_edittext"
                     android:text="Cancel"
-                    android:enabled="true"
-                    android:layout_weight="1"
                     android:textAllCaps="false"
+                    android:layout_weight="1"
                     app:layout_constraintTop_toBottomOf="@+id/edt_comment"
                     tools:ignore="MissingConstraints" />
 
             </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
 
+        </LinearLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

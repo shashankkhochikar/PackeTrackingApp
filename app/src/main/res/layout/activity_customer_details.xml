@@ -27,7 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Slip Number : 20190401-0001"
-                android:textSize="15dp"/>
+                android:textSize="15dp"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -42,9 +43,11 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:text="Select Member :" />
 
             <Spinner
+                style="@style/Widget.AppCompat.Spinner"
                 android:id="@+id/customerSpinner"
                android:layout_width="match_parent"
                android:layout_height="45dp"
@@ -68,12 +71,15 @@
                 android:weightSum="2">
 
                 <EditText
+                    android:id="@+id/edTxtOrderDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:hint="01/01/1999"
-                    android:layout_weight="1"/>
+                    android:drawableRight="@drawable/calendar" />
 
                 <EditText
+                    android:id="@+id/edTxtOrderNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Order Number"
@@ -94,16 +100,5 @@
         android:layout_marginTop="2dp">
 
     </ListView>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        app:itemIconTint="@color/text_white"
-        app:itemTextColor="@color/text_white"
-        app:menu="@menu/bottom_navigation_items" />
-
 
 </RelativeLayout>

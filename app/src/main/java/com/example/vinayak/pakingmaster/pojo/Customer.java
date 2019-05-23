@@ -7,11 +7,8 @@ import java.io.Serializable;
 
 public class Customer implements Serializable {
 
-
-
     @SerializedName("id")
     @Expose
-
     private String id;
     @SerializedName("custname")
     @Expose
