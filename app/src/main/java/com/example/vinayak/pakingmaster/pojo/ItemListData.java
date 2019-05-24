@@ -7,19 +7,22 @@ import java.io.Serializable;
 
 public class ItemListData implements Serializable {
 
-    @SerializedName("itembacode")
+    @SerializedName("id")
+    @Expose
+    private String id;
+    @SerializedName("barcode")
     @Expose
     private String itembacode;
-    @SerializedName("qty")
+    /*@SerializedName("qty")
     @Expose
     private String qty;
     @SerializedName("boxno")
     @Expose
-    private String boxno;
+    private String boxno;*/
     @SerializedName("uom")
     @Expose
     private String uom;
-    @SerializedName("itemname")
+    @SerializedName("name")
     @Expose
     private String itemname;
     private final static long serialVersionUID = -16176406284530971L;
@@ -32,7 +35,7 @@ public class ItemListData implements Serializable {
         this.itembacode = itembacode;
     }
 
-    public String getQty() {
+    /*public String getQty() {
         return qty;
     }
 
@@ -46,7 +49,7 @@ public class ItemListData implements Serializable {
 
     public void setBoxno(String boxno) {
         this.boxno = boxno;
-    }
+    }*/
 
     public String getUom() {
         return uom;
@@ -62,5 +65,17 @@ public class ItemListData implements Serializable {
 
     public void setItemname(String itemname) {
         this.itemname = itemname;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

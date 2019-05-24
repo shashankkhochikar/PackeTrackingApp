@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -36,6 +37,7 @@ import com.example.vinayak.pakingmaster.pojo.CustomerDetails;
 import com.example.vinayak.pakingmaster.pojo.GetCustomerListResponse;
 import com.example.vinayak.pakingmaster.pojo.Item;
 import com.example.vinayak.pakingmaster.pojo.ItemListData;
+import com.example.vinayak.pakingmaster.pojo.ItemListResponseData;
 import com.example.vinayak.pakingmaster.pojo.SlipDetailsResponseData;
 import com.example.vinayak.pakingmaster.pojo.SubmitOrderResponse;
 import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
@@ -63,11 +65,19 @@ import static com.example.vinayak.pakingmaster.utils.Constant.userName;
 
 public class CustomerDetailsActivity extends BaseActivity {
 
+    private static final String TAG = CustomerDetailsActivity.class.getName();
+
     TextView slipNumber;
     EditText edTxtOrderDate;
     EditText edTxtOrderNumber;
     ListView listView;
     List<Item> items;
+
+    List<ItemListData> itemListData;
+    ItemListResponseData itemListResponseData;
+    ArrayList<String> tempItems = new ArrayList<>();
+    ArrayList<String> tempBarcodes = new ArrayList<>();
+    ArrayList<String> tempUom = new ArrayList<>();
 
     ItemListAdapter adapter;
     Spinner customerNameSipnner;
@@ -103,6 +113,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         assignview();
 
         prepareCustomerList();
+        prepareItemList();
 
         myFormat = "dd/MM/yyyy"; //In which you need put here
         sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -360,7 +371,42 @@ public class CustomerDetailsActivity extends BaseActivity {
         final Button btnSubmit = (Button) dialogView.findViewById(R.id.buttonSubmitNewItem);
         final Button btnCancel = (Button) dialogView.findViewById(R.id.buttonCancelNewItem);
         final TextView textViewCheckBarcode = (TextView) dialogView.findViewById(R.id.textViewCheckBarcode);
+        final Spinner itemSpinner = (Spinner) dialogView.findViewById(R.id.itemSpinner);
 
+        //load items on item spinner
+        tempItems = new ArrayList<>(itemListResponseData.getItemListData().size());
+        tempBarcodes = new ArrayList<>(itemListResponseData.getItemListData().size());
+        tempUom = new ArrayList<>(itemListResponseData.getItemListData().size());
+        for (int i = 0; i < itemListResponseData.getItemListData().size(); i++) {
+            tempItems.add(itemListData.get(i).getItemname());
+            tempBarcodes.add(itemListData.get(i).getItembacode());
+            tempUom.add(itemListData.get(i).getUom());
+
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (CustomerDetailsActivity.this, android.R.layout.simple_spinner_item,
+                        tempItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        itemSpinner.setAdapter(adapter);
+        AdapterView.OnItemSelectedListener onItemSelectedListener = null;
+        onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    int indexOfSelectedItem = itemSpinner.getSelectedItemPosition();
+                    itemBarcodeValue.setText(tempBarcodes.get(indexOfSelectedItem).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        };
+        itemSpinner.setOnItemSelectedListener(onItemSelectedListener);
+
+
+
+
+//////////////////////////////////////////////////////
         textViewCheckBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -571,7 +617,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                             if (response.getError() != null) {
                                 showToast(response.getError().getErrorMessage());
-                                Log.e(CustomerDetailsActivity.class.getName(), response.getError().getErrorMessage());
+                                Log.e(TAG, response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
                                     slipDetailsResponseData = response;
@@ -596,7 +642,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 public void onErrorResponse(VolleyError error) {
                     hideBusyProgress();
                     showToast(error.getMessage());
-                    Log.e(CustomerDetailsActivity.class.getName(), error.getMessage());
+                    Log.e(TAG, error.getMessage());
                 }
             });
             barcodeScanResquest.setRetryPolicy(Application.getDefaultRetryPolice());
@@ -605,12 +651,55 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         } catch (Exception e) {
             hideBusyProgress();
-            Log.e(CustomerDetailsActivity.class.getName(), e.getMessage());
+            Log.e(TAG, e.getMessage());
         }
 
 
     }
 
+    private void prepareItemList(){
+
+        try{
+            showBusyProgress();
+            JSONObject jo = new JSONObject();
+            jo.put("", "");
+
+            GsonRequest<ItemListResponseData> itemListResquest = new GsonRequest<>(Request.Method.POST, Constant.GET_ITEM_LIST, jo.toString(), ItemListResponseData.class,
+                    new Response.Listener<ItemListResponseData>() {
+                        @Override
+                        public void onResponse(@NonNull ItemListResponseData response) {
+                            hideBusyProgress();
+
+                            if (response.getError() != null) {
+                                showToast(response.getError().getErrorMessage());
+                                Log.e(TAG, response.getError().getErrorMessage());
+                            } else {
+                                if (response.getSuccess() == 1) {
+                                    itemListResponseData = response;
+                                    if (itemListResponseData.getItemListData() != null && itemListResponseData.getItemListData().size() > 0) {
+                                        itemListData = itemListResponseData.getItemListData();
+                                    } else {
+                                        showToast("No Item Found");
+                                    }
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    hideBusyProgress();
+                    showToast(error.getMessage());
+                    Log.e(TAG, error.getMessage());
+                }
+            });
+            itemListResquest.setRetryPolicy(Application.getDefaultRetryPolice());
+            itemListResquest.setShouldCache(false);
+            Application.getInstance().addToRequestQueue(itemListResquest, "itemListResquest");
+
+        } catch (Exception e){
+            Log.e(TAG,e.getMessage());
+        }
+    }
 
     private boolean checkValidationForFields() {
 
