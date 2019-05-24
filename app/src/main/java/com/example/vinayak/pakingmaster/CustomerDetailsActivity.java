@@ -219,7 +219,9 @@ public class CustomerDetailsActivity extends BaseActivity {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-                                submitSlipDetails();
+                                if (checkValidationForFields() == true) {
+                                    submitSlipDetails();
+                                }
                             }
                         });
                 alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -278,7 +280,9 @@ public class CustomerDetailsActivity extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        submitSlipDetails();
+                        if (checkValidationForFields() == true) {
+                            submitSlipDetails();
+                        }
                     }
                 });
         alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -394,6 +398,7 @@ public class CustomerDetailsActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     int indexOfSelectedItem = itemSpinner.getSelectedItemPosition();
                     itemBarcodeValue.setText(tempBarcodes.get(indexOfSelectedItem).toString());
+                    itemUmo.setText(tempUom.get(indexOfSelectedItem).toString());
             }
 
             @Override
@@ -432,6 +437,16 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                                                 itemName.setText(barcodeScanResponse.getItemList().get(0).getName());
                                                 itemUmo.setText(barcodeScanResponse.getItemList().get(0).getUom());
+                                                String strItem = barcodeScanResponse.getItemList().get(0).getName();
+
+                                                int index = -1;
+                                                for (int i=0;i<tempItems.size();i++) {
+                                                    if (tempItems.get(i).equals(strItem)) {
+                                                        index = i;
+                                                        break;
+                                                    }
+                                                }
+                                                itemSpinner.setSelection(index);
 
                                             } else {
                                                 showToast("No Item Found");
@@ -494,6 +509,15 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                                                                 itemName.setText(barcodeScanResponse.getItemList().get(0).getName());
                                                                 itemUmo.setText(barcodeScanResponse.getItemList().get(0).getUom());
+                                                                String strItem = barcodeScanResponse.getItemList().get(0).getName();
+                                                                int index = -1;
+                                                                for (int i=0;i<tempItems.size();i++) {
+                                                                    if (tempItems.get(i).equals(strItem)) {
+                                                                        index = i;
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                itemSpinner.setSelection(index);
 
                                                             } else {
                                                                 showToast("No Item Found");
@@ -526,6 +550,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String str_itemName = itemName.getText().toString().trim();
                 String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
                 String str_itemQty = itemQuantity.getText().toString().trim();
@@ -533,10 +558,14 @@ public class CustomerDetailsActivity extends BaseActivity {
                 String str_slipNo = slipNumber.getText().toString().trim();
                 String str_itemUmo = itemUmo.getText().toString().trim();
 
-                Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
-                items.add(item);
-                setAdapter(items);
-                dialogBuilder.dismiss();
+                if(str_slipNo.equals("") &&  str_itemName.equals("") &&  str_itemBarcode.equals("") ){
+                    showToast("Please Fill All Details");
+                }else{
+                    Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
+                    items.add(item);
+                    setAdapter(items);
+                    dialogBuilder.dismiss();
+                }
             }
         });
 
@@ -546,7 +575,6 @@ public class CustomerDetailsActivity extends BaseActivity {
                 dialogBuilder.dismiss();
             }
         });
-
 
         dialogBuilder.setView(dialogView);
         dialogBuilder.setCancelable(false);
