@@ -52,7 +52,7 @@
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:layout_gravity="center"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:src="@drawable/scanner" />
 
                 <EditText
@@ -112,6 +112,14 @@
                     android:weightSum="4"
                     android:layout_centerInParent="true">
 
+                    <TextView
+                        android:id="@+id/txtTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=""
+                        android:gravity="center"
+                        android:layout_weight="1.2"
+                        android:visibility="visible"/>
 
 
                     <TextView
@@ -120,7 +128,7 @@
                         android:layout_height="match_parent"
                         android:text="Quantity"
                         android:gravity="center"
-                        android:layout_weight="0.9"
+                        android:layout_weight="0.8"
                         android:visibility="visible"/>
 
 
@@ -131,7 +139,7 @@
                         android:layout_height="match_parent"
                         android:text="UOM"
                         android:gravity="center"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.5"
                         android:visibility="visible"/>
 
 

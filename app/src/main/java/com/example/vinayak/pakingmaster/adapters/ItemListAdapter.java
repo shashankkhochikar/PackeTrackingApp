@@ -246,6 +246,7 @@ public class ItemListAdapter extends BaseAdapter {
         });
 
         dialogBuilder.setView(dialogView);
+        dialogBuilder.setCancelable(false);
         dialogBuilder.show();
     }
 }

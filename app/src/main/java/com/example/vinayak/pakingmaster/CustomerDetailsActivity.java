@@ -87,6 +87,8 @@ public class CustomerDetailsActivity extends BaseActivity {
     String entryBy;
     /*String slipNumberFromList = "";*/
 
+    String myFormat = "";
+    SimpleDateFormat sdf = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,14 +104,17 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         prepareCustomerList();
 
-        if(!slipNumberFromList.equals(""))
-        {
+        myFormat = "dd/MM/yyyy"; //In which you need put here
+        sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        if (!slipNumberFromList.equals("")) {
             slipNumber.setText(slipNumberFromList);
             getSupportActionBar().setTitle(slipNumberFromList);
             prepareSlipDetails(slipNumberFromList);
 
         } else {
             generateSlipNumber();
+            edTxtOrderDate.setText(sdf.format(calendar.getTime()));
         }
 
         items = new ArrayList<>();
@@ -129,6 +134,9 @@ public class CustomerDetailsActivity extends BaseActivity {
             }
 
         };
+
+
+
 
         edTxtOrderDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -495,6 +503,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
 
         dialogBuilder.setView(dialogView);
+        dialogBuilder.setCancelable(false);
         dialogBuilder.show();
 
     }
@@ -549,7 +558,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     }
 
     private void prepareSlipDetails(final String slipNumberFromList) {
-        try{
+        try {
             showBusyProgress();
             JSONObject jo = new JSONObject();
             jo.put("Slipno", slipNumberFromList);
@@ -562,19 +571,19 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                             if (response.getError() != null) {
                                 showToast(response.getError().getErrorMessage());
-                                Log.e(CustomerDetailsActivity.class.getName(),response.getError().getErrorMessage());
+                                Log.e(CustomerDetailsActivity.class.getName(), response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
                                     slipDetailsResponseData = response;
 
-                                            slipNumber.setText(slipDetailsResponseData.getSlipno().toString());
-                                            String tempCustId = slipDetailsResponseData.getCustid().toString();
-                                            customerNameSipnner.setSelection(customerIds.indexOf(tempCustId));
-                                            edTxtOrderDate.setText(slipDetailsResponseData.getOrderdate().toString());
-                                            edTxtOrderNumber.setText(slipDetailsResponseData.getOrderno().toString());
+                                    slipNumber.setText(slipDetailsResponseData.getSlipno().toString());
+                                    String tempCustId = slipDetailsResponseData.getCustid().toString();
+                                    customerNameSipnner.setSelection(customerIds.indexOf(tempCustId));
+                                    edTxtOrderDate.setText(slipDetailsResponseData.getOrderdate().toString());
+                                    edTxtOrderNumber.setText(slipDetailsResponseData.getOrderno().toString());
                                     if (slipDetailsResponseData.getItemList() != null && slipDetailsResponseData.getItemList().size() > 0) {
-                                            items = slipDetailsResponseData.getItemList();
-                                            setAdapter(items);
+                                        items = slipDetailsResponseData.getItemList();
+                                        setAdapter(items);
                                     } else {
                                         showToast("No Item Found");
                                     }
@@ -594,9 +603,9 @@ public class CustomerDetailsActivity extends BaseActivity {
             barcodeScanResquest.setShouldCache(false);
             Application.getInstance().addToRequestQueue(barcodeScanResquest, "barcodeScanResquest");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             hideBusyProgress();
-            Log.e(CustomerDetailsActivity.class.getName(),e.getMessage());
+            Log.e(CustomerDetailsActivity.class.getName(), e.getMessage());
         }
 
 
