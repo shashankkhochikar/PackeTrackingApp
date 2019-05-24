@@ -249,9 +249,12 @@ public class CustomerDetailsActivity extends BaseActivity {
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                   // return true;
+                }else if(modeOfOpration.equals("1")){
+                    finish();
                     return true;
                 }
-
+                return true;
 
                 /*if(slipNumberFromList.equals(""))
                 {
@@ -327,6 +330,8 @@ public class CustomerDetailsActivity extends BaseActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+        }else if(modeOfOpration.equals("1")){
+            finish();
         }
 
         //super.onBackPressed();
@@ -334,7 +339,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     private void submitSlipDetails(String url) {
         showBusyProgress();
-        String str_slipNumber = slipNumber.getText().toString().trim();
+        String str_slipNumber = getSupportActionBar().getTitle().toString();//slipNumber.getText().toString().trim();
 
         String str_customerName = customerNameSipnner.getSelectedItem().toString();
         String str_orderDate = edTxtOrderDate.getText().toString().trim();
