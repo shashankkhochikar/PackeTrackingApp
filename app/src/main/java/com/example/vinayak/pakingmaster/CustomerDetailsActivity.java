@@ -96,6 +96,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     String str_Barcode = "";
     String entryBy;
     /*String slipNumberFromList = "";*/
+    String modeOfOpration = "";
 
     String myFormat = "";
     SimpleDateFormat sdf = null;
@@ -109,7 +110,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         Intent intent = getIntent();
         slipNumberFromList = intent.getStringExtra("slipNumber");
-
+        modeOfOpration = intent.getStringExtra("modeOfOpration");
         assignview();
 
         prepareCustomerList();
@@ -145,8 +146,6 @@ public class CustomerDetailsActivity extends BaseActivity {
             }
 
         };
-
-
 
 
         edTxtOrderDate.setOnClickListener(new View.OnClickListener() {
@@ -203,6 +202,18 @@ public class CustomerDetailsActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.item_add_new, menu);
+
+        MenuItem submitItem = menu.findItem(R.id.menuSubmit);
+        MenuItem updateItem = menu.findItem(R.id.menuUpdate);
+
+        if (slipNumberFromList.equals("")) {
+            submitItem.setVisible(true);
+            updateItem.setVisible(false);
+        } else {
+            submitItem.setVisible(false);
+            updateItem.setVisible(true);
+        }
+
         return true;
 
     }
@@ -213,26 +224,34 @@ public class CustomerDetailsActivity extends BaseActivity {
 
             case android.R.id.home:
 
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-                alertDialogBuilder.setMessage("Do you want to submit this slip ?");
-                alertDialogBuilder.setPositiveButton("yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                if (checkValidationForFields() == true) {
-                                    submitSlipDetails();
+                if (modeOfOpration.equals("")) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                    alertDialogBuilder.setMessage("Do you want to submit this slip ?");
+                    alertDialogBuilder.setPositiveButton("yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    if (checkValidationForFields() == true) {
+                                        if (slipNumberFromList.equals("")) {
+                                            submitSlipDetails(Constant.ADD_ORDER);
+                                        } else {
+                                            submitSlipDetails(Constant.UPDATE_ORDER);
+                                        }
+                                    }
                                 }
-                            }
-                        });
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //super.onBackPressed();
-                        finish();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                            });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //super.onBackPressed();
+                            finish();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                    return true;
+                }
+
 
                 /*if(slipNumberFromList.equals(""))
                 {
@@ -256,7 +275,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 } else{
                     finish();
                 }*/
-                return true;
+
 
             case R.id.menuAddItem:
                 showDialog();
@@ -264,7 +283,13 @@ public class CustomerDetailsActivity extends BaseActivity {
 
             case R.id.menuSubmit:
                 if (checkValidationForFields() == true) {
-                    submitSlipDetails();
+                    submitSlipDetails(Constant.ADD_ORDER);
+                    return true;
+                }
+
+            case R.id.menuUpdate:
+                if (checkValidationForFields() == true) {
+                    submitSlipDetails(Constant.UPDATE_ORDER);
                     return true;
                 }
 
@@ -274,32 +299,40 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-        alertDialogBuilder.setMessage("Do you want to submit this slip ?");
-        alertDialogBuilder.setPositiveButton("yes",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        if (checkValidationForFields() == true) {
-                            submitSlipDetails();
-                        }
-                    }
-                });
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //super.onBackPressed();
-                finish();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
 
+        if (modeOfOpration.equals("")) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+            alertDialogBuilder.setMessage("Do you want to submit this slip ?");
+            alertDialogBuilder.setPositiveButton("yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            if (checkValidationForFields() == true) {
+                                if (slipNumberFromList.equals("")) {
+                                    submitSlipDetails(Constant.ADD_ORDER);
+                                } else {
+                                    submitSlipDetails(Constant.UPDATE_ORDER);
+                                }
+                            }
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
+
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //super.onBackPressed();
+                    finish();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
 
         //super.onBackPressed();
     }
 
-    private void submitSlipDetails() {
+    private void submitSlipDetails(String url) {
         showBusyProgress();
         String str_slipNumber = slipNumber.getText().toString().trim();
 
@@ -325,7 +358,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         try {
             GsonRequest<SubmitOrderResponse>
-                    submitSlipDetailsRequest = new GsonRequest<>(Request.Method.POST, Constant.ADD_ORDER, jsonString, SubmitOrderResponse.class,
+                    submitSlipDetailsRequest = new GsonRequest<>(Request.Method.POST, url, jsonString, SubmitOrderResponse.class,
                     new Response.Listener<SubmitOrderResponse>() {
                         @Override
                         public void onResponse(@NonNull SubmitOrderResponse response) {
@@ -396,9 +429,9 @@ public class CustomerDetailsActivity extends BaseActivity {
         onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    int indexOfSelectedItem = itemSpinner.getSelectedItemPosition();
-                    itemBarcodeValue.setText(tempBarcodes.get(indexOfSelectedItem).toString());
-                    itemUmo.setText(tempUom.get(indexOfSelectedItem).toString());
+                int indexOfSelectedItem = itemSpinner.getSelectedItemPosition();
+                itemBarcodeValue.setText(tempBarcodes.get(indexOfSelectedItem).toString());
+                itemUmo.setText(tempUom.get(indexOfSelectedItem).toString());
             }
 
             @Override
@@ -407,8 +440,6 @@ public class CustomerDetailsActivity extends BaseActivity {
             }
         };
         itemSpinner.setOnItemSelectedListener(onItemSelectedListener);
-
-
 
 
 //////////////////////////////////////////////////////
@@ -440,7 +471,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                                                 String strItem = barcodeScanResponse.getItemList().get(0).getName();
 
                                                 int index = -1;
-                                                for (int i=0;i<tempItems.size();i++) {
+                                                for (int i = 0; i < tempItems.size(); i++) {
                                                     if (tempItems.get(i).equals(strItem)) {
                                                         index = i;
                                                         break;
@@ -511,7 +542,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                                                                 itemUmo.setText(barcodeScanResponse.getItemList().get(0).getUom());
                                                                 String strItem = barcodeScanResponse.getItemList().get(0).getName();
                                                                 int index = -1;
-                                                                for (int i=0;i<tempItems.size();i++) {
+                                                                for (int i = 0; i < tempItems.size(); i++) {
                                                                     if (tempItems.get(i).equals(strItem)) {
                                                                         index = i;
                                                                         break;
@@ -551,16 +582,16 @@ public class CustomerDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                String str_itemName = itemName.getText().toString().trim();
+                String str_itemName = itemSpinner.getSelectedItem().toString();
                 String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
                 String str_itemQty = itemQuantity.getText().toString().trim();
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
                 String str_slipNo = slipNumber.getText().toString().trim();
                 String str_itemUmo = itemUmo.getText().toString().trim();
 
-                if(str_slipNo.equals("") &&  str_itemName.equals("") &&  str_itemBarcode.equals("") ){
+                if (str_slipNo.equals("") && str_itemName.equals("") && str_itemBarcode.equals("")) {
                     showToast("Please Fill All Details");
-                }else{
+                } else {
                     Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
                     items.add(item);
                     setAdapter(items);
@@ -575,6 +606,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 dialogBuilder.dismiss();
             }
         });
+
 
         dialogBuilder.setView(dialogView);
         dialogBuilder.setCancelable(false);
@@ -685,9 +717,9 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     }
 
-    private void prepareItemList(){
+    private void prepareItemList() {
 
-        try{
+        try {
             showBusyProgress();
             JSONObject jo = new JSONObject();
             jo.put("", "");
@@ -724,8 +756,8 @@ public class CustomerDetailsActivity extends BaseActivity {
             itemListResquest.setShouldCache(false);
             Application.getInstance().addToRequestQueue(itemListResquest, "itemListResquest");
 
-        } catch (Exception e){
-            Log.e(TAG,e.getMessage());
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
         }
     }
 

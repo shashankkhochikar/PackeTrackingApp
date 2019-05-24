@@ -72,6 +72,7 @@ public class CustomerSlipListActivity extends BaseActivity {
 
                     Intent slipDetailsIntent = new Intent(CustomerSlipListActivity.this, CustomerDetailsActivity.class);
                     slipDetailsIntent.putExtra("slipNumber", customerOrderListData.get(position).getSlipno());
+                    slipDetailsIntent.putExtra("modeOfOpration",modeOfOpration);
                     startActivity(slipDetailsIntent);
 
                 } else if (modeOfOpration.equals("2")) {// when mode of opration submit
