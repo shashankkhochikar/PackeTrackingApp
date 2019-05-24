@@ -373,7 +373,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                                 showToast(response.getError().getErrorMessage());
                             } else {
                                 if (response.getSuccess() == 1) {
-                                    showToast("Order submitted successfully.");
+                                    showToast(response.getMessage().toString());
                                     setResult(RESULT_OK);
                                     finish();
                                 }

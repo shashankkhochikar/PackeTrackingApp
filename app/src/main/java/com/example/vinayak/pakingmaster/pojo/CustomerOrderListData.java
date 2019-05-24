@@ -7,6 +7,18 @@ import java.io.Serializable;
 
 public class CustomerOrderListData implements Serializable {
 
+    @SerializedName("noofboxes")
+    @Expose
+    private String noofboxes;
+
+    public String getNoofboxes() {
+        return noofboxes;
+    }
+
+    public void setNoofboxes(String noofboxes) {
+        this.noofboxes = noofboxes;
+    }
+
     @SerializedName("slipno")
     @Expose
     private String slipno;

@@ -75,6 +75,8 @@
                     android:gravity="center"
                     android:hint="Uom"
                     android:layout_margin="1dp"
+                    android:editable="false"
+                    android:focusable="false"
                     android:background="@drawable/rounded_border_edittext"/>
 
 
