@@ -364,7 +364,18 @@ public class CustomerDetailsActivity extends BaseActivity {
         String submitedDate = df.format(c);
         String str_slipDate = df.format(c);
         String downloadedDate = df.format(c);
-        String noOfBoxes = "" + items.size();
+
+        int countNoOfBoxes = items.size();
+        int same = 0;
+        for (int i = 0; i < items.size(); i++) {
+            for (int k = i + 1; k < items.size(); k++) {
+                if(items.get(i).getItemBarcode().equals(items.get(k).getItemBarcode())){
+                    same++;
+                }
+            }
+        }
+
+        String noOfBoxes = "0";//items.size();
 
         customerDetails = new CustomerDetails(str_slipNumber, str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
                 noOfBoxes, entryBy, items);
