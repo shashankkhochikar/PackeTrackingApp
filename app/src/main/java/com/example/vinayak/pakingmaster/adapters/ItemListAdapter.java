@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,7 +112,8 @@ public class ItemListAdapter extends BaseAdapter {
                 {
                     items.get(position).setItemBoxNo(holder.itemBoxNo.getText().toString());
                     Log.e(TAG,items.get(position).getItemBoxNo().toString());
-                    //Constant.isAllItemBoxNoFilled = true;
+                    //notifyDataSetChanged();
+                    Constant.isAllItemBoxNoFilled = true;
                 } else {
                     Constant.isAllItemBoxNoFilled = false;
                 }
@@ -126,7 +129,7 @@ public class ItemListAdapter extends BaseAdapter {
                 if(!holder.itemQty.getText().toString().equals("")){
                     items.get(position).setItemQty(holder.itemQty.getText().toString());
                     Log.e(TAG,items.get(position).getItemQty().toString());
-                    //Constant.isAllItemQtyFilled = true;
+                    Constant.isAllItemQtyFilled = true;
                 } else{
                     Constant.isAllItemQtyFilled = false;
                 }
