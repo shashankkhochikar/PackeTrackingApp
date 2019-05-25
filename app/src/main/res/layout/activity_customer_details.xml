@@ -46,13 +46,18 @@
                 android:visibility="gone"
                 android:text="Select Member :" />
 
-            <Spinner
+            <AutoCompleteTextView
+                android:id="@+id/customerSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
+
+           <!-- <Spinner
                 style="@style/Widget.AppCompat.Spinner"
                 android:id="@+id/customerSpinner"
                android:layout_width="match_parent"
                android:layout_height="45dp"
                android:background="@drawable/spinner"
-               />
+               />-->
 
         </LinearLayout>
 

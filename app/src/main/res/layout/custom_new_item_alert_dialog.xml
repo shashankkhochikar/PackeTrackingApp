@@ -67,23 +67,22 @@
             </LinearLayout>
 
 
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/edTxtItemName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Item Name"
                 android:inputType="textPersonName"
-                android:editable="false"
-                android:visibility="gone"
-                android:focusable="false"/>
+                android:editable="true"
+                android:visibility="visible"
+                android:focusable="true"/>
 
-            <Spinner
+            <!--<Spinner
                 android:id="@+id/itemSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:background="@drawable/spinner"
-                />
+                android:background="@drawable/spinner" />-->
 
             <EditText
                 android:id="@+id/edTxtItemQuantity"

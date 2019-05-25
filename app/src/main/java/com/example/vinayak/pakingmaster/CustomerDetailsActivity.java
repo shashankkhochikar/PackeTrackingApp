@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -80,7 +81,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     ArrayList<String> tempUom = new ArrayList<>();
 
     ItemListAdapter adapter;
-    Spinner customerNameSipnner;
+    AutoCompleteTextView  customerNameSipnner;
     GetCustomerListResponse getCustomerListResponse;
     BarcodeScanResponse barcodeScanResponse;
     SlipDetailsResponseData slipDetailsResponseData;
@@ -193,7 +194,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     private void assignview() {
         listView = (ListView) findViewById(R.id.itemList);
-        customerNameSipnner = (Spinner) findViewById(R.id.customerSpinner);
+        customerNameSipnner = (AutoCompleteTextView) findViewById(R.id.customerSpinner);
         slipNumber = (TextView) findViewById(R.id.textViewSlipNumber);
         edTxtOrderDate = (EditText) findViewById(R.id.edTxtOrderDate);
         edTxtOrderNumber = (EditText) findViewById(R.id.edTxtOrderNumber);
@@ -343,12 +344,20 @@ public class CustomerDetailsActivity extends BaseActivity {
         showBusyProgress();
         String str_slipNumber = getSupportActionBar().getTitle().toString();//slipNumber.getText().toString().trim();
 
-        String str_customerName = customerNameSipnner.getSelectedItem().toString();
+        String str_customerName = customerNameSipnner.getText().toString();//customerNameSipnner.getSelectedItem().toString();
         String str_orderDate = edTxtOrderDate.getText().toString().trim();
         String str_orderNumber = edTxtOrderNumber.getText().toString().trim();
 
 
-        int indexOfCustomer = customerNameSipnner.getSelectedItemPosition();
+        //int indexOfCustomer = customerNameSipnner.getSelectedItemPosition();
+        int indexOfCustomer = -1;
+        for (int i = 0; i < customer.size(); i++) {//009
+            if (customer.get(i).equals(str_customerName)) {
+                indexOfCustomer = i;
+                break;
+            }
+        }
+
         String cutomerId = customerIds.get(indexOfCustomer).toString();
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -406,7 +415,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         LayoutInflater inflater = CustomerDetailsActivity.this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.custom_new_item_alert_dialog, null);
 
-        final EditText itemName = (EditText) dialogView.findViewById(R.id.edTxtItemName);
+        final AutoCompleteTextView itemName = (AutoCompleteTextView) dialogView.findViewById(R.id.edTxtItemName);
         final ImageView imgBarcodeScanner = (ImageView) dialogView.findViewById(R.id.imgBarcodeScanner);
         final EditText itemBarcodeValue = (EditText) dialogView.findViewById(R.id.edTxtItemBarcode);
         final EditText itemQuantity = (EditText) dialogView.findViewById(R.id.edTxtItemQuantity);
@@ -415,7 +424,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         final Button btnSubmit = (Button) dialogView.findViewById(R.id.buttonSubmitNewItem);
         final Button btnCancel = (Button) dialogView.findViewById(R.id.buttonCancelNewItem);
         final TextView textViewCheckBarcode = (TextView) dialogView.findViewById(R.id.textViewCheckBarcode);
-        final Spinner itemSpinner = (Spinner) dialogView.findViewById(R.id.itemSpinner);
+        //final Spinner itemSpinner = (Spinner) dialogView.findViewById(R.id.itemSpinner);
 
         //load items on item spinner
         tempItems = new ArrayList<>(itemListResponseData.getItemListData().size());
@@ -427,26 +436,31 @@ public class CustomerDetailsActivity extends BaseActivity {
             tempUom.add(itemListData.get(i).getUom());
 
         }
+
+
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (CustomerDetailsActivity.this, android.R.layout.simple_spinner_item,
                         tempItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        itemSpinner.setAdapter(adapter);
-        AdapterView.OnItemSelectedListener onItemSelectedListener = null;
+        itemName.setAdapter(adapter);
+        itemName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //int indexOfSelectedItem = itemSpinner.getSelectedItemPosition();
+                itemBarcodeValue.setText(tempBarcodes.get(i).toString());
+                itemUmo.setText(tempUom.get(i).toString());
+            }
+        });
+
+        /*AdapterView.OnItemSelectedListener onItemSelectedListener = null;
         onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int indexOfSelectedItem = itemSpinner.getSelectedItemPosition();
-                itemBarcodeValue.setText(tempBarcodes.get(indexOfSelectedItem).toString());
-                itemUmo.setText(tempUom.get(indexOfSelectedItem).toString());
-            }
-
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {    }
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {    }
         };
-        itemSpinner.setOnItemSelectedListener(onItemSelectedListener);
+        itemSpinner.setOnItemSelectedListener(onItemSelectedListener);*/
 
 
 //////////////////////////////////////////////////////
@@ -477,14 +491,14 @@ public class CustomerDetailsActivity extends BaseActivity {
                                                 itemUmo.setText(barcodeScanResponse.getItemList().get(0).getUom());
                                                 String strItem = barcodeScanResponse.getItemList().get(0).getName();
 
-                                                int index = -1;
+                                                /*int index = -1;
                                                 for (int i = 0; i < tempItems.size(); i++) {
                                                     if (tempItems.get(i).equals(strItem)) {
                                                         index = i;
                                                         break;
                                                     }
                                                 }
-                                                itemSpinner.setSelection(index);
+                                                itemSpinner.setSelection(index);*/
 
                                             } else {
                                                 showToast("No Item Found");
@@ -548,14 +562,14 @@ public class CustomerDetailsActivity extends BaseActivity {
                                                                 itemName.setText(barcodeScanResponse.getItemList().get(0).getName());
                                                                 itemUmo.setText(barcodeScanResponse.getItemList().get(0).getUom());
                                                                 String strItem = barcodeScanResponse.getItemList().get(0).getName();
-                                                                int index = -1;
+                                                                /*int index = -1;
                                                                 for (int i = 0; i < tempItems.size(); i++) {
                                                                     if (tempItems.get(i).equals(strItem)) {
                                                                         index = i;
                                                                         break;
                                                                     }
                                                                 }
-                                                                itemSpinner.setSelection(index);
+                                                                itemSpinner.setSelection(index);*/
 
                                                             } else {
                                                                 showToast("No Item Found");
@@ -589,7 +603,8 @@ public class CustomerDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                String str_itemName = itemSpinner.getSelectedItem().toString();
+                String str_itemName = itemName.getText().toString();
+                //String str_itemName = itemSpinner.getSelectedItem().toString();
                 String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
                 String str_itemQty = itemQuantity.getText().toString().trim();
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
@@ -644,10 +659,8 @@ public class CustomerDetailsActivity extends BaseActivity {
                                         customer.add(getCustomerListResponse.getCustomerList().get(i).getCustname());
                                         customerIds.add(getCustomerListResponse.getCustomerList().get(i).getId());
                                     }
-                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                                            (CustomerDetailsActivity.this, android.R.layout.simple_spinner_item,
-                                                    customer);
-                                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(CustomerDetailsActivity.this, android.R.layout.simple_spinner_item, customer);
+                                    //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     customerNameSipnner.setAdapter(adapter);
                                 } else {
                                     showToast("No Customer Found");
@@ -770,7 +783,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     private boolean checkValidationForFields() {
 
-        String customerName = customerNameSipnner.getSelectedItem().toString();
+        String customerName = customerNameSipnner.getText().toString();//customerNameSipnner.getSelectedItem().toString();
         String orderDate = edTxtOrderDate.getText().toString().trim();
         String orderNumber = edTxtOrderNumber.getText().toString().trim();
 
@@ -780,10 +793,10 @@ public class CustomerDetailsActivity extends BaseActivity {
         } else if (orderDate.isEmpty() || orderDate == null) {
             showToast("Please select order date");
             return false;
-        } else if (orderNumber.isEmpty() || orderNumber == null) {
+        } else /*if (orderNumber.isEmpty() || orderNumber == null) {
             showToast("Please enter order number");
             return false;
-        } else if (Constant.isAllItemBoxNoFilled == false) {
+        } else */if (Constant.isAllItemBoxNoFilled == false) {
             showToast("Please fill items box no in item list which is remaining");
             return false;
         } else if (Constant.isAllItemQtyFilled == false) {
