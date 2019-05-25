@@ -122,7 +122,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         myFormat = "dd/MM/yyyy"; //In which you need put here
         sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        if (!slipNumberFromList.equals("")) {
+       /* if (!slipNumberFromList.equals("")) {
             slipNumber.setText(slipNumberFromList);
             getSupportActionBar().setTitle(slipNumberFromList);
             prepareSlipDetails(slipNumberFromList);
@@ -130,7 +130,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         } else {
             generateSlipNumber();
             edTxtOrderDate.setText(sdf.format(calendar.getTime()));
-        }
+        }*/
 
         items = new ArrayList<>();
 
@@ -673,6 +673,17 @@ public class CustomerDetailsActivity extends BaseActivity {
                                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(CustomerDetailsActivity.this, android.R.layout.simple_spinner_item, customer);
                                     //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     customerNameSipnner.setAdapter(adapter);
+
+                                    if (!slipNumberFromList.equals("")) {
+                                        slipNumber.setText(slipNumberFromList);
+                                        getSupportActionBar().setTitle(slipNumberFromList);
+                                        prepareSlipDetails(slipNumberFromList);
+
+                                    } else {
+                                        generateSlipNumber();
+                                        edTxtOrderDate.setText(sdf.format(calendar.getTime()));
+                                    }
+
                                 } else {
                                     showToast("No Customer Found");
                                 }
@@ -715,7 +726,8 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                                     slipNumber.setText(slipDetailsResponseData.getSlipno().toString());
                                     String tempCustId = slipDetailsResponseData.getCustid().toString();
-                                    customerNameSipnner.setSelection(customerIds.indexOf(tempCustId));
+                                    int indexOfCustId = customerIds.indexOf(tempCustId);
+                                    customerNameSipnner.setText(customer.get(indexOfCustId).toString());
                                     edTxtOrderDate.setText(slipDetailsResponseData.getOrderdate().toString());
                                     edTxtOrderNumber.setText(slipDetailsResponseData.getOrderno().toString());
                                     if (slipDetailsResponseData.getItemList() != null && slipDetailsResponseData.getItemList().size() > 0) {
