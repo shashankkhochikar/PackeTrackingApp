@@ -101,6 +101,8 @@ public class CustomerDetailsActivity extends BaseActivity {
     String myFormat = "";
     SimpleDateFormat sdf = null;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -594,7 +596,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 String str_slipNo = slipNumber.getText().toString().trim();
                 String str_itemUmo = itemUmo.getText().toString().trim();
 
-                if (str_slipNo.equals("") && str_itemName.equals("") && str_itemBarcode.equals("")) {
+                if (str_slipNo.equals("") || str_itemName.equals("") || str_itemBarcode.equals("") || str_itemBoxNo.equals("") || str_itemQty.equals("")) {
                     showToast("Please Fill All Details");
                 } else {
                     Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
@@ -781,10 +783,18 @@ public class CustomerDetailsActivity extends BaseActivity {
         } else if (orderNumber.isEmpty() || orderNumber == null) {
             showToast("Please enter order number");
             return false;
+        } else if (Constant.isAllItemBoxNoFilled == false) {
+            showToast("Please fill items box no in item list which is remaining");
+            return false;
+        } else if (Constant.isAllItemQtyFilled == false) {
+            showToast("Please fill items quantity in item list which is remaining");
+            return false;
         } else if (items.size() < 0 || items.isEmpty()) {
             showToast("Please add at least one item");
             return false;
         } else
             return true;
     }
+
+
 }

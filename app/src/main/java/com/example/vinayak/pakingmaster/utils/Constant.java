@@ -23,4 +23,7 @@ public class Constant {
     public static String userName = "";
     public static String slipNumberFromList = "";
 
+    public static boolean isAllItemBoxNoFilled = true;
+    public static boolean isAllItemQtyFilled = true;
+
 }

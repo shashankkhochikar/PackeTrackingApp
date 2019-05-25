@@ -41,10 +41,13 @@ import java.util.List;
 import static com.example.vinayak.pakingmaster.utils.Constant.slipNumberFromList;
 
 public class ItemListAdapter extends BaseAdapter {
+
+    private static final String TAG = ItemListAdapter.class.getName();
     Activity activity;
     private static LayoutInflater inflater = null;
     List<Item> items;
     public String strBarcode;
+    Item item = new Item();
 
     public ItemListAdapter() {
 
@@ -76,7 +79,7 @@ public class ItemListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         View view = convertView;
-        ViewHolder holder;
+        final ViewHolder holder;
         if (view == null) {
             view = inflater.inflate(R.layout.activity_list_item, null);
             holder = new ViewHolder();
@@ -97,6 +100,40 @@ public class ItemListAdapter extends BaseAdapter {
         holder.itemBoxNo.setText(items.get(position).getItemBoxNo().toString());
         holder.itemUmo.setText(items.get(position).getUom().toString());
 
+
+
+        holder.itemBoxNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(!holder.itemBoxNo.getText().toString().equals(""))
+                {
+                    items.get(position).setItemBoxNo(holder.itemBoxNo.getText().toString());
+                    Log.e(TAG,items.get(position).getItemBoxNo().toString());
+                    //Constant.isAllItemBoxNoFilled = true;
+                } else {
+                    Constant.isAllItemBoxNoFilled = false;
+                }
+
+
+            }
+        });
+
+        holder.itemQty.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(!holder.itemQty.getText().toString().equals("")){
+                    items.get(position).setItemQty(holder.itemQty.getText().toString());
+                    Log.e(TAG,items.get(position).getItemQty().toString());
+                    //Constant.isAllItemQtyFilled = true;
+                } else{
+                    Constant.isAllItemQtyFilled = false;
+                }
+
+
+            }
+        });
 
         holder.scanItem.setOnClickListener(new View.OnClickListener() {
             @Override

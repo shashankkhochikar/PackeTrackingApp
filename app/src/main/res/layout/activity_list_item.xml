@@ -74,6 +74,7 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:hint="Uom"
+                    android:enabled="false"
                     android:layout_margin="1dp"
                     android:editable="false"
                     android:focusable="false"
