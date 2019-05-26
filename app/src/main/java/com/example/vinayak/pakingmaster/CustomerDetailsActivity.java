@@ -79,6 +79,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     ArrayList<String> tempItems = new ArrayList<>();
     ArrayList<String> tempBarcodes = new ArrayList<>();
     ArrayList<String> tempUom = new ArrayList<>();
+    int[] tempNoOfBox;
 
     ItemListAdapter adapter;
     AutoCompleteTextView  customerNameSipnner;
@@ -365,17 +366,37 @@ public class CustomerDetailsActivity extends BaseActivity {
         String str_slipDate = df.format(c);
         String downloadedDate = df.format(c);
 
-        int countNoOfBoxes = items.size();
-        int same = 0;
-        for (int i = 0; i < items.size(); i++) {
-            for (int k = i + 1; k < items.size(); k++) {
-                if(items.get(i).getItemBarcode().equals(items.get(k).getItemBarcode())){
-                    same++;
+        tempNoOfBox = new int[items.size()];
+        for(int noOfBox=0;noOfBox<items.size();noOfBox++){
+            tempNoOfBox[noOfBox] = Integer.parseInt(items.get(noOfBox).getItemBoxNo());
+        }
+
+        int n = tempNoOfBox.length;
+        int count =0;
+        for (int i = 0; i < n-1; i++){
+            for (int j = 0; j < n-i-1; j++){
+                if (tempNoOfBox[j] > tempNoOfBox[j+1])
+                {
+                    // swap temp and arr[i]
+                    int temp = tempNoOfBox[j];
+                    tempNoOfBox[j] = tempNoOfBox[j+1];
+                    tempNoOfBox[j+1] = temp;
                 }
             }
         }
 
-        String noOfBoxes = "0";//items.size();
+        for (int i = 0; i < tempNoOfBox.length; i++) {
+            for (int j = i + 1; j < tempNoOfBox.length; j++) {
+                if (tempNoOfBox[i] == tempNoOfBox[j] ) {
+                    // got the duplicate element
+                    count++;
+                    Log.d("Temp :",""+tempNoOfBox[j]);
+                }
+
+            }
+        }
+        Log.d(TAG,tempNoOfBox.toString());
+        String noOfBoxes = ""+(n-count);//items.size();
 
         customerDetails = new CustomerDetails(str_slipNumber, str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
                 noOfBoxes, entryBy, items);
