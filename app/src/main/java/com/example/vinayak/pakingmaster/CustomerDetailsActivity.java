@@ -2,6 +2,7 @@ package com.example.vinayak.pakingmaster;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -182,7 +184,6 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     }
 
-
     public static int generateRandomIntIntRange(int min, int max) {
         Random r = new Random();
         return r.nextInt((max - min) + 1) + min;
@@ -288,18 +289,25 @@ public class CustomerDetailsActivity extends BaseActivity {
                 showDialog();
                 return true;
 
-            case R.id.menuSubmit:
+            case R.id.menuSubmit://009
+                edTxtOrderNumber.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(edTxtOrderNumber, InputMethodManager.SHOW_IMPLICIT);
+
                 if (checkValidationForFields() == true) {
                     submitSlipDetails(Constant.ADD_ORDER);
                     return true;
                 }
 
             case R.id.menuUpdate:
+                edTxtOrderNumber.requestFocus();
+                InputMethodManager imm1 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm1.showSoftInput(edTxtOrderNumber, InputMethodManager.SHOW_IMPLICIT);
+
                 if (checkValidationForFields() == true) {
                     submitSlipDetails(Constant.UPDATE_ORDER);
                     return true;
                 }
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -349,16 +357,15 @@ public class CustomerDetailsActivity extends BaseActivity {
         String str_orderDate = edTxtOrderDate.getText().toString().trim();
         String str_orderNumber = edTxtOrderNumber.getText().toString().trim();
 
-
         //int indexOfCustomer = customerNameSipnner.getSelectedItemPosition();
-        int indexOfCustomer = -1;
+       /* int indexOfCustomer = -1;
         for (int i = 0; i < customer.size(); i++) {//009
             if (customer.get(i).equals(str_customerName)) {
                 indexOfCustomer = i;
                 break;
             }
-        }
-
+        }*/
+        int indexOfCustomer = customer.indexOf(str_customerName);
         String cutomerId = customerIds.get(indexOfCustomer).toString();
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -492,8 +499,17 @@ public class CustomerDetailsActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //int indexOfSelectedItem = itemSpinner.getSelectedItemPosition();
-                itemBarcodeValue.setText(tempBarcodes.get(i).toString());
-                itemUmo.setText(tempUom.get(i).toString());
+                int pos = tempItems.indexOf(adapterView.getItemAtPosition(i));
+                itemBarcodeValue.setText(tempBarcodes.get(pos));
+                itemUmo.setText(tempUom.get(pos));
+                /*for(int j=0;i<itemListData.size();i++){
+                    if (itemListData.get(j).getItemname().equals(itemName.getText().toString())){
+                        itemBarcodeValue.setText(itemListData.get(j).getItembacode().toString());
+                        itemUmo.setText(itemListData.get(j).getUom().toString());
+                    }
+                }*/
+
+
             }
         });
 
@@ -658,10 +674,14 @@ public class CustomerDetailsActivity extends BaseActivity {
                 if (str_slipNo.equals("") || str_itemName.equals("") || str_itemBarcode.equals("") || str_itemBoxNo.equals("") || str_itemQty.equals("")) {
                     showToast("Please Fill All Details");
                 } else {
-                    Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
-                    items.add(item);
-                    setAdapter(items);
-                    dialogBuilder.dismiss();
+                    if(Integer.parseInt(str_itemQty) < 1){
+                        showToast("Please Fill Proper Qty");
+                    }else{
+                        Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
+                        items.add(item);
+                        setAdapter(items);
+                        dialogBuilder.dismiss();
+                    }
                 }
             }
         });
@@ -679,7 +699,6 @@ public class CustomerDetailsActivity extends BaseActivity {
         dialogBuilder.show();
 
     }
-
 
     private void prepareCustomerList() {
         try {
@@ -856,7 +875,7 @@ public class CustomerDetailsActivity extends BaseActivity {
             showToast("Please fill items box no in item list which is remaining");
             return false;
         } else if (Constant.isAllItemQtyFilled == false) {
-            showToast("Please fill items quantity in item list which is remaining");
+            showToast("Please fill items details in list which are remaining OR Some Invalid Details Filled");
             return false;
         } else if (items.size() < 0 || items.isEmpty()) {
             showToast("Please add at least one item");

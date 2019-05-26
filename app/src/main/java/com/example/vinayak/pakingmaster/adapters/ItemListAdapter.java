@@ -102,39 +102,44 @@ public class ItemListAdapter extends BaseAdapter {
         holder.itemBoxNo.setText(items.get(position).getItemBoxNo().toString());
         holder.itemUmo.setText(items.get(position).getUom().toString());
 
-
-
         holder.itemBoxNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
 
-                if(!holder.itemBoxNo.getText().toString().equals(""))
-                {
-                    items.get(position).setItemBoxNo(holder.itemBoxNo.getText().toString());
-                    Log.e(TAG,items.get(position).getItemBoxNo().toString());
-                    //notifyDataSetChanged();
-                    Constant.isAllItemBoxNoFilled = true;
-                } else {
-                    Constant.isAllItemBoxNoFilled = false;
+                if (!hasFocus) {
+                    if (!holder.itemBoxNo.getText().toString().equals("")) {
+                        if (Integer.parseInt(holder.itemBoxNo.getText().toString()) < 1) {
+                            Toast.makeText(activity, "BoxNo Should be Greater then one", Toast.LENGTH_LONG).show();
+                            Constant.isAllItemQtyFilled = false;
+                        } else {
+                            items.get(position).setItemBoxNo(holder.itemBoxNo.getText().toString());
+                            Log.e(TAG, items.get(position).getItemBoxNo().toString());
+                            Constant.isAllItemBoxNoFilled = true;
+                        }
+                    } else {
+                        Constant.isAllItemBoxNoFilled = false;
+                    }
                 }
-
-
             }
         });
 
         holder.itemQty.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-
-                if(!holder.itemQty.getText().toString().equals("")){
-                    items.get(position).setItemQty(holder.itemQty.getText().toString());
-                    Log.e(TAG,items.get(position).getItemQty().toString());
-                    Constant.isAllItemQtyFilled = true;
-                } else{
-                    Constant.isAllItemQtyFilled = false;
+                if (!hasFocus) {
+                    if (!holder.itemQty.getText().toString().equals("")) {
+                        if (Integer.parseInt(holder.itemQty.getText().toString()) < 1) {
+                            Toast.makeText(activity, "Qty Should be Greater then one", Toast.LENGTH_LONG).show();
+                            Constant.isAllItemQtyFilled = false;
+                        } else {
+                            items.get(position).setItemQty(holder.itemQty.getText().toString());
+                            Log.e(TAG, items.get(position).getItemQty().toString());
+                            Constant.isAllItemQtyFilled = true;
+                        }
+                    } else {
+                        Constant.isAllItemQtyFilled = false;
+                    }
                 }
-
-
             }
         });
 

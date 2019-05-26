@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +49,8 @@ public class CustomerSlipListActivity extends BaseActivity {
     String customerId = "";
     String enterBy = "";
 
+    SwipeRefreshLayout pullToRefresh;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,66 +66,74 @@ public class CustomerSlipListActivity extends BaseActivity {
 
         assignView();
         prepareCustomerSlipList(customerId, enterBy);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+           @Override
+           public void onRefresh() {
+               customerOrderListData.clear();
+               prepareCustomerSlipList(customerId, enterBy);
+               pullToRefresh.setRefreshing(false);
+           }
+       });
 
-        slipList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                slipList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
-                if (modeOfOpration.equals("1")) {
+                        if (modeOfOpration.equals("1")) {
 
-                    Intent slipDetailsIntent = new Intent(CustomerSlipListActivity.this, CustomerDetailsActivity.class);
-                    slipDetailsIntent.putExtra("slipNumber", customerOrderListData.get(position).getSlipno());
-                    slipDetailsIntent.putExtra("modeOfOpration",modeOfOpration);
-                    startActivity(slipDetailsIntent);
+                            Intent slipDetailsIntent = new Intent(CustomerSlipListActivity.this, CustomerDetailsActivity.class);
+                            slipDetailsIntent.putExtra("slipNumber", customerOrderListData.get(position).getSlipno());
+                            slipDetailsIntent.putExtra("modeOfOpration", modeOfOpration);
+                            startActivity(slipDetailsIntent);
 
-                } else if (modeOfOpration.equals("2")) {// when mode of opration submit
+                        } else if (modeOfOpration.equals("2")) {// when mode of opration submit
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerSlipListActivity.this);
-                    alertDialogBuilder.setMessage("Are you sure, Do you wanted to submit this slip ?");
-                    alertDialogBuilder.setPositiveButton("yes",
-                            new DialogInterface.OnClickListener() {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerSlipListActivity.this);
+                            alertDialogBuilder.setMessage("Are you sure, Do you wanted to submit this slip ?");
+                            alertDialogBuilder.setPositiveButton("yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface arg0, int arg1) {
+
+                                            submitCustomerSlip(customerOrderListData.get(position).getSlipno(), position);
+
+                                        }
+                                    });
+                            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface arg0, int arg1) {
-
-                                    submitCustomerSlip(customerOrderListData.get(position).getSlipno(),position);
+                                public void onClick(DialogInterface dialog, int which) {
 
                                 }
                             });
-                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
 
 
-                } else if (modeOfOpration.equals("3")) { //when mode of opration is delete
+                        } else if (modeOfOpration.equals("3")) { //when mode of opration is delete
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerSlipListActivity.this);
-                    alertDialogBuilder.setMessage("Are you sure, Do you wanted to delete this slip ?");
-                    alertDialogBuilder.setPositiveButton("yes",
-                            new DialogInterface.OnClickListener() {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerSlipListActivity.this);
+                            alertDialogBuilder.setMessage("Are you sure, Do you wanted to delete this slip ?");
+                            alertDialogBuilder.setPositiveButton("yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface arg0, int arg1) {
+
+                                            deleteCustomerSlip(customerOrderListData.get(position).getSlipno(), position);
+
+                                        }
+                                    });
+                            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface arg0, int arg1) {
-
-                                    deleteCustomerSlip(customerOrderListData.get(position).getSlipno(),position);
+                                public void onClick(DialogInterface dialog, int which) {
 
                                 }
                             });
-                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
 
                         }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-
-                }
-            }
-        });
+                    }
+                });
 
 
     }
@@ -130,6 +141,7 @@ public class CustomerSlipListActivity extends BaseActivity {
     private void assignView() {
         slipList = (ListView) findViewById(R.id.slipList);
         txtDataNotFoundForSlip = (TextView) findViewById(R.id.txtDataNotFoundForSlip);
+        pullToRefresh = (SwipeRefreshLayout) findViewById(R.id.pullToRefresh);
     }
 
     private void prepareCustomerSlipList(String customerId, String enterBy) {

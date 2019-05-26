@@ -6,14 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".CustomerSlipListActivity">
 
-
-    <ListView
-        android:id="@+id/slipList"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp"
-        tools:ignore="MissingConstraints" />
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+        <ListView
+            android:id="@+id/slipList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp"
+            tools:ignore="MissingConstraints" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/txtDataNotFoundForSlip"
@@ -23,6 +28,7 @@
         android:paddingTop="10dp"
         android:layout_gravity="center"
         android:visibility="gone"
-        android:textSize="18dp"/>
+        android:textSize="18dp"
+        tools:ignore="MissingConstraints" />
 
 </android.support.constraint.ConstraintLayout>
