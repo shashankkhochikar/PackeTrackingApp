@@ -25,11 +25,11 @@ public class Item implements Serializable {
 
     @SerializedName("qty")
     @Expose
-    private String itemQty;
+    public String itemQty;
 
     @SerializedName("boxno")
     @Expose
-    private String itemBoxNo;
+    public String itemBoxNo;
 
     @SerializedName("uom")
     @Expose

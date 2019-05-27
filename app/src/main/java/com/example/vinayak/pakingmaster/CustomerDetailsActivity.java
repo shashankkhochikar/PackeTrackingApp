@@ -229,7 +229,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
             case android.R.id.home:
 
-                if (modeOfOpration.equals("")) {
+                //if (modeOfOpration.equals("")) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
                     alertDialogBuilder.setMessage("Do you want to submit this slip ?");
                     alertDialogBuilder.setPositiveButton("yes",
@@ -255,10 +255,10 @@ public class CustomerDetailsActivity extends BaseActivity {
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                    // return true;
-                }else if(modeOfOpration.equals("1")){
+                /*}else if(modeOfOpration.equals("1")){
                     finish();
                     return true;
-                }
+                }*/
                 return true;
 
                 /*if(slipNumberFromList.equals(""))
@@ -315,7 +315,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        if (modeOfOpration.equals("")) {
+        //if (modeOfOpration.equals("")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
             alertDialogBuilder.setMessage("Do you want to submit this slip ?");
             alertDialogBuilder.setPositiveButton("yes",
@@ -342,9 +342,9 @@ public class CustomerDetailsActivity extends BaseActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-        }else if(modeOfOpration.equals("1")){
+        /*}else if(modeOfOpration.equals("1")){
             finish();
-        }
+        }*/
 
         //super.onBackPressed();
     }

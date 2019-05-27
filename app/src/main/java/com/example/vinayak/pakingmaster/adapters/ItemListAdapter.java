@@ -98,8 +98,12 @@ public class ItemListAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         holder.itemName.setText(items.get(position).getItemName().toString());
+
         holder.itemQty.setText(items.get(position).getItemQty().toString());
+        holder.itemQty.setId(position);
         holder.itemBoxNo.setText(items.get(position).getItemBoxNo().toString());
+        holder.itemBoxNo.setId(position);
+
         holder.itemUmo.setText(items.get(position).getUom().toString());
 
         holder.itemBoxNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -108,12 +112,16 @@ public class ItemListAdapter extends BaseAdapter {
 
                 if (!hasFocus) {
                     if (!holder.itemBoxNo.getText().toString().equals("")) {
+                        Constant.isAllItemQtyFilled = true;
                         if (Integer.parseInt(holder.itemBoxNo.getText().toString()) < 1) {
                             Toast.makeText(activity, "BoxNo Should be Greater then one", Toast.LENGTH_LONG).show();
                             Constant.isAllItemQtyFilled = false;
                         } else {
-                            items.get(position).setItemBoxNo(holder.itemBoxNo.getText().toString());
-                            Log.e(TAG, items.get(position).getItemBoxNo().toString());
+                            final int pos = v.getId();
+                            final EditText Caption = (EditText) v;
+                            /*items.get(position).setItemBoxNo(holder.itemBoxNo.getText().toString());*/
+                            items.get(pos).setItemBoxNo(Caption.getText().toString());
+                            Log.e(TAG, items.get(pos).getItemBoxNo().toString());
                             Constant.isAllItemBoxNoFilled = true;
                         }
                     } else {
@@ -128,12 +136,16 @@ public class ItemListAdapter extends BaseAdapter {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     if (!holder.itemQty.getText().toString().equals("")) {
+                        Constant.isAllItemQtyFilled = true;
                         if (Integer.parseInt(holder.itemQty.getText().toString()) < 1) {
                             Toast.makeText(activity, "Qty Should be Greater then one", Toast.LENGTH_LONG).show();
                             Constant.isAllItemQtyFilled = false;
                         } else {
-                            items.get(position).setItemQty(holder.itemQty.getText().toString());
-                            Log.e(TAG, items.get(position).getItemQty().toString());
+                            final int pos = v.getId();
+                            final EditText Caption = (EditText) v;
+                            /*items.get(position).setItemQty(holder.itemQty.getText().toString());*/
+                            items.get(pos).setItemQty(Caption.getText().toString());
+                            Log.e(TAG, items.get(pos).getItemQty().toString());
                             Constant.isAllItemQtyFilled = true;
                         }
                     } else {
