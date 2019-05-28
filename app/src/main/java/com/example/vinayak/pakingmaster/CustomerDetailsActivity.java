@@ -85,7 +85,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     int[] tempNoOfBox;
 
     ItemListAdapter adapter;
-    AutoCompleteTextView  customerNameSipnner;
+    AutoCompleteTextView customerNameSipnner;
     GetCustomerListResponse getCustomerListResponse;
     BarcodeScanResponse barcodeScanResponse;
     SlipDetailsResponseData slipDetailsResponseData;
@@ -118,6 +118,9 @@ public class CustomerDetailsActivity extends BaseActivity {
         modeOfOpration = intent.getStringExtra("modeOfOpration");
         assignview();
 
+        if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
+            disableFieldsOnModeOfOpration(modeOfOpration);
+        }
         prepareCustomerList();
         prepareItemList();
 
@@ -164,6 +167,14 @@ public class CustomerDetailsActivity extends BaseActivity {
         entryBy = userName;
     }
 
+    private void disableFieldsOnModeOfOpration(String modeOfOpration) {
+        listView.setEnabled(false);
+        customerNameSipnner.setEnabled(false);
+        slipNumber.setEnabled(false);
+        edTxtOrderDate.setEnabled(false);
+        edTxtOrderNumber.setEnabled(false);
+    }
+
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -189,7 +200,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     private void setAdapter(List<Item> items) {
         Collections.reverse(items);
-        adapter = new ItemListAdapter(CustomerDetailsActivity.this, items);
+        adapter = new ItemListAdapter(CustomerDetailsActivity.this, items, modeOfOpration);
         listView.setAdapter(adapter);
     }
 
@@ -209,6 +220,8 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         MenuItem submitItem = menu.findItem(R.id.menuSubmit);
         MenuItem updateItem = menu.findItem(R.id.menuUpdate);
+        MenuItem newItem = menu.findItem(R.id.menuAddItem);
+
 
         if (slipNumberFromList.equals("")) {
             submitItem.setVisible(true);
@@ -216,6 +229,11 @@ public class CustomerDetailsActivity extends BaseActivity {
         } else {
             submitItem.setVisible(false);
             updateItem.setVisible(true);
+        }
+        if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
+            submitItem.setEnabled(false);
+            updateItem.setEnabled(false);
+            newItem.setEnabled(false);
         }
 
         return true;
@@ -253,8 +271,8 @@ public class CustomerDetailsActivity extends BaseActivity {
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
-                   // return true;
-                }else if(modeOfOpration.equals("1")){
+                    // return true;
+                } else if (modeOfOpration.equals("1")) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
                     alertDialogBuilder.setMessage("Do you want to update this slip ?");
                     alertDialogBuilder.setPositiveButton("yes",
@@ -279,6 +297,8 @@ public class CustomerDetailsActivity extends BaseActivity {
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
+                } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
+                    finish();
                 }
                 return true;
 
@@ -363,7 +383,7 @@ public class CustomerDetailsActivity extends BaseActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-        }else if(modeOfOpration.equals("1")){
+        } else if (modeOfOpration.equals("1")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
             alertDialogBuilder.setMessage("Do you want to update this slip ?");
             alertDialogBuilder.setPositiveButton("yes",
@@ -380,7 +400,6 @@ public class CustomerDetailsActivity extends BaseActivity {
                         }
                     });
             alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
-
             {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -390,6 +409,8 @@ public class CustomerDetailsActivity extends BaseActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+        } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
+            finish();
         }
 
         //super.onBackPressed();
@@ -420,21 +441,20 @@ public class CustomerDetailsActivity extends BaseActivity {
         String downloadedDate = df.format(c);
 
         tempNoOfBox = new int[items.size()];
-        for(int noOfBox=0;noOfBox<items.size();noOfBox++){
+        for (int noOfBox = 0; noOfBox < items.size(); noOfBox++) {
             tempNoOfBox[noOfBox] = Integer.parseInt(items.get(noOfBox).getItemBoxNo());
         }
 
         //sort the array
         int n = tempNoOfBox.length;
-        int count =0;
-        for (int i = 0; i < n-1; i++){
-            for (int j = 0; j < n-i-1; j++){
-                if (tempNoOfBox[j] > tempNoOfBox[j+1])
-                {
+        int count = 0;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (tempNoOfBox[j] > tempNoOfBox[j + 1]) {
                     // swap temp and arr[i]
                     int temp = tempNoOfBox[j];
-                    tempNoOfBox[j] = tempNoOfBox[j+1];
-                    tempNoOfBox[j+1] = temp;
+                    tempNoOfBox[j] = tempNoOfBox[j + 1];
+                    tempNoOfBox[j + 1] = temp;
                 }
             }
         }
@@ -442,7 +462,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         int length = tempNoOfBox.length;
         length = removeDuplicateElements(tempNoOfBox, length);
 
-        String noOfBoxes = ""+length;
+        String noOfBoxes = "" + length;
 
         customerDetails = new CustomerDetails(str_slipNumber, str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
                 noOfBoxes, entryBy, items);
@@ -488,20 +508,20 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     }
 
-    public static int removeDuplicateElements(int arr[], int n){
-        if (n==0 || n==1){
+    public static int removeDuplicateElements(int arr[], int n) {
+        if (n == 0 || n == 1) {
             return n;
         }
         int[] temp = new int[n];
         int j = 0;
-        for (int i=0; i<n-1; i++){
-            if (arr[i] != arr[i+1]){
+        for (int i = 0; i < n - 1; i++) {
+            if (arr[i] != arr[i + 1]) {
                 temp[j++] = arr[i];
             }
         }
-        temp[j++] = arr[n-1];
+        temp[j++] = arr[n - 1];
         // Changing original array
-        for (int i=0; i<j; i++){
+        for (int i = 0; i < j; i++) {
             arr[i] = temp[i];
         }
         return j;
@@ -533,7 +553,6 @@ public class CustomerDetailsActivity extends BaseActivity {
             tempUom.add(itemListData.get(i).getUom());
 
         }
-
 
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
@@ -720,9 +739,9 @@ public class CustomerDetailsActivity extends BaseActivity {
                 if (str_slipNo.equals("") || str_itemName.equals("") || str_itemBarcode.equals("") || str_itemBoxNo.equals("") || str_itemQty.equals("")) {
                     showToast("Please Fill All Details");
                 } else {
-                    if(Integer.parseInt(str_itemQty) < 1){
+                    if (Integer.parseInt(str_itemQty) < 1) {
                         showToast("Please Fill Proper Qty");
-                    }else{
+                    } else {
                         Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
                         items.add(item);
                         setAdapter(items);

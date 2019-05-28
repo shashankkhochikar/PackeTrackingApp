@@ -50,14 +50,12 @@ public class ItemListAdapter extends BaseAdapter {
     List<Item> items;
     public String strBarcode;
     Item item = new Item();
+    String modeOfOpration;
 
-    public ItemListAdapter() {
-
-    }
-
-    public ItemListAdapter(Activity activity, List<Item> items) {
+    public ItemListAdapter(Activity activity, List<Item> items,String modeOfOpration) {
         this.activity = activity;
         this.items = items;
+        this.modeOfOpration = modeOfOpration;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
@@ -97,6 +95,16 @@ public class ItemListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
+
+        if(modeOfOpration.equals("2") || modeOfOpration.equals("3"))
+        {
+            holder.itemBoxNo.setEnabled(false);
+            holder.itemQty.setEnabled(false);
+           // holder.scanItem.setEnabled(false);
+            holder.imgDelete.setEnabled(false);
+
+        }
+
         holder.itemName.setText(items.get(position).getItemName().toString());
 
         holder.itemQty.setText(items.get(position).getItemQty().toString());
