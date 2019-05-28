@@ -143,7 +143,6 @@ public class CustomerDetailsActivity extends BaseActivity {
 
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
@@ -154,8 +153,6 @@ public class CustomerDetailsActivity extends BaseActivity {
             }
 
         };
-
-
         edTxtOrderDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
