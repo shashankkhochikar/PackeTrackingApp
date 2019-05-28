@@ -28,21 +28,29 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".LogInActivity">
+        <activity android:name=".LogInActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DashboardActivity" />
-        <activity android:name=".CustomerDetailsActivity" />
-        <activity android:name=".ListItemActivity" />
-        <activity android:name=".PakingListActivity" />
-        <activity android:name=".CustomerListActivity" />
-        <activity android:name=".AddNewUserActivity" />
-        <activity android:name=".CustomerSlipListActivity" />
-        <activity android:name=".SlipListActivity"></activity>
+        <activity android:name=".DashboardActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CustomerDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ListItemActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".PakingListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CustomerListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".AddNewUserActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CustomerSlipListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SlipListActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

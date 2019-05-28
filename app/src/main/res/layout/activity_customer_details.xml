@@ -49,7 +49,8 @@
             <AutoCompleteTextView
                 android:id="@+id/customerSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="45dp" />
+                android:layout_height="45dp"
+                android:maxLines="1"/>
 
            <!-- <Spinner
                 style="@style/Widget.AppCompat.Spinner"
@@ -80,15 +81,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="01/01/1999"
-                    android:drawableRight="@drawable/calendar" />
+                    android:maxLines="1"
+                    android:hint="  01/01/1999"
+                    android:drawableLeft="@drawable/calendar"
+                    android:layout_margin="3dp"/>
 
                 <EditText
                     android:id="@+id/edTxtOrderNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Order Number"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:layout_margin="3dp"
+                    android:maxLines="1"/>
 
             </LinearLayout>
 

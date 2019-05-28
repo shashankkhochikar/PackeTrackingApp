@@ -564,14 +564,6 @@ public class CustomerDetailsActivity extends BaseActivity {
                 int pos = tempItems.indexOf(adapterView.getItemAtPosition(i));
                 itemBarcodeValue.setText(tempBarcodes.get(pos));
                 itemUmo.setText(tempUom.get(pos));
-                /*for(int j=0;i<itemListData.size();i++){
-                    if (itemListData.get(j).getItemname().equals(itemName.getText().toString())){
-                        itemBarcodeValue.setText(itemListData.get(j).getItembacode().toString());
-                        itemUmo.setText(itemListData.get(j).getUom().toString());
-                    }
-                }*/
-
-
             }
         });
 
@@ -624,6 +616,8 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                                             } else {
                                                 showToast("No Item Found");
+                                                itemName.setText("");
+                                                itemUmo.setText("");
                                             }
                                         }
                                     }
@@ -695,6 +689,8 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                                                             } else {
                                                                 showToast("No Item Found");
+                                                                itemName.setText("");
+                                                                itemUmo.setText("");
                                                             }
                                                         }
                                                     }
@@ -725,9 +721,11 @@ public class CustomerDetailsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                String str_itemName = itemName.getText().toString();
+
                 //String str_itemName = itemSpinner.getSelectedItem().toString();
                 String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
+                int indx = tempBarcodes.indexOf(str_itemBarcode);
+                String str_itemName = tempItems.get(indx);//itemName.getText().toString();
                 String str_itemQty = itemQuantity.getText().toString().trim();
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
                 String str_slipNo = slipNumber.getText().toString().trim();

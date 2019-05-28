@@ -21,11 +21,12 @@
                 android:id="@+id/textViewScanBarcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:padding="8dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
                 android:text="Scan Barcode"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,24 +46,24 @@
                 android:weightSum="2">
 
                 <EditText
-                    android:layout_weight="0.4"
                     android:id="@+id/edTxtItemBarcode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:hint="Enter Barcode"
                     android:inputType="number"
                     app:layout_constraintTop_toBottomOf="@+id/scanBarcode"
                     tools:ignore="MissingConstraints" />
 
                 <TextView
-                    android:layout_weight="1.6"
                     android:id="@+id/textViewCheckBarcode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:padding="8dp"
-                    android:text="Check"
+                    android:text="Get Details"
                     android:textAlignment="center"
-                    android:textColor="@color/colorPrimary"/>
+                    android:textColor="@color/colorPrimary" />
 
             </LinearLayout>
 
@@ -71,12 +72,12 @@
                 android:id="@+id/edTxtItemName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:editable="true"
                 android:ems="10"
+                android:focusable="true"
                 android:hint="Item Name"
                 android:inputType="textPersonName"
-                android:editable="true"
-                android:visibility="visible"
-                android:focusable="true"/>
+                android:visibility="visible" />
 
             <!--<Spinner
                 android:id="@+id/itemSpinner"
@@ -84,44 +85,79 @@
                 android:layout_height="45dp"
                 android:background="@drawable/spinner" />-->
 
-            <EditText
-                android:id="@+id/edTxtItemQuantity"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Item Quantity"
-                android:inputType="number" />
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-            <EditText
-                android:id="@+id/edTxtBoxNo"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="Qty :"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary" />
+
+                <EditText
+                    android:id="@+id/edTxtItemQuantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Item Quantity"
+                    android:inputType="number"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Box No"
-                android:maxLength="2"
-                android:inputType="number" />
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:text="Box No :"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary" />
+
+                <EditText
+                    android:id="@+id/edTxtBoxNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Box No"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:layout_weight="1"/>
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/edTxtUmo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Uom"
                 android:enabled="false"
-                android:visibility="visible"
-                android:inputType="number" />
+                android:hint="UOM"
+                android:inputType="number"
+                android:visibility="visible" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:weightSum="2">
+
                 <Button
                     android:id="@+id/buttonSubmitNewItem"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/rounded_border_edittext"
-                    android:text="Submit"
-                    android:textAllCaps="false"
                     android:layout_weight="1"
+                    android:background="@drawable/rounded_border_edittext"
+                    android:text="Done"
+                    android:textAllCaps="false"
                     app:layout_constraintTop_toBottomOf="@+id/edt_comment"
                     tools:ignore="MissingConstraints" />
 
@@ -131,10 +167,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
                     android:background="@drawable/rounded_border_edittext"
                     android:text="Cancel"
                     android:textAllCaps="false"
-                    android:layout_weight="1"
                     app:layout_constraintTop_toBottomOf="@+id/edt_comment"
                     tools:ignore="MissingConstraints" />
 
