@@ -58,6 +58,7 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -104,8 +105,6 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     String myFormat = "";
     SimpleDateFormat sdf = null;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +161,6 @@ public class CustomerDetailsActivity extends BaseActivity {
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
         entryBy = userName;
     }
 
@@ -190,6 +188,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     }
 
     private void setAdapter(List<Item> items) {
+        Collections.reverse(items);
         adapter = new ItemListAdapter(CustomerDetailsActivity.this, items);
         listView.setAdapter(adapter);
     }
@@ -229,7 +228,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
             case android.R.id.home:
 
-                //if (modeOfOpration.equals("")) {
+                if (modeOfOpration.equals("")) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
                     alertDialogBuilder.setMessage("Do you want to submit this slip ?");
                     alertDialogBuilder.setPositiveButton("yes",
@@ -255,10 +254,32 @@ public class CustomerDetailsActivity extends BaseActivity {
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
                    // return true;
-                /*}else if(modeOfOpration.equals("1")){
-                    finish();
-                    return true;
-                }*/
+                }else if(modeOfOpration.equals("1")){
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                    alertDialogBuilder.setMessage("Do you want to update this slip ?");
+                    alertDialogBuilder.setPositiveButton("yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    if (checkValidationForFields() == true) {
+                                        if (slipNumberFromList.equals("")) {
+                                            submitSlipDetails(Constant.ADD_ORDER);
+                                        } else {
+                                            submitSlipDetails(Constant.UPDATE_ORDER);
+                                        }
+                                    }
+                                }
+                            });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //super.onBackPressed();
+                            finish();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
                 return true;
 
                 /*if(slipNumberFromList.equals(""))
@@ -315,7 +336,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        //if (modeOfOpration.equals("")) {
+        if (modeOfOpration.equals("")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
             alertDialogBuilder.setMessage("Do you want to submit this slip ?");
             alertDialogBuilder.setPositiveButton("yes",
@@ -342,9 +363,34 @@ public class CustomerDetailsActivity extends BaseActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-        /*}else if(modeOfOpration.equals("1")){
-            finish();
-        }*/
+        }else if(modeOfOpration.equals("1")){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+            alertDialogBuilder.setMessage("Do you want to update this slip ?");
+            alertDialogBuilder.setPositiveButton("yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            if (checkValidationForFields() == true) {
+                                if (slipNumberFromList.equals("")) {
+                                    submitSlipDetails(Constant.ADD_ORDER);
+                                } else {
+                                    submitSlipDetails(Constant.UPDATE_ORDER);
+                                }
+                            }
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
+
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //super.onBackPressed();
+                    finish();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
 
         //super.onBackPressed();
     }
