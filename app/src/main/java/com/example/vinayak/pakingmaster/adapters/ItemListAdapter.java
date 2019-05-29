@@ -52,7 +52,7 @@ public class ItemListAdapter extends BaseAdapter {
     Item item = new Item();
     String modeOfOpration;
 
-    public ItemListAdapter(Activity activity, List<Item> items,String modeOfOpration) {
+    public ItemListAdapter(Activity activity, List<Item> items, String modeOfOpration) {
         this.activity = activity;
         this.items = items;
         this.modeOfOpration = modeOfOpration;
@@ -96,11 +96,10 @@ public class ItemListAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        if(modeOfOpration.equals("2") || modeOfOpration.equals("3"))
-        {
+        if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
             holder.itemBoxNo.setEnabled(false);
             holder.itemQty.setEnabled(false);
-           // holder.scanItem.setEnabled(false);
+            // holder.scanItem.setEnabled(false);
             holder.imgDelete.setEnabled(false);
 
         }
@@ -181,15 +180,14 @@ public class ItemListAdapter extends BaseAdapter {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
 
-                                if (slipNumberFromList.equals("")) {
-                                    items.remove(position);
-                                    notifyDataSetChanged();
-                                } else {
+
+                                if (items.get(position).getId() != null) {
+                                    Log.e("Ewwww","Ok");
                                     try {
 
                                         JSONObject jo = new JSONObject();
                                         jo.put("id", items.get(position).getId());
-                                        jo.put("slipno",slipNumberFromList);
+                                        jo.put("slipno", slipNumberFromList);
 
                                         GsonRequest<DeleteItemResponseData> deleteItemResquest = new GsonRequest<>(Request.Method.POST, Constant.DELETE_ITEM, jo.toString(), DeleteItemResponseData.class,
                                                 new Response.Listener<DeleteItemResponseData>() {
@@ -197,7 +195,7 @@ public class ItemListAdapter extends BaseAdapter {
                                                     public void onResponse(@NonNull DeleteItemResponseData response) {
 
                                                         if (response.getError() != null) {
-                                                            Log.e(ItemListAdapter.class.getName(),response.getError().getErrorMessage());
+                                                            Log.e(ItemListAdapter.class.getName(), response.getError().getErrorMessage());
                                                         } else {
                                                             if (response.getSuccess() == 1) {
                                                                 items.remove(position);
@@ -208,19 +206,22 @@ public class ItemListAdapter extends BaseAdapter {
                                                 }, new Response.ErrorListener() {
                                             @Override
                                             public void onErrorResponse(VolleyError error) {
-                                                Log.e(ItemListAdapter.class.getName(),error.getMessage());
+                                                Log.e(ItemListAdapter.class.getName(), error.getMessage());
                                             }
                                         });
                                         deleteItemResquest.setRetryPolicy(Application.getDefaultRetryPolice());
                                         deleteItemResquest.setShouldCache(false);
                                         Application.getInstance().addToRequestQueue(deleteItemResquest, "deleteItemResquest");
 
-                                    }catch (Exception e){
-                                        Log.e(ItemListAdapter.class.getName(),e.getMessage());
+                                    } catch (Exception e) {
+                                        Log.e(ItemListAdapter.class.getName(), e.getMessage());
                                     }
+                                } else {
+
+                                    Log.e("Ewwww","Not Ok");
+                                    items.remove(position);
+                                    notifyDataSetChanged();
                                 }
-
-
                             }
                         });
                 alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
