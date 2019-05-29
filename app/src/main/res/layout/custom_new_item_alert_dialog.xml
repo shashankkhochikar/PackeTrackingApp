@@ -76,8 +76,9 @@
                 android:ems="10"
                 android:focusable="true"
                 android:hint="Item Name"
-                android:inputType="textPersonName"
-                android:visibility="visible" />
+                android:visibility="visible"
+                android:inputType = "text"
+                android:imeOptions = "actionNext"/>
 
             <!--<Spinner
                 android:id="@+id/itemSpinner"
