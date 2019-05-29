@@ -244,7 +244,7 @@ public class CustomerDetailsActivity extends BaseActivity {
             case android.R.id.home:
 
                 if (modeOfOpration.equals("")) {
-                    /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
                     alertDialogBuilder.setMessage("Do you want to submit this slip ?");
                     alertDialogBuilder.setPositiveButton("yes",
                             new DialogInterface.OnClickListener() {
@@ -267,15 +267,15 @@ public class CustomerDetailsActivity extends BaseActivity {
                         }
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();*/
+                    alertDialog.show();
 
-                    if (checkValidationForFields() == true) {
+                    /*if (checkValidationForFields() == true) {
                         if (slipNumberFromList.equals("")) {
                             submitSlipDetails(Constant.ADD_ORDER);
                         } else {
                             submitSlipDetails(Constant.UPDATE_ORDER);
                         }
-                    }
+                    }*/
                     //finish();
                     // return true;
                 } else if (modeOfOpration.equals("1")) {
@@ -372,7 +372,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     public void onBackPressed() {
 
         if (modeOfOpration.equals("")) {
-            /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
             alertDialogBuilder.setMessage("Do you want to submit this slip ?");
             alertDialogBuilder.setPositiveButton("yes",
                     new DialogInterface.OnClickListener() {
@@ -398,14 +398,14 @@ public class CustomerDetailsActivity extends BaseActivity {
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();*/
-            if (checkValidationForFields() == true) {
+            alertDialog.show();
+            /*if (checkValidationForFields() == true) {
                 if (slipNumberFromList.equals("")) {
                     submitSlipDetails(Constant.ADD_ORDER);
                 } else {
                     submitSlipDetails(Constant.UPDATE_ORDER);
                 }
-            }
+            }*/
 
             //finish();
         } else if (modeOfOpration.equals("1")) {
