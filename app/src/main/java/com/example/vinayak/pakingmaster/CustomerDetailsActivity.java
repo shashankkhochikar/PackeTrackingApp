@@ -244,7 +244,7 @@ public class CustomerDetailsActivity extends BaseActivity {
             case android.R.id.home:
 
                 if (modeOfOpration.equals("")) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                    /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
                     alertDialogBuilder.setMessage("Do you want to submit this slip ?");
                     alertDialogBuilder.setPositiveButton("yes",
                             new DialogInterface.OnClickListener() {
@@ -267,10 +267,19 @@ public class CustomerDetailsActivity extends BaseActivity {
                         }
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                    alertDialog.show();*/
+
+                    if (checkValidationForFields() == true) {
+                        if (slipNumberFromList.equals("")) {
+                            submitSlipDetails(Constant.ADD_ORDER);
+                        } else {
+                            submitSlipDetails(Constant.UPDATE_ORDER);
+                        }
+                    }
+                    //finish();
                     // return true;
                 } else if (modeOfOpration.equals("1")) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                    /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
                     alertDialogBuilder.setMessage("Do you want to update this slip ?");
                     alertDialogBuilder.setPositiveButton("yes",
                             new DialogInterface.OnClickListener() {
@@ -293,7 +302,16 @@ public class CustomerDetailsActivity extends BaseActivity {
                         }
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                    alertDialog.show();*/
+
+                    if (checkValidationForFields() == true) {
+                        if (slipNumberFromList.equals("")) {
+                            submitSlipDetails(Constant.ADD_ORDER);
+                        } else {
+                            submitSlipDetails(Constant.UPDATE_ORDER);
+                        }
+                    }
+                    //finish();
                 } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
                     finish();
                 }
@@ -354,7 +372,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     public void onBackPressed() {
 
         if (modeOfOpration.equals("")) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+            /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
             alertDialogBuilder.setMessage("Do you want to submit this slip ?");
             alertDialogBuilder.setPositiveButton("yes",
                     new DialogInterface.OnClickListener() {
@@ -375,13 +393,23 @@ public class CustomerDetailsActivity extends BaseActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //super.onBackPressed();
+
                     finish();
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            alertDialog.show();*/
+            if (checkValidationForFields() == true) {
+                if (slipNumberFromList.equals("")) {
+                    submitSlipDetails(Constant.ADD_ORDER);
+                } else {
+                    submitSlipDetails(Constant.UPDATE_ORDER);
+                }
+            }
+
+            //finish();
         } else if (modeOfOpration.equals("1")) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+           /* AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
             alertDialogBuilder.setMessage("Do you want to update this slip ?");
             alertDialogBuilder.setPositiveButton("yes",
                     new DialogInterface.OnClickListener() {
@@ -401,11 +429,23 @@ public class CustomerDetailsActivity extends BaseActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     //super.onBackPressed();
-                    finish();
+                    if(checkValidationForFields()==true){
+                        finish();
+                    }
+
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            alertDialog.show();*/
+            if (checkValidationForFields() == true) {
+                if (slipNumberFromList.equals("")) {
+                    submitSlipDetails(Constant.ADD_ORDER);
+                } else {
+                    submitSlipDetails(Constant.UPDATE_ORDER);
+                }
+            }
+
+           // finish();
         } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
             finish();
         }
@@ -725,7 +765,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 //String str_itemName = itemSpinner.getSelectedItem().toString();
                 String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
                 int indx = tempBarcodes.indexOf(str_itemBarcode);
-                String str_itemName = tempItems.get(indx);//itemName.getText().toString();
+                String str_itemName = itemName.getText().toString();//itemName.getText().toString();
                 String str_itemQty = itemQuantity.getText().toString().trim();
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
                 String str_slipNo = slipNumber.getText().toString().trim();

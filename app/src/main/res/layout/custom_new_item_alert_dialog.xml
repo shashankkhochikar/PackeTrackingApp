@@ -89,15 +89,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="4">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
+                    android:layout_weight="1.2"
+                    android:padding="2dp"
                     android:text="Qty :"
-                    android:textAlignment="center"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/colorPrimary" />
 
                 <EditText
@@ -106,7 +106,26 @@
                     android:layout_height="wrap_content"
                     android:hint="Item Quantity"
                     android:inputType="number"
-                    android:layout_weight="1"/>
+                    android:layout_weight="0.8"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.1"
+                    android:padding="8dp"
+                    android:text="UOM :"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary" />
+
+                <EditText
+                    android:id="@+id/edTxtUmo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:layout_weight="0.9"
+                    android:hint="UOM"
+                    android:inputType="number"
+                    android:visibility="visible" />
             </LinearLayout>
 
             <LinearLayout
@@ -118,10 +137,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
+                    android:layout_weight="1.6"
+                    android:padding="2dp"
                     android:text="Box No :"
-                    android:textAlignment="center"
+                    android:textAlignment="viewStart"
                     android:textColor="@color/colorPrimary" />
 
                 <EditText
@@ -131,17 +150,10 @@
                     android:hint="Box No"
                     android:inputType="number"
                     android:maxLength="2"
-                    android:layout_weight="1"/>
+                    android:layout_weight="0.4"/>
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/edTxtUmo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:hint="UOM"
-                android:inputType="number"
-                android:visibility="visible" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
