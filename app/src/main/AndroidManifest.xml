@@ -51,6 +51,9 @@
             android:screenOrientation="portrait" />
         <activity android:name=".SlipListActivity"
             android:screenOrientation="portrait"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="4533e2579f7dc9d3da7564e96fdb6941f606a3e3" />
     </application>
 
 </manifest>

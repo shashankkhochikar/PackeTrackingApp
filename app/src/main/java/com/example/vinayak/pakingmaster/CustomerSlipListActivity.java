@@ -69,7 +69,8 @@ public class CustomerSlipListActivity extends BaseActivity {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
            @Override
            public void onRefresh() {
-               customerOrderListData.clear();
+               try{      customerOrderListData.clear();     }
+               catch(Exception ex){     Log.e("Exp",ex.getMessage());   }
                prepareCustomerSlipList(customerId, enterBy);
                pullToRefresh.setRefreshing(false);
            }

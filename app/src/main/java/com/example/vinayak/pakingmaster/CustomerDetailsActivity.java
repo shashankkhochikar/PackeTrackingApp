@@ -462,15 +462,21 @@ public class CustomerDetailsActivity extends BaseActivity {
         String str_orderNumber = edTxtOrderNumber.getText().toString().trim();
 
         //int indexOfCustomer = customerNameSipnner.getSelectedItemPosition();
-       /* int indexOfCustomer = -1;
+        int indexOfCustomer = -1;
         for (int i = 0; i < customer.size(); i++) {//009
             if (customer.get(i).equals(str_customerName)) {
                 indexOfCustomer = i;
                 break;
             }
-        }*/
-        int indexOfCustomer = customer.indexOf(str_customerName);
-        String cutomerId = customerIds.get(indexOfCustomer).toString();
+        }
+
+        //int indexOfCustomer = customer.indexOf(str_customerName);
+        if (indexOfCustomer < 0 || indexOfCustomer >= customer.size()) {
+            hideBusyProgress();
+            showToast("Please Enter Proper Customer Name");
+            return;
+        }
+        String cutomerId = customerIds.get(indexOfCustomer);
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         String submitedDate = df.format(c);
@@ -765,7 +771,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 //String str_itemName = itemSpinner.getSelectedItem().toString();
                 String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
                 int indx = tempBarcodes.indexOf(str_itemBarcode);
-                String str_itemName = itemName.getText().toString();//itemName.getText().toString();
+                String str_itemName = tempItems.get(indx);//itemName.getText().toString();//itemName.getText().toString();
                 String str_itemQty = itemQuantity.getText().toString().trim();
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
                 String str_slipNo = slipNumber.getText().toString().trim();
