@@ -105,6 +105,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     String myFormat = "";
     SimpleDateFormat sdf = null;
+    boolean isUpdateRecord = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,9 +128,11 @@ public class CustomerDetailsActivity extends BaseActivity {
         myFormat = "dd/MM/yyyy"; //In which you need put here
         sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-       /* if (!slipNumberFromList.equals("")) {
+        /*if (!slipNumberFromList.equals("")) {
             slipNumber.setText(slipNumberFromList);
-            getSupportActionBar().setTitle(slipNumberFromList);
+            if(modeOfOpration.equals("1")){getSupportActionBar().setTitle("Update : "+slipNumberFromList);}else{
+                getSupportActionBar().setTitle(slipNumberFromList);
+            }
             prepareSlipDetails(slipNumberFromList);
 
         } else {
@@ -165,7 +168,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     }
 
     private void disableFieldsOnModeOfOpration(String modeOfOpration) {
-        listView.setEnabled(false);
+        //listView.setEnabled(false);
         customerNameSipnner.setEnabled(false);
         slipNumber.setEnabled(false);
         edTxtOrderDate.setEnabled(false);
@@ -184,9 +187,10 @@ public class CustomerDetailsActivity extends BaseActivity {
         String formattedDate = df.format(c);
         String tempDate = formattedDate.replace("-", "");
         int tempNumber = generateRandomIntIntRange(0001, 9999);
+       // String mode = modeOfOpration.isEmpty()?"New :":modeOfOpration.equals("1")?"Update":"";
         finalSlipNumber = tempDate + "-" + tempNumber;
         slipNumber.setText("" + finalSlipNumber);
-        getSupportActionBar().setTitle("" + finalSlipNumber);
+        getSupportActionBar().setTitle("New : " + finalSlipNumber);
 
     }
 
@@ -269,15 +273,6 @@ public class CustomerDetailsActivity extends BaseActivity {
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
 
-                    /*if (checkValidationForFields() == true) {
-                        if (slipNumberFromList.equals("")) {
-                            submitSlipDetails(Constant.ADD_ORDER);
-                        } else {
-                            submitSlipDetails(Constant.UPDATE_ORDER);
-                        }
-                    }*/
-                    //finish();
-                    // return true;
                 } else if (modeOfOpration.equals("1")) {
                     /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
                     alertDialogBuilder.setMessage("Do you want to update this slip ?");
@@ -303,15 +298,17 @@ public class CustomerDetailsActivity extends BaseActivity {
                     });
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();*/
-
-                    if (checkValidationForFields() == true) {
-                        if (slipNumberFromList.equals("")) {
-                            submitSlipDetails(Constant.ADD_ORDER);
-                        } else {
-                            submitSlipDetails(Constant.UPDATE_ORDER);
+                    if (isUpdateRecord == false) {
+                        if (checkValidationForFields() == true) {
+                            if (slipNumberFromList.equals("")) {
+                                submitSlipDetails(Constant.ADD_ORDER);
+                            } else {
+                                submitSlipDetails(Constant.UPDATE_ORDER);
+                            }
                         }
                     }
-                    //finish();
+                    finish();
+
                 } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
                     finish();
                 }
@@ -437,15 +434,17 @@ public class CustomerDetailsActivity extends BaseActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();*/
-            if (checkValidationForFields() == true) {
-                if (slipNumberFromList.equals("")) {
-                    submitSlipDetails(Constant.ADD_ORDER);
-                } else {
-                    submitSlipDetails(Constant.UPDATE_ORDER);
+            if (isUpdateRecord == false) {
+                if (checkValidationForFields() == true) {
+                    if (slipNumberFromList.equals("")) {
+                        submitSlipDetails(Constant.ADD_ORDER);
+                    } else {
+                        submitSlipDetails(Constant.UPDATE_ORDER);
+                    }
                 }
             }
 
-           // finish();
+            finish();
         } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
             finish();
         }
@@ -453,7 +452,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         //super.onBackPressed();
     }
 
-    private void submitSlipDetails(String url) {
+    private void submitSlipDetails(final String url) {
         showBusyProgress();
         String str_slipNumber = getSupportActionBar().getTitle().toString();//slipNumber.getText().toString().trim();
 
@@ -527,7 +526,11 @@ public class CustomerDetailsActivity extends BaseActivity {
                                 if (response.getSuccess() == 1) {
                                     showToast(response.getMessage().toString());
                                     setResult(RESULT_OK);
-                                    finish();
+                                    if (url.equals(Constant.ADD_ORDER)) {
+                                        finish();
+                                    } else {
+                                        isUpdateRecord = true;
+                                    }
                                 }
                             }
 
@@ -777,7 +780,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 String str_slipNo = slipNumber.getText().toString().trim();
                 String str_itemUmo = itemUmo.getText().toString().trim();
 
-                if (str_slipNo.equals("") || str_itemName.equals("") || str_itemBarcode.equals("") || str_itemBoxNo.equals("") || str_itemQty.equals("")) {
+                if (str_slipNo.equals("") || itemName.getText().toString().equals("") || str_itemBarcode.equals("") || str_itemBoxNo.equals("") || str_itemQty.equals("")) {
                     showToast("Please Fill All Details");
                 } else {
                     if (Integer.parseInt(str_itemQty) < 1) {
@@ -834,7 +837,9 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                                     if (!slipNumberFromList.equals("")) {
                                         slipNumber.setText(slipNumberFromList);
-                                        getSupportActionBar().setTitle(slipNumberFromList);
+                                        if(modeOfOpration.equals("1")){getSupportActionBar().setTitle("Update : "+slipNumberFromList);}else{
+                                            getSupportActionBar().setTitle(slipNumberFromList);
+                                        }
                                         prepareSlipDetails(slipNumberFromList);
 
                                     } else {
