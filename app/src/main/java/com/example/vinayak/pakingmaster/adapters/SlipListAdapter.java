@@ -27,7 +27,6 @@ public class SlipListAdapter extends BaseAdapter {
     }
 
     public SlipListAdapter(Activity activity, List<CustomerOrderListData> customerOrderListData){
-
         this.activity = activity;
         this.customerOrderListData = customerOrderListData;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -80,7 +79,6 @@ public class SlipListAdapter extends BaseAdapter {
 
         return view;
     }
-
 
     static class ViewHolder {
         TextView slipNumber;

@@ -788,11 +788,18 @@ public class CustomerDetailsActivity extends BaseActivity {
                 String str_slipNo = slipNumber.getText().toString().trim();
                 String str_itemUmo = itemUmo.getText().toString().trim();
 
+                /*if (Float.parseFloat(str_itemQty) <= 0 || Integer.parseInt(str_itemBoxNo) <= 0 ){
+                    showToast("Please Enter Proper Qty OR BoxNo.");
+                    return;
+                }*/
+
                 if (str_slipNo.equals("") || itemName.getText().toString().equals("") || str_itemBarcode.equals("") || str_itemBoxNo.equals("") || str_itemQty.equals("")) {
                     showToast("Please Fill All Details");
                 } else {
-                    if (Integer.parseInt(str_itemQty) < 1) {
+                    if (Float.parseFloat(str_itemQty) <= 0) {
                         showToast("Please Fill Proper Qty");
+                    }else if(Integer.parseInt(str_itemBoxNo) <= 0){
+                        showToast("Please Fill Proper Box No");
                     } else {
                         Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
                         items.add(item);

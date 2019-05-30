@@ -65,7 +65,7 @@
                         android:gravity="center"
                         android:hint="Quantity"
                         android:imeOptions="actionNext"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:maxLines="1" />
 
 

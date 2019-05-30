@@ -341,7 +341,6 @@ public class CustomerSlipListActivity extends BaseActivity {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-
     }
 
     @Override

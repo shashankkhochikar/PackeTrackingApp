@@ -119,10 +119,10 @@ public class ItemListAdapter extends BaseAdapter {
 
                 if (!hasFocus) {
                     if (!holder.itemBoxNo.getText().toString().equals("")) {
-                        Constant.isAllItemQtyFilled = true;
-                        if (Integer.parseInt(holder.itemBoxNo.getText().toString()) < 1) {
-                            Toast.makeText(activity, "BoxNo Should be Greater then one", Toast.LENGTH_LONG).show();
-                            Constant.isAllItemQtyFilled = false;
+                        Constant.isAllItemBoxNoFilled = true;
+                        if (Integer.parseInt(holder.itemBoxNo.getText().toString()) <= 0) {
+                            Toast.makeText(activity, "BoxNo Should be Greater then zero", Toast.LENGTH_LONG).show();
+                            Constant.isAllItemBoxNoFilled = false;
                         } else {
                             final int pos = v.getId();
                             final EditText Caption = (EditText) v;
@@ -144,8 +144,9 @@ public class ItemListAdapter extends BaseAdapter {
                 if (!hasFocus) {
                     if (!holder.itemQty.getText().toString().equals("")) {
                         Constant.isAllItemQtyFilled = true;
-                        if (Integer.parseInt(holder.itemQty.getText().toString()) < 1) {
-                            Toast.makeText(activity, "Qty Should be Greater then one", Toast.LENGTH_LONG).show();
+                        if (Float.parseFloat(holder.itemQty.getText().toString()) <= 0) {
+                        //if (Integer.parseInt(holder.itemQty.getText().toString()) < 1) {
+                            Toast.makeText(activity, "Qty Should be Greater then zero", Toast.LENGTH_LONG).show();
                             Constant.isAllItemQtyFilled = false;
                         } else {
                             final int pos = v.getId();
