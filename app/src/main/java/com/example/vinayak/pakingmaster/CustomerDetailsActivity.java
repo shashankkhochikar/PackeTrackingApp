@@ -190,7 +190,7 @@ public class CustomerDetailsActivity extends BaseActivity {
        // String mode = modeOfOpration.isEmpty()?"New :":modeOfOpration.equals("1")?"Update":"";
         finalSlipNumber = tempDate + "-" + tempNumber;
         slipNumber.setText("" + finalSlipNumber);
-        getSupportActionBar().setTitle("New : " + finalSlipNumber);
+        getSupportActionBar().setTitle("New:" + finalSlipNumber);
 
     }
 
@@ -454,7 +454,8 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     private void submitSlipDetails(final String url) {
         showBusyProgress();
-        String str_slipNumber = getSupportActionBar().getTitle().toString();//slipNumber.getText().toString().trim();
+        String[] tempSlipNo = getSupportActionBar().getTitle().toString().split(":");
+        String str_slipNumber = tempSlipNo[1];//slipNumber.getText().toString().trim();
 
         String str_customerName = customerNameSipnner.getText().toString();//customerNameSipnner.getSelectedItem().toString();
         String str_orderDate = edTxtOrderDate.getText().toString().trim();
@@ -774,7 +775,14 @@ public class CustomerDetailsActivity extends BaseActivity {
                 //String str_itemName = itemSpinner.getSelectedItem().toString();
                 String str_itemBarcode = itemBarcodeValue.getText().toString().trim();
                 int indx = tempBarcodes.indexOf(str_itemBarcode);
-                String str_itemName = tempItems.get(indx);//itemName.getText().toString();//itemName.getText().toString();
+
+                if (indx < 0 || indx >= tempBarcodes.size()) {
+                   // hideBusyProgress();
+                    showToast("Please Enter Proper Item");
+                    return;
+                }
+
+                String str_itemName = tempItems.get(indx);//itemName.getText().toString();//itemName.getText().toString();//007
                 String str_itemQty = itemQuantity.getText().toString().trim();
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
                 String str_slipNo = slipNumber.getText().toString().trim();
@@ -837,7 +845,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                                     if (!slipNumberFromList.equals("")) {
                                         slipNumber.setText(slipNumberFromList);
-                                        if(modeOfOpration.equals("1")){getSupportActionBar().setTitle("Update : "+slipNumberFromList);}else{
+                                        if(modeOfOpration.equals("1")){getSupportActionBar().setTitle("View:"+slipNumberFromList); }else{
                                             getSupportActionBar().setTitle(slipNumberFromList);
                                         }
                                         prepareSlipDetails(slipNumberFromList);
