@@ -283,7 +283,11 @@ public class CustomerDetailsActivity extends BaseActivity {
                 imm.showSoftInput(edTxtOrderNumber, InputMethodManager.SHOW_IMPLICIT);
 
                 if (checkValidationForFields() == true) {
-                    submitSlipDetails(Constant.ADD_ORDER);
+                    if (isSavedRecord == false) {
+                        submitSlipDetails(Constant.ADD_ORDER);
+                    } else {
+                        submitSlipDetails(Constant.UPDATE_ORDER);
+                    }
                     return true;
                 }
 
