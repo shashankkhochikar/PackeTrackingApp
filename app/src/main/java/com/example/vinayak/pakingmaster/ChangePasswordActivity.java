@@ -42,9 +42,9 @@ public class ChangePasswordActivity extends BaseActivity {
             public void onClick(View v) {
                 if (checkFieldValidation() == true)
                     if (password.getText().toString().equals(confirmPassword.getText().toString())) {
-                    String password = confirmPassword.getText().toString();
+                        String password = confirmPassword.getText().toString();
 
-                    try {
+                        try {
                             showBusyProgress();
                             JSONObject jo = new JSONObject();
                             jo.put("id", userId);
@@ -83,6 +83,8 @@ public class ChangePasswordActivity extends BaseActivity {
                             hideBusyProgress();
                             Log.e(TAG, e.getMessage());
                         }
+                    }else{
+                        showToast("Password dose not match");
                     }
             }
         });
