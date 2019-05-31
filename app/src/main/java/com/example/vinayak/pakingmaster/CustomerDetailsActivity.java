@@ -896,5 +896,56 @@ public class CustomerDetailsActivity extends BaseActivity {
             return true;
     }
 
+    /*if (isUpdateRecord == false) {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                        alertDialogBuilder.setMessage("Do you want to save this slip ?");
+                        alertDialogBuilder.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        if (checkValidationForFields() == true) {
+                                            if (slipNumberFromList.equals("")) {
+                                                submitSlipDetails(Constant.ADD_ORDER);
+                                            } else {
+                                                submitSlipDetails(Constant.UPDATE_ORDER);
+                                            }
+                                        }
+                                    }
+                                });
+                        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //super.onBackPressed();
+                                finish();
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                    } else {
+                        if (checkValidationForFields() == true) {
+                            finish();
+                        }
+
+                    }
+
+
+                } else if (modeOfOpration.equals("1")) {
+
+                    if (isUpdateRecord == false) {
+                        if (checkValidationForFields() == true) {
+                            if (slipNumberFromList.equals("")) {
+                                submitSlipDetails(Constant.ADD_ORDER);
+                            } else {
+                                submitSlipDetails(Constant.UPDATE_ORDER);
+                            }
+                            finish();
+                        }
+                    } else {
+                        finish();
+                    }
+
+                } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
+                    finish();
+                }*/
 
 }
