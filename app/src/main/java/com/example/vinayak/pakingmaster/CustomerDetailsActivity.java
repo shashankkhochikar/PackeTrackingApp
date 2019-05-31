@@ -187,7 +187,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         String formattedDate = df.format(c);
         String tempDate = formattedDate.replace("-", "");
         int tempNumber = generateRandomIntIntRange(0001, 9999);
-       // String mode = modeOfOpration.isEmpty()?"New :":modeOfOpration.equals("1")?"Update":"";
+        // String mode = modeOfOpration.isEmpty()?"New :":modeOfOpration.equals("1")?"Update":"";
         finalSlipNumber = tempDate + "-" + tempNumber;
         slipNumber.setText("" + finalSlipNumber);
         getSupportActionBar().setTitle("New:" + finalSlipNumber);
@@ -248,30 +248,36 @@ public class CustomerDetailsActivity extends BaseActivity {
             case android.R.id.home:
 
                 if (modeOfOpration.equals("")) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-                    alertDialogBuilder.setMessage("Do you want to save this slip ?");
-                    alertDialogBuilder.setPositiveButton("yes",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    if (checkValidationForFields() == true) {
-                                        if (slipNumberFromList.equals("")) {
-                                            submitSlipDetails(Constant.ADD_ORDER);
-                                        } else {
-                                            submitSlipDetails(Constant.UPDATE_ORDER);
+
+                    if (isUpdateRecord == false) {
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                        alertDialogBuilder.setMessage("Do you want to save this slip ?");
+                        alertDialogBuilder.setPositiveButton("yes",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        if (checkValidationForFields() == true) {
+                                            if (slipNumberFromList.equals("")) {
+                                                submitSlipDetails(Constant.ADD_ORDER);
+                                            } else {
+                                                submitSlipDetails(Constant.UPDATE_ORDER);
+                                            }
                                         }
                                     }
-                                }
-                            });
-                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //super.onBackPressed();
-                            finish();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                                });
+                        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //super.onBackPressed();
+                                finish();
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                    } else {
+                        finish();
+                    }
+
 
                 } else if (modeOfOpration.equals("1")) {
                     /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
@@ -307,7 +313,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                             }
                             finish();
                         }
-                    }else{
+                    } else {
                         finish();
                     }
 
@@ -372,71 +378,38 @@ public class CustomerDetailsActivity extends BaseActivity {
     public void onBackPressed() {
 
         if (modeOfOpration.equals("")) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-            alertDialogBuilder.setMessage("Do you want to save this slip ?");
-            alertDialogBuilder.setPositiveButton("yes",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            if (checkValidationForFields() == true) {
-                                if (slipNumberFromList.equals("")) {
-                                    submitSlipDetails(Constant.ADD_ORDER);
-                                } else {
-                                    submitSlipDetails(Constant.UPDATE_ORDER);
+
+            if (isUpdateRecord == false) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
+                alertDialogBuilder.setMessage("Do you want to save this slip ?");
+                alertDialogBuilder.setPositiveButton("yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                if (checkValidationForFields() == true) {
+                                    if (slipNumberFromList.equals("")) {
+                                        submitSlipDetails(Constant.ADD_ORDER);
+                                    } else {
+                                        submitSlipDetails(Constant.UPDATE_ORDER);
+                                    }
                                 }
                             }
-                        }
-                    });
-            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
+                        });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
 
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //super.onBackPressed();
-
-                    finish();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-            /*if (checkValidationForFields() == true) {
-                if (slipNumberFromList.equals("")) {
-                    submitSlipDetails(Constant.ADD_ORDER);
-                } else {
-                    submitSlipDetails(Constant.UPDATE_ORDER);
-                }
-            }*/
-
-            //finish();
-        } else if (modeOfOpration.equals("1")) {
-           /* AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-            alertDialogBuilder.setMessage("Do you want to update this slip ?");
-            alertDialogBuilder.setPositiveButton("yes",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                            if (checkValidationForFields() == true) {
-                                if (slipNumberFromList.equals("")) {
-                                    submitSlipDetails(Constant.ADD_ORDER);
-                                } else {
-                                    submitSlipDetails(Constant.UPDATE_ORDER);
-                                }
-                            }
-                        }
-                    });
-            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //super.onBackPressed();
-                    if(checkValidationForFields()==true){
+                {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            } else {
+                finish();
+            }
+        } else if (modeOfOpration.equals("1")) {
 
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();*/
             if (isUpdateRecord == false) {
                 if (checkValidationForFields() == true) {
                     if (slipNumberFromList.equals("")) {
@@ -446,15 +419,13 @@ public class CustomerDetailsActivity extends BaseActivity {
                     }
                     finish();
                 }
-            } else{
+            } else {
                 finish();
             }
 
         } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
             finish();
         }
-
-        //super.onBackPressed();
     }
 
     private void submitSlipDetails(final String url) {
@@ -534,6 +505,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                                     setResult(RESULT_OK);
                                     if (url.equals(Constant.ADD_ORDER)) {
                                         //finish();
+                                        isUpdateRecord = true;
                                     } else {
                                         isUpdateRecord = true;
                                     }
@@ -782,7 +754,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 int indx = tempBarcodes.indexOf(str_itemBarcode);
 
                 if (indx < 0 || indx >= tempBarcodes.size()) {
-                   // hideBusyProgress();
+                    // hideBusyProgress();
                     showToast("Please Enter Proper Item");
                     return;
                 }
@@ -803,7 +775,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 } else {
                     if (Float.parseFloat(str_itemQty) <= 0) {
                         showToast("Please Fill Proper Qty");
-                    }else if(Integer.parseInt(str_itemBoxNo) <= 0){
+                    } else if (Integer.parseInt(str_itemBoxNo) <= 0) {
                         showToast("Please Fill Proper Box No");
                     } else {
                         Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
@@ -857,7 +829,9 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                                     if (!slipNumberFromList.equals("")) {
                                         slipNumber.setText(slipNumberFromList);
-                                        if(modeOfOpration.equals("1")){getSupportActionBar().setTitle("View:"+slipNumberFromList); }else{
+                                        if (modeOfOpration.equals("1")) {
+                                            getSupportActionBar().setTitle("View:" + slipNumberFromList);
+                                        } else {
                                             getSupportActionBar().setTitle(slipNumberFromList);
                                         }
                                         prepareSlipDetails(slipNumberFromList);
