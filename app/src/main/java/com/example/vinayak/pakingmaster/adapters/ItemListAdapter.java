@@ -180,12 +180,10 @@ public class ItemListAdapter extends BaseAdapter {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-
-
+                                
                                 if (items.get(position).getId() != null) {
                                     Log.e("Ewwww","Ok");
                                     try {
-
                                         JSONObject jo = new JSONObject();
                                         jo.put("id", items.get(position).getId());
                                         jo.put("slipno", slipNumberFromList);

@@ -528,7 +528,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                                     showToast(response.getMessage().toString());
                                     setResult(RESULT_OK);
                                     if (url.equals(Constant.ADD_ORDER)) {
-                                        finish();
+                                        //finish();
                                     } else {
                                         isUpdateRecord = true;
                                     }
