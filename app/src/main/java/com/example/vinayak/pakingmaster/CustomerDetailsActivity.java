@@ -106,6 +106,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     String myFormat = "";
     SimpleDateFormat sdf = null;
     boolean isUpdateRecord = false;
+    boolean isSavedRecord = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,104 +249,29 @@ public class CustomerDetailsActivity extends BaseActivity {
             case android.R.id.home:
 
                 if (modeOfOpration.equals("")) {
-
-                    if (isUpdateRecord == false) {
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-                        alertDialogBuilder.setMessage("Do you want to save this slip ?");
-                        alertDialogBuilder.setPositiveButton("yes",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        if (checkValidationForFields() == true) {
-                                            if (slipNumberFromList.equals("")) {
-                                                submitSlipDetails(Constant.ADD_ORDER);
-                                            } else {
-                                                submitSlipDetails(Constant.UPDATE_ORDER);
-                                            }
-                                        }
-                                    }
-                                });
-                        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //super.onBackPressed();
-                                finish();
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.create();
-                        alertDialog.show();
-                    } else {
+                    if (checkValidationForFields() == true) {
+                        if (isUpdateRecord == false) {
+                            submitSlipDetails(Constant.ADD_ORDER);
+                        } else {
+                            submitSlipDetails(Constant.UPDATE_ORDER);
+                        }
                         finish();
                     }
-
-
                 } else if (modeOfOpration.equals("1")) {
-                    /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-                    alertDialogBuilder.setMessage("Do you want to update this slip ?");
-                    alertDialogBuilder.setPositiveButton("yes",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    if (checkValidationForFields() == true) {
-                                        if (slipNumberFromList.equals("")) {
-                                            submitSlipDetails(Constant.ADD_ORDER);
-                                        } else {
-                                            submitSlipDetails(Constant.UPDATE_ORDER);
-                                        }
-                                    }
-                                }
-                            });
-                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //super.onBackPressed();
-                            finish();
+
+                    if (checkValidationForFields() == true) {
+                        if (isUpdateRecord == false) {
+                            submitSlipDetails(Constant.UPDATE_ORDER);
+
                         }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();*/
-                    if (isUpdateRecord == false) {
-                        if (checkValidationForFields() == true) {
-                            if (slipNumberFromList.equals("")) {
-                                submitSlipDetails(Constant.ADD_ORDER);
-                            } else {
-                                submitSlipDetails(Constant.UPDATE_ORDER);
-                            }
-                            finish();
-                        }
-                    } else {
                         finish();
                     }
-
 
                 } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
                     finish();
                 }
+
                 return true;
-
-                /*if(slipNumberFromList.equals(""))
-                {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-                    alertDialogBuilder.setMessage("Are you sure,Do you wanted to cancel this slip ?");
-                    alertDialogBuilder.setPositiveButton("yes",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface arg0, int arg1) {
-                                    finish();
-                                }
-                            });
-                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                } else{
-                    finish();
-                }*/
-
 
             case R.id.menuAddItem:
                 showDialog();
@@ -371,7 +297,10 @@ public class CustomerDetailsActivity extends BaseActivity {
                     return true;
                 }
         }
-        return super.onOptionsItemSelected(item);
+        return super.
+
+                onOptionsItemSelected(item);
+
     }
 
     @Override
@@ -379,47 +308,21 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         if (modeOfOpration.equals("")) {
 
-            if (isUpdateRecord == false) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-                alertDialogBuilder.setMessage("Do you want to save this slip ?");
-                alertDialogBuilder.setPositiveButton("yes",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                if (checkValidationForFields() == true) {
-                                    if (slipNumberFromList.equals("")) {
-                                        submitSlipDetails(Constant.ADD_ORDER);
-                                    } else {
-                                        submitSlipDetails(Constant.UPDATE_ORDER);
-                                    }
-                                }
-                            }
-                        });
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener()
-
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-            } else {
+            if (checkValidationForFields() == true) {
+                if (isSavedRecord == false) {
+                    submitSlipDetails(Constant.ADD_ORDER);
+                } else {
+                    submitSlipDetails(Constant.UPDATE_ORDER);
+                }
                 finish();
             }
         } else if (modeOfOpration.equals("1")) {
 
-            if (isUpdateRecord == false) {
-                if (checkValidationForFields() == true) {
-                    if (slipNumberFromList.equals("")) {
-                        submitSlipDetails(Constant.ADD_ORDER);
-                    } else {
-                        submitSlipDetails(Constant.UPDATE_ORDER);
-                    }
-                    finish();
+            if (checkValidationForFields() == true) {
+                if (isUpdateRecord == false) {
+                    submitSlipDetails(Constant.UPDATE_ORDER);
+
                 }
-            } else {
                 finish();
             }
 
@@ -505,7 +408,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                                     setResult(RESULT_OK);
                                     if (url.equals(Constant.ADD_ORDER)) {
                                         //finish();
-                                        isUpdateRecord = true;
+                                        isSavedRecord = true;
                                     } else {
                                         isUpdateRecord = true;
                                     }
