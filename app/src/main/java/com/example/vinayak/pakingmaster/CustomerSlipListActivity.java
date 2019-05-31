@@ -65,6 +65,13 @@ public class CustomerSlipListActivity extends BaseActivity {
         enterBy = intent.getStringExtra("enterBy");
 
         assignView();
+        if(modeOfOpration.equals("1")) {
+            getSupportActionBar().setTitle("View Packing List");
+        }else if(modeOfOpration.equals("2")){
+            getSupportActionBar().setTitle("Submit Packing List");
+        }else if(modeOfOpration.equals("3")){
+            getSupportActionBar().setTitle("Delete Packing List");
+        }
         prepareCustomerSlipList(customerId, enterBy);
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
            @Override

@@ -301,9 +301,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                     return true;
                 }
         }
-        return super.
-
-                onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
 
     }
 
@@ -738,6 +736,10 @@ public class CustomerDetailsActivity extends BaseActivity {
                                         slipNumber.setText(slipNumberFromList);
                                         if (modeOfOpration.equals("1")) {
                                             getSupportActionBar().setTitle("View:" + slipNumberFromList);
+                                        } else if (modeOfOpration.equals("2")) {
+                                            getSupportActionBar().setTitle("Submit:" + slipNumberFromList);
+                                        } else if (modeOfOpration.equals("3")) {
+                                            getSupportActionBar().setTitle("Delete:" + slipNumberFromList);
                                         } else {
                                             getSupportActionBar().setTitle(slipNumberFromList);
                                         }

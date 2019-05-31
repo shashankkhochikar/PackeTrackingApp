@@ -17,9 +17,11 @@ public class Constant {
     public static final String GET_SLIP_DETAILS = BASE_URL.concat("getSlipDetails.php");
     public static final String SUBMIT_SLIP = BASE_URL.concat("submitOrder.php");
     public static final String DELETE_SLIP = BASE_URL.concat("deleteOrder.php");
+    public static final String LOGOUT = BASE_URL.concat("userLogout.php");
+    public static final String CHANGE_PASSWORD = BASE_URL.concat("userChangePassword.php");
 
 
-    public static String userId = "";
+ public static String userId = "";
     public static String userName = "";
     public static String slipNumberFromList = "";
 
