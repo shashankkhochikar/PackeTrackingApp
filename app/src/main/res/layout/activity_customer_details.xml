@@ -50,7 +50,10 @@
                 android:id="@+id/customerSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:maxLines="1"/>
+                android:maxLines="1"
+                android:inputType="text"
+                android:ems="10"
+                android:imeOptions="actionNext"/>
 
            <!-- <Spinner
                 style="@style/Widget.AppCompat.Spinner"
@@ -93,7 +96,9 @@
                     android:hint="Order Number"
                     android:layout_weight="1"
                     android:layout_margin="3dp"
-                    android:maxLines="1"/>
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:imeOptions="actionNext"/>
 
             </LinearLayout>
 

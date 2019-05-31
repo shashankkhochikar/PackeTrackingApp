@@ -249,7 +249,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
                 if (modeOfOpration.equals("")) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-                    alertDialogBuilder.setMessage("Do you want to submit this slip ?");
+                    alertDialogBuilder.setMessage("Do you want to save this slip ?");
                     alertDialogBuilder.setPositiveButton("yes",
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -305,9 +305,12 @@ public class CustomerDetailsActivity extends BaseActivity {
                             } else {
                                 submitSlipDetails(Constant.UPDATE_ORDER);
                             }
+                            finish();
                         }
+                    }else{
+                        finish();
                     }
-                    finish();
+
 
                 } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
                     finish();
@@ -370,7 +373,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         if (modeOfOpration.equals("")) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-            alertDialogBuilder.setMessage("Do you want to submit this slip ?");
+            alertDialogBuilder.setMessage("Do you want to save this slip ?");
             alertDialogBuilder.setPositiveButton("yes",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -441,10 +444,12 @@ public class CustomerDetailsActivity extends BaseActivity {
                     } else {
                         submitSlipDetails(Constant.UPDATE_ORDER);
                     }
+                    finish();
                 }
+            } else{
+                finish();
             }
 
-            finish();
         } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
             finish();
         }
