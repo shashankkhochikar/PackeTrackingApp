@@ -28,6 +28,7 @@ public class DashboardActivity extends BaseActivity {
     private static final String TAG = DashboardActivity.class.getName();
 
     TextView changePassword;
+    TextView linkForApp;
     LinearLayout newItem;
     LinearLayout modifyItem;
     LinearLayout viewItem;
@@ -110,7 +111,7 @@ public class DashboardActivity extends BaseActivity {
         submitItem = (LinearLayout) findViewById(R.id.linearSubmitItem);
         deleteItem = (LinearLayout) findViewById(R.id.linearDeleteItem);
         changePassword = (TextView)findViewById(R.id.changePassword);
-
+        linkForApp = (TextView)findViewById(R.id.linkForApp);
     }
 
     @Override

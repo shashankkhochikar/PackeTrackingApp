@@ -388,8 +388,8 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         String noOfBoxes = "" + length;
 
-        customerDetails = new CustomerDetails(str_slipNumber, str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
-                noOfBoxes, entryBy, items);
+        customerDetails = new CustomerDetails("", str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
+                noOfBoxes, entryBy, items);/*str_slipNumber*//*comment for this field is not required from now date - 10/06/2019 */
 
         Gson gson2 = new GsonBuilder().create();
         String jsonString = gson2.toJson(customerDetails);

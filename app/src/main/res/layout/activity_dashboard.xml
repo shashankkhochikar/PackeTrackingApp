@@ -248,16 +248,36 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/changePassword"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:layout_marginRight="15dp"
-            android:gravity="right"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:text="Change Password"/>
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/linkForApp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="satvyk.vishwanet.in"
+                android:layout_weight="1"
+                android:layout_marginLeft="15dp"
+                android:autoLink="all"
+                android:textSize="16dp"/>
+
+            <TextView
+                android:id="@+id/changePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_marginRight="15dp"
+                android:gravity="right"
+                android:layout_weight="1"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:text="Change Password"/>
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 
