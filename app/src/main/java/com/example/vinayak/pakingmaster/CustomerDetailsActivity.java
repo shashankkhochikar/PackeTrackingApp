@@ -189,7 +189,7 @@ public class CustomerDetailsActivity extends BaseActivity {
         String tempDate = formattedDate.replace("-", "");
         int tempNumber = generateRandomIntIntRange(0001, 9999);
         // String mode = modeOfOpration.isEmpty()?"New :":modeOfOpration.equals("1")?"Update":"";
-        finalSlipNumber = tempDate + "-" + tempNumber;
+        finalSlipNumber = ""+tempNumber;//tempDate + "-" + tempNumber;
         slipNumber.setText("" + finalSlipNumber);
         getSupportActionBar().setTitle("New:" + finalSlipNumber);
 
@@ -388,7 +388,7 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         String noOfBoxes = "" + length;
 
-        customerDetails = new CustomerDetails("", str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
+        customerDetails = new CustomerDetails(str_slipNumber, str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
                 noOfBoxes, entryBy, items);/*str_slipNumber*//*comment for this field is not required from now date - 10/06/2019 */
 
         Gson gson2 = new GsonBuilder().create();
