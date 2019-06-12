@@ -257,12 +257,12 @@
                 android:id="@+id/linkForApp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="satvyk.vishwanet.in"
+                android:text="packing.vishwanet.in"
                 android:layout_weight="1"
                 android:layout_marginLeft="15dp"
                 android:autoLink="all"
                 android:textSize="16dp"/>
-
+            <!--satvyk.vishwanet.in-->
             <TextView
                 android:id="@+id/changePassword"
                 android:layout_width="match_parent"
