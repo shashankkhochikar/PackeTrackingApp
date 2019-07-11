@@ -192,7 +192,6 @@ public class CustomerDetailsActivity extends BaseActivity {
         finalSlipNumber = ""+tempNumber;//tempDate + "-" + tempNumber;
         slipNumber.setText("" + finalSlipNumber);
         getSupportActionBar().setTitle("New:" + finalSlipNumber);
-
     }
 
     public static int generateRandomIntIntRange(int min, int max) {
@@ -248,29 +247,29 @@ public class CustomerDetailsActivity extends BaseActivity {
 
             case android.R.id.home:
 
-                if (modeOfOpration.equals("")) {
-                    if (checkValidationForFields() == true) {
-                        if (isUpdateRecord == false) {
-                            submitSlipDetails(Constant.ADD_ORDER);
-                        } else {
-                            submitSlipDetails(Constant.UPDATE_ORDER);
+                if(isNetworkConnected()){
+                    if (modeOfOpration.equals("")) {
+                        if (checkValidationForFields() == true) {
+                            if (isUpdateRecord == false) {
+                                submitSlipDetails(Constant.ADD_ORDER);
+                            } else {
+                                submitSlipDetails(Constant.UPDATE_ORDER);
+                            }
+                            finish();
                         }
+                    } else if (modeOfOpration.equals("1")) {
+                        if (checkValidationForFields() == true) {
+                            if (isUpdateRecord == false) {
+                                submitSlipDetails(Constant.UPDATE_ORDER);
+                            }
+                            finish();
+                        }
+                    } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
                         finish();
                     }
-                } else if (modeOfOpration.equals("1")) {
-
-                    if (checkValidationForFields() == true) {
-                        if (isUpdateRecord == false) {
-                            submitSlipDetails(Constant.UPDATE_ORDER);
-
-                        }
-                        finish();
-                    }
-
-                } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
-                    finish();
+                }else{
+                    showToast("Please check internet connection");
                 }
-
                 return true;
 
             case R.id.menuAddItem:
@@ -282,24 +281,35 @@ public class CustomerDetailsActivity extends BaseActivity {
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(edTxtOrderNumber, InputMethodManager.SHOW_IMPLICIT);
 
-                if (checkValidationForFields() == true) {
-                    if (isSavedRecord == false) {
-                        submitSlipDetails(Constant.ADD_ORDER);
-                    } else {
-                        submitSlipDetails(Constant.UPDATE_ORDER);
+                if(isNetworkConnected()){
+                    if (checkValidationForFields() == true) {
+                        if (isSavedRecord == false) {
+                            submitSlipDetails(Constant.ADD_ORDER);
+                        } else {
+                            submitSlipDetails(Constant.UPDATE_ORDER);
+                        }
+                        return true;
                     }
-                    return true;
+                }else{
+                    showToast("Please check internet connection");
                 }
+                return true;
 
             case R.id.menuUpdate:
                 edTxtOrderNumber.requestFocus();
                 InputMethodManager imm1 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm1.showSoftInput(edTxtOrderNumber, InputMethodManager.SHOW_IMPLICIT);
 
-                if (checkValidationForFields() == true) {
-                    submitSlipDetails(Constant.UPDATE_ORDER);
-                    return true;
+                if(isNetworkConnected()){
+                    if (checkValidationForFields() == true) {
+                        submitSlipDetails(Constant.UPDATE_ORDER);
+                        return true;
+                    }
+                }else{
+                    showToast("Please check internet connection");
                 }
+
+                return true;
         }
         return super.onOptionsItemSelected(item);
 
@@ -897,57 +907,4 @@ public class CustomerDetailsActivity extends BaseActivity {
         } else
             return true;
     }
-
-    /*if (isUpdateRecord == false) {
-                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CustomerDetailsActivity.this);
-                        alertDialogBuilder.setMessage("Do you want to save this slip ?");
-                        alertDialogBuilder.setPositiveButton("yes",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface arg0, int arg1) {
-                                        if (checkValidationForFields() == true) {
-                                            if (slipNumberFromList.equals("")) {
-                                                submitSlipDetails(Constant.ADD_ORDER);
-                                            } else {
-                                                submitSlipDetails(Constant.UPDATE_ORDER);
-                                            }
-                                        }
-                                    }
-                                });
-                        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //super.onBackPressed();
-                                finish();
-                            }
-                        });
-                        AlertDialog alertDialog = alertDialogBuilder.create();
-                        alertDialog.show();
-                    } else {
-                        if (checkValidationForFields() == true) {
-                            finish();
-                        }
-
-                    }
-
-
-                } else if (modeOfOpration.equals("1")) {
-
-                    if (isUpdateRecord == false) {
-                        if (checkValidationForFields() == true) {
-                            if (slipNumberFromList.equals("")) {
-                                submitSlipDetails(Constant.ADD_ORDER);
-                            } else {
-                                submitSlipDetails(Constant.UPDATE_ORDER);
-                            }
-                            finish();
-                        }
-                    } else {
-                        finish();
-                    }
-
-                } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
-                    finish();
-                }*/
-
 }
