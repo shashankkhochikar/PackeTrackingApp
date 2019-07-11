@@ -123,8 +123,12 @@ public class CustomerDetailsActivity extends BaseActivity {
         if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
             disableFieldsOnModeOfOpration(modeOfOpration);
         }
-        prepareCustomerList();
-        prepareItemList();
+        if(isNetworkConnected()){
+            prepareCustomerList();
+            prepareItemList();}
+        else{
+            showToast("Please check internet connection");
+        }
 
         myFormat = "dd/MM/yyyy"; //In which you need put here
         sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -273,7 +277,11 @@ public class CustomerDetailsActivity extends BaseActivity {
                 return true;
 
             case R.id.menuAddItem:
-                showDialog();
+                if(isNetworkConnected()){
+                    showDialog();
+                }else{
+                    showToast("Please check internet connection");
+                }
                 return true;
 
             case R.id.menuSubmit://009
@@ -319,25 +327,31 @@ public class CustomerDetailsActivity extends BaseActivity {
     public void onBackPressed() {
 
         if (modeOfOpration.equals("")) {
-
-            if (checkValidationForFields() == true) {
-                if (isSavedRecord == false) {
-                    submitSlipDetails(Constant.ADD_ORDER);
-                } else {
-                    submitSlipDetails(Constant.UPDATE_ORDER);
+            if(isNetworkConnected()){
+                if (checkValidationForFields() == true) {
+                    if (isSavedRecord == false) {
+                        submitSlipDetails(Constant.ADD_ORDER);
+                    } else {
+                        submitSlipDetails(Constant.UPDATE_ORDER);
+                    }
+                    finish();
                 }
-                finish();
+            }else{
+                showToast("please check internet connection");
             }
+
+
         } else if (modeOfOpration.equals("1")) {
-
-            if (checkValidationForFields() == true) {
-                if (isUpdateRecord == false) {
-                    submitSlipDetails(Constant.UPDATE_ORDER);
-
+            if (isNetworkConnected()){
+                if (checkValidationForFields() == true) {
+                    if (isUpdateRecord == false) {
+                        submitSlipDetails(Constant.UPDATE_ORDER);
+                    }
+                    finish();
                 }
-                finish();
+            }else{
+                showToast("please check internet connection");
             }
-
         } else if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
             finish();
         }
