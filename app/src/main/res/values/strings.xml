@@ -11,4 +11,6 @@
         <item>Ajay Rane</item>
         <item>Vinod Mane</item>
     </string-array>
+
+    <string name="Link"><u>http://packing.vishwanet.in</u></string>
 </resources>

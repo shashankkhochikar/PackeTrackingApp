@@ -257,21 +257,21 @@
                 android:id="@+id/linkForApp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:autoLink="all"
                 android:text="packing.vishwanet.in"
-                android:textSize="16dp" />
-            <!--satvyk.vishwanet.in-->
+                android:layout_weight="1"
+                android:layout_marginLeft="15dp"
+                android:autoLink="all"
+                android:textSize="16dp"/>
+            <!--packing.vishwanet.in-->
             <TextView
                 android:id="@+id/changePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
-                android:layout_weight="1"
                 android:gravity="right"
-                android:text="Change Password"
+                android:layout_weight="1"
                 android:textColor="@color/colorPrimary"
+                android:text="Change Password"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -287,10 +287,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
-                android:text="packing.vishwanet.in"
+                android:text="@string/Link"
                 android:textSize="16dp" />
 
         </LinearLayout>
+
 
 
     </LinearLayout>

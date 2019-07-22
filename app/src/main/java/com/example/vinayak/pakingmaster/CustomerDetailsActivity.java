@@ -900,10 +900,10 @@ public class CustomerDetailsActivity extends BaseActivity {
         String orderDate = edTxtOrderDate.getText().toString().trim();
         String orderNumber = edTxtOrderNumber.getText().toString().trim();
 
-        if (customerName.isEmpty() || customerName == null) {
+        /*if (customerName.isEmpty() || customerName == null) {
             showToast("Please select cutomer name");
             return false;
-        } else if (orderDate.isEmpty() || orderDate == null) {
+        } else*/ if (orderDate.isEmpty() || orderDate == null) {
             showToast("Please select order date");
             return false;
         } else /*if (orderNumber.isEmpty() || orderNumber == null) {
@@ -915,10 +915,10 @@ public class CustomerDetailsActivity extends BaseActivity {
         } else if (Constant.isAllItemQtyFilled == false) {
             showToast("Please fill items details in list which are remaining OR Some Invalid Details Filled");
             return false;
-        } else if (items.size() < 0 || items.isEmpty()) {
+        }/* else if (items.size() < 0 || items.isEmpty()) {
             showToast("Please add at least one item");
             return false;
-        } else
+        }*/ else
             return true;
     }
 }
