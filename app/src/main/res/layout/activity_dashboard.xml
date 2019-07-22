@@ -257,26 +257,40 @@
                 android:id="@+id/linkForApp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="packing.vishwanet.in"
-                android:layout_weight="1"
                 android:layout_marginLeft="15dp"
+                android:layout_weight="1"
                 android:autoLink="all"
-                android:textSize="16dp"/>
+                android:text="packing.vishwanet.in"
+                android:textSize="16dp" />
             <!--satvyk.vishwanet.in-->
             <TextView
                 android:id="@+id/changePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
                 android:layout_marginRight="15dp"
-                android:gravity="right"
                 android:layout_weight="1"
+                android:gravity="right"
+                android:text="Change Password"
                 android:textColor="@color/colorPrimary"
-                android:textStyle="bold"
-                android:text="Change Password"/>
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/linkForWeb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:text="packing.vishwanet.in"
+                android:textSize="16dp" />
+
+        </LinearLayout>
 
 
     </LinearLayout>

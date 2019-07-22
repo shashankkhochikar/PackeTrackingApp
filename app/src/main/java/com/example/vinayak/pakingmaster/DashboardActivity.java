@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,11 +30,13 @@ public class DashboardActivity extends BaseActivity {
 
     TextView changePassword;
     TextView linkForApp;
+    TextView linkForWeb;
     LinearLayout newItem;
     LinearLayout modifyItem;
     LinearLayout viewItem;
     LinearLayout submitItem;
     LinearLayout deleteItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class DashboardActivity extends BaseActivity {
         getSupportActionBar().setTitle("Dashboard");
         assignView();
         init();
+
     }
 
     private void init() {
@@ -101,6 +105,16 @@ public class DashboardActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        linkForWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DashboardActivity.this,WebViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     private void assignView() {
@@ -112,6 +126,7 @@ public class DashboardActivity extends BaseActivity {
         deleteItem = (LinearLayout) findViewById(R.id.linearDeleteItem);
         changePassword = (TextView)findViewById(R.id.changePassword);
         linkForApp = (TextView)findViewById(R.id.linkForApp);
+        linkForWeb = (TextView)findViewById(R.id.linkForWeb);
     }
 
     @Override
