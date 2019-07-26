@@ -896,29 +896,52 @@ public class CustomerDetailsActivity extends BaseActivity {
 
     private boolean checkValidationForFields() {
 
-        String customerName = customerNameSipnner.getText().toString();//customerNameSipnner.getSelectedItem().toString();
+      //customerNameSipnner.getSelectedItem().toString();
         String orderDate = edTxtOrderDate.getText().toString().trim();
         String orderNumber = edTxtOrderNumber.getText().toString().trim();
 
-        /*if (customerName.isEmpty() || customerName == null) {
-            showToast("Please select cutomer name");
-            return false;
-        } else*/ if (orderDate.isEmpty() || orderDate == null) {
+         if (orderDate.isEmpty() || orderDate == null) {
             showToast("Please select order date");
             return false;
-        } else /*if (orderNumber.isEmpty() || orderNumber == null) {
-            showToast("Please enter order number");
-            return false;
-        } else */if (Constant.isAllItemBoxNoFilled == false) {
+        } else if (Constant.isAllItemBoxNoFilled == false) {
             showToast("Please fill items box no in item list which is remaining");
             return false;
         } else if (Constant.isAllItemQtyFilled == false) {
             showToast("Please fill items details in list which are remaining OR Some Invalid Details Filled");
             return false;
-        }/* else if (items.size() < 0 || items.isEmpty()) {
-            showToast("Please add at least one item");
-            return false;
-        }*/ else
+        }  else
             return true;
     }
+
+    private boolean checkItemList()
+    {
+        String customerName = customerNameSipnner.getText().toString();
+        if (!customerName.isEmpty() || customerName != null) {
+            if (items.size() < 0 || items.isEmpty()){
+                showToast("Please add at least one item");
+                return false;
+            }else
+                return true;
+        } else
+            return true;
+    }
+
+    private  boolean checkCustomerName(){
+        String customerName = customerNameSipnner.getText().toString();
+         if (!(items.size() < 0) || !items.isEmpty()) {//
+            if (customerName.isEmpty() || customerName == null){
+                showToast("Please select customer name");
+                return false;
+            }else {
+                return true;
+            }
+        } else {
+             return true;
+         }
+    }
+
+    /*if (orderNumber.isEmpty() || orderNumber == null) {
+            showToast("Please enter order number");
+            return false;
+        } else */
 }
