@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
+import com.example.vinayak.pakingmaster.utils.SessionManager;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
 
 import org.json.JSONException;
@@ -36,6 +37,8 @@ public class LogInActivity extends BaseActivity {
 
     String isUserLogged = "0";
 
+    private SessionManager sessionManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class LogInActivity extends BaseActivity {
         /*getSupportActionBar().setTitle("Login");*/
         assignViews();
         init();
+        sessionManager = new SessionManager(LogInActivity.this);
     }
 
     private void init() {
@@ -100,8 +104,10 @@ public class LogInActivity extends BaseActivity {
 
 
                             /*if (response.getMessage().equals("Success")) {*/
-                                Constant.userId = response.getUser().getId();
-                                Constant.userName = response.getUser().getUsername();
+                                //Constant.userId = response.getUser().getId();
+                               // Constant.userName = response.getUser().getUsername();
+                                sessionManager.updateSessionUsername(response.getUser().getUsername());
+                                sessionManager.updateSessionUserId(response.getUser().getId());
                                 startActivity(new Intent(LogInActivity.this, DashboardActivity.class));
                                 finish();
                             /*} else {

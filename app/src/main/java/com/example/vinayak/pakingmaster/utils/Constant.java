@@ -23,8 +23,8 @@ public class Constant {
     public static final String CHANGE_PASSWORD = BASE_URL.concat("userChangePassword.php");
 
 
- public static String userId = "";
-    public static String userName = "";
+    //public static String userId = "";
+    //public static String userName = "";
     public static String slipNumberFromList = "";
 
     public static boolean isAllItemBoxNoFilled = true;

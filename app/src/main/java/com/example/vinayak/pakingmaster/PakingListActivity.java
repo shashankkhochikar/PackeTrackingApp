@@ -20,6 +20,7 @@ import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.Customer;
 import com.example.vinayak.pakingmaster.pojo.GetCustomerListResponse;
 import com.example.vinayak.pakingmaster.utils.Constant;
+import com.example.vinayak.pakingmaster.utils.SessionManager;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
 
 import org.json.JSONException;
@@ -39,13 +40,14 @@ public class PakingListActivity extends BaseActivity {
     ArrayList<String> date = new ArrayList<>();
 
     GetCustomerListResponse getCustomerListResponse;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paking_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        sessionManager = new SessionManager(PakingListActivity.this);
 
         date.add("02/03/2019");
         date.add("12/03/2019");
@@ -66,10 +68,11 @@ public class PakingListActivity extends BaseActivity {
                 Intent intent = new Intent(PakingListActivity.this, CustomerSlipListActivity.class);
                 String customerIdVal = customerId.get(position).toString();
                 intent.putExtra("customerId", customerIdVal);
-                intent.putExtra("enterBy", Constant.userName);
+                intent.putExtra("enterBy", sessionManager.getSessionUsername());
                 startActivity(intent);
             }
         });
+
     }
 
     private void prepareCustomerList() {

@@ -16,11 +16,12 @@ import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.ChangePasswordResponseData;
 import com.example.vinayak.pakingmaster.pojo.LogoutResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
+import com.example.vinayak.pakingmaster.utils.SessionManager;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
 
 import org.json.JSONObject;
 
-import static com.example.vinayak.pakingmaster.utils.Constant.userId;
+//import static com.example.vinayak.pakingmaster.utils.Constant.userId;
 
 public class ChangePasswordActivity extends BaseActivity {
 
@@ -28,6 +29,7 @@ public class ChangePasswordActivity extends BaseActivity {
     EditText password;
     EditText confirmPassword;
     Button btnSubmit;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class ChangePasswordActivity extends BaseActivity {
         getSupportActionBar().setTitle("Change Password");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         assignView();
+        sessionManager = new SessionManager(ChangePasswordActivity.this);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +50,7 @@ public class ChangePasswordActivity extends BaseActivity {
                         try {
                             showBusyProgress();
                             JSONObject jo = new JSONObject();
-                            jo.put("id", userId);
+                            jo.put("id", sessionManager.getSessionUserId());
                             jo.put("password", password);
 
                             GsonRequest<ChangePasswordResponseData> barcodeScanResquest = new GsonRequest<>(Request.Method.POST, Constant.CHANGE_PASSWORD, jo.toString(), ChangePasswordResponseData.class,

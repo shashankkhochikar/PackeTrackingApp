@@ -19,7 +19,9 @@ public class SessionManager {
 
     private static final String APP_SHARED_PREFS_NAME = "BandhanMantra";
 
+    private static final String PREFS_SESSION_USERID = "SessionUserId";
     private static final String PREFS_SESSION_USERNAME = "SessionUsername";
+
     private static final String PREFS_SESSION_PASSWORD = "SessionPassword";
     private static final String PREFS_SESSION_PROFILE_TOKEN = "SessionProfileToken";
     private static final String PREFS_SESSION_FCM_TOKEN = "SessionFCMToken";
@@ -90,6 +92,10 @@ public class SessionManager {
      */
     public String getSessionUsername() {
         return this.sharedPrefs.getString(PREFS_SESSION_USERNAME, "");
+    }
+
+    public String getSessionUserId() {
+        return this.sharedPrefs.getString(PREFS_SESSION_USERID, "");
     }
 
     /**
@@ -220,6 +226,16 @@ public class SessionManager {
             editor.putString(PREFS_SESSION_USERNAME, username);
         } else {
             editor.remove(PREFS_SESSION_USERNAME);
+        }
+        editor.commit();
+    }
+    public void updateSessionUserId(String id) {
+
+        Editor editor = this.sharedPrefs.edit();
+        if ((id != null) && (id.length() > 0)) {
+            editor.putString(PREFS_SESSION_USERID, id);
+        } else {
+            editor.remove(PREFS_SESSION_USERID);
         }
         editor.commit();
     }
@@ -361,6 +377,7 @@ public class SessionManager {
     public void updateSessionCredentials(String username, String password, String profileToken) {
 
         Editor editor = this.sharedPrefs.edit();
+
         if ((username != null) && (username.length() > 0)) {
             editor.putString(PREFS_SESSION_USERNAME, username);
         } else {

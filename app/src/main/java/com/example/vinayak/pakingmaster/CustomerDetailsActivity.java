@@ -45,6 +45,7 @@ import com.example.vinayak.pakingmaster.pojo.SlipDetailsResponseData;
 import com.example.vinayak.pakingmaster.pojo.SubmitOrderResponse;
 import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
+import com.example.vinayak.pakingmaster.utils.SessionManager;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.gson.Gson;
@@ -65,7 +66,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import static com.example.vinayak.pakingmaster.utils.Constant.slipNumberFromList;
-import static com.example.vinayak.pakingmaster.utils.Constant.userName;
+//import static com.example.vinayak.pakingmaster.utils.Constant.userName;
 
 public class CustomerDetailsActivity extends BaseActivity {
 
@@ -108,6 +109,8 @@ public class CustomerDetailsActivity extends BaseActivity {
     boolean isUpdateRecord = false;
     boolean isSavedRecord = false;
 
+    private SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +122,8 @@ public class CustomerDetailsActivity extends BaseActivity {
         slipNumberFromList = intent.getStringExtra("slipNumber");
         modeOfOpration = intent.getStringExtra("modeOfOpration");
         assignview();
+
+        sessionManager = new SessionManager(CustomerDetailsActivity.this);
 
         if (modeOfOpration.equals("2") || modeOfOpration.equals("3")) {
             disableFieldsOnModeOfOpration(modeOfOpration);
@@ -169,7 +174,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        entryBy = userName;
+        entryBy = sessionManager.getSessionUsername();
     }
 
     private void disableFieldsOnModeOfOpration(String modeOfOpration) {

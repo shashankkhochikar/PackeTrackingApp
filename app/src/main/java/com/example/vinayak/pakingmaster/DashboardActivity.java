@@ -17,12 +17,13 @@ import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.LogoutResponseData;
 import com.example.vinayak.pakingmaster.pojo.SlipDetailsResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
+import com.example.vinayak.pakingmaster.utils.SessionManager;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
 
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
-import static com.example.vinayak.pakingmaster.utils.Constant.userId;
+//import static com.example.vinayak.pakingmaster.utils.Constant.userId;
 
 public class DashboardActivity extends BaseActivity {
 
@@ -37,6 +38,8 @@ public class DashboardActivity extends BaseActivity {
     LinearLayout submitItem;
     LinearLayout deleteItem;
 
+    private SessionManager sessionManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class DashboardActivity extends BaseActivity {
         getSupportActionBar().setTitle("Dashboard");
         assignView();
         init();
+        sessionManager = new SessionManager(DashboardActivity.this);
 
     }
 
@@ -71,8 +75,8 @@ public class DashboardActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, CustomerSlipListActivity.class);
-                intent.putExtra("customerId", userId);
-                intent.putExtra("enterBy", Constant.userName);
+                intent.putExtra("customerId", sessionManager.getSessionUserId());
+                intent.putExtra("enterBy", sessionManager.getSessionUsername());
                 intent.putExtra("modeOfOpration", "1");
                 startActivity(intent);
             }
@@ -81,8 +85,8 @@ public class DashboardActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, CustomerSlipListActivity.class);
-                intent.putExtra("customerId", userId);
-                intent.putExtra("enterBy", Constant.userName);
+                intent.putExtra("customerId", sessionManager.getSessionUserId());
+                intent.putExtra("enterBy", sessionManager.getSessionUsername());
                 intent.putExtra("modeOfOpration", "2");
                 startActivity(intent);
             }
@@ -91,8 +95,8 @@ public class DashboardActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DashboardActivity.this, CustomerSlipListActivity.class);
-                intent.putExtra("customerId", userId);
-                intent.putExtra("enterBy", Constant.userName);
+                intent.putExtra("customerId", sessionManager.getSessionUserId());
+                intent.putExtra("enterBy", sessionManager.getSessionUsername());
                 intent.putExtra("modeOfOpration", "3");
                 startActivity(intent);
             }
@@ -135,7 +139,7 @@ public class DashboardActivity extends BaseActivity {
         try {
             showBusyProgress();
             JSONObject jo = new JSONObject();
-            jo.put("id", userId);
+            jo.put("id", sessionManager.getSessionUserId());
             jo.put("Loginstatus", "0");
 
             GsonRequest<LogoutResponseData> barcodeScanResquest = new GsonRequest<>(Request.Method.POST, Constant.LOGOUT, jo.toString(), LogoutResponseData.class,
