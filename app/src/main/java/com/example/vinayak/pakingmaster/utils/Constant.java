@@ -2,8 +2,8 @@ package com.example.vinayak.pakingmaster.utils;
 
 public class Constant {
 
-    public static final String BASE_URL = "http://packing.vishwanet.in/";
-   //public static final String BASE_URL = "http://satvyk.vishwanet.in/";
+    //public static final String BASE_URL = "http://packing.vishwanet.in/";
+    public static final String BASE_URL = "http://satvyk.vishwanet.in/";
    //public static final String BASE_URL = "https://packagetracker.000webhostapp.com/";
    // public static final String BASE_URL = "http://192.168.0.14/pack/";
     public static final String ADD_NEW_USER = BASE_URL.concat("adduser.php");
@@ -23,8 +23,8 @@ public class Constant {
     public static final String CHANGE_PASSWORD = BASE_URL.concat("userChangePassword.php");
 
 
-    //public static String userId = "";
-    //public static String userName = "";
+ public static String userId = "";
+    public static String userName = "";
     public static String slipNumberFromList = "";
 
     public static boolean isAllItemBoxNoFilled = true;

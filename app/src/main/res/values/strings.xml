@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Packing Master</string>
+    <string name="app_name">Satvyk</string>
 
     <string-array name="customer_array">
         <item>Ram Patil</item>
