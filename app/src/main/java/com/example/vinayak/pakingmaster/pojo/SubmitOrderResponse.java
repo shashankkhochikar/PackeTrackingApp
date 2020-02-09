@@ -13,9 +13,15 @@ public class SubmitOrderResponse implements Serializable {
     @SerializedName("Code")
     @Expose
     private String code;
+
     @SerializedName("Message")
     @Expose
     private String message;
+
+    @SerializedName("slipNo")
+    @Expose
+    private String slipNo;
+
     private final static long serialVersionUID = -6716456762931131071L;
     @SerializedName("Error")
     @Expose
@@ -57,5 +63,11 @@ public class SubmitOrderResponse implements Serializable {
         this.message = message;
     }
 
+    public String getSlipNo() {
+        return slipNo;
+    }
 
+    public void setSlipNo(String slipNo) {
+        this.slipNo = slipNo;
+    }
 }

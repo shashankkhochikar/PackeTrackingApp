@@ -196,11 +196,12 @@ public class CustomerDetailsActivity extends BaseActivity {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c);
         String tempDate = formattedDate.replace("-", "");
-        int tempNumber = generateRandomIntIntRange(0001, 9999);
+
+        int tempNumber = 0;//generateRandomIntIntRange(0001, 9999);
         // String mode = modeOfOpration.isEmpty()?"New :":modeOfOpration.equals("1")?"Update":"";
         finalSlipNumber = ""+tempNumber;//tempDate + "-" + tempNumber;
         slipNumber.setText("" + finalSlipNumber);
-        getSupportActionBar().setTitle("New:" + finalSlipNumber);
+        getSupportActionBar().setTitle("New :" + finalSlipNumber);
     }
 
     public static int generateRandomIntIntRange(int min, int max) {
@@ -209,7 +210,7 @@ public class CustomerDetailsActivity extends BaseActivity {
     }
 
     private void setAdapter(List<Item> items) {
-        Collections.reverse(items);
+        //Collections.reverse(items);
         adapter = new ItemListAdapter(CustomerDetailsActivity.this, items, modeOfOpration);
         listView.setAdapter(adapter);
     }
@@ -417,11 +418,17 @@ public class CustomerDetailsActivity extends BaseActivity {
 
         String noOfBoxes = "" + length;
 
+        if(items.size() >= 0){
+            for (int z=0; z<items.size();z++){
+                items.get(z).setSlipno(str_slipNumber);
+            }
+        }
         customerDetails = new CustomerDetails(str_slipNumber, str_slipDate, str_orderNumber, str_orderDate, cutomerId, submitedDate, downloadedDate,
                 noOfBoxes, entryBy, items);/*str_slipNumber*//*comment for this field is not required from now date - 10/06/2019 */
 
         Gson gson2 = new GsonBuilder().create();
         String jsonString = gson2.toJson(customerDetails);
+        Log.e(CustomerDetailsActivity.class.getName(),""+jsonString);
 
         try {
             GsonRequest<SubmitOrderResponse>
@@ -438,7 +445,11 @@ public class CustomerDetailsActivity extends BaseActivity {
                                     showToast(response.getMessage().toString());
                                     setResult(RESULT_OK);
                                     if (url.equals(Constant.ADD_ORDER)) {
-                                        //finish();
+                                        //finish();///009 /// Shashank009
+                                        finalSlipNumber = ""+response.getSlipNo();//tempDate + "-" + tempNumber;
+                                        slipNumber.setText(""+response.getSlipNo());
+                                        getSupportActionBar().setTitle("New:" + finalSlipNumber);
+                                        showToast("Generated Slip No : "+finalSlipNumber);
                                         isSavedRecord = true;
                                     } else {
                                         isUpdateRecord = true;
@@ -698,7 +709,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                 String str_itemBoxNo = itemBoxNo.getText().toString().trim();
                 String str_slipNo = slipNumber.getText().toString().trim();
                 String str_itemUmo = itemUmo.getText().toString().trim();
-
+//eeeewwwww
                 /*if (Float.parseFloat(str_itemQty) <= 0 || Integer.parseInt(str_itemBoxNo) <= 0 ){
                     showToast("Please Enter Proper Qty OR BoxNo.");
                     return;
@@ -713,7 +724,7 @@ public class CustomerDetailsActivity extends BaseActivity {
                         showToast("Please Fill Proper Box No");
                     } else {
                         Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
-                        items.add(item);
+                        items.add(0,item);//items.add(item);
                         setAdapter(items);
                         dialogBuilder.dismiss();
                     }
@@ -914,7 +925,10 @@ public class CustomerDetailsActivity extends BaseActivity {
         } else if (Constant.isAllItemQtyFilled == false) {
             showToast("Please fill items details in list which are remaining OR Some Invalid Details Filled");
             return false;
-        }  else
+        }  else /*if (checkItemList() == false) {
+             showToast("Please fill at least one item");
+             return false;
+         }*/
             return true;
     }
 

@@ -24,6 +24,7 @@ import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
 import com.example.vinayak.pakingmaster.utils.SessionManager;
 import com.example.vinayak.pakingmaster.volley.GsonRequest;
+import com.google.firebase.crash.FirebaseCrash;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +52,11 @@ public class LogInActivity extends BaseActivity {
         /*getSupportActionBar().setTitle("Login");*/
         assignViews();
         init();
+
+        //FirebaseCrash.report(new Exception("My first Android non-fatal error"));
+        //I'm also creating a log message, which we'll look at in more detail later//
+        //FirebaseCrash.log("MainActivity started");
+
         sessionManager = new SessionManager(LogInActivity.this);
     }
 

@@ -12,11 +12,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-import com.crashlytics.android.Crashlytics;
 import com.example.vinayak.pakingmaster.utils.SessionManager;
 import com.example.vinayak.pakingmaster.volley.OkHttpStack;
 
-import io.fabric.sdk.android.Fabric;
 import java.io.File;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
@@ -59,7 +57,6 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
         mInstance = this;
 
         sessionManager = new SessionManager(getApplicationContext());

@@ -3,9 +3,12 @@ package com.example.vinayak.pakingmaster.utils;
 public class Constant {
 
     //public static final String BASE_URL = "http://packing.vishwanet.in/";
-    public static final String BASE_URL = "http://satvyk.vishwanet.in/";
-   //public static final String BASE_URL = "https://packagetracker.000webhostapp.com/";
-   // public static final String BASE_URL = "http://192.168.0.14/pack/";
+    //public static final String BASE_URL = "http://satvyk.vishwanet.in/";
+
+    //public static final String BASE_URL = "http://192.168.29.12/satvyk/";
+    public static final String BASE_URL = "http://172.20.10.2/satvyk/";
+
+
     public static final String ADD_NEW_USER = BASE_URL.concat("adduser.php");
     public static final String CHECK_LOGIN_USER = BASE_URL.concat("authuser.php");
     public static final String GET_CUSTOMER_LIST = BASE_URL.concat("getcustomers.php");
