@@ -12,5 +12,5 @@
         <item>Vinod Mane</item>
     </string-array>
 
-    <string name="Link">my packing list</string>
+    <string name="Link"><u>My packing list</u></string>
 </resources>

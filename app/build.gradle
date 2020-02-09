@@ -37,7 +37,7 @@ dependencies {
 
 
     //noinspection GradleCompatible
-    implementation 'com.google.firebase:firebase-crash:9.0.0'
+    //implementation 'com.google.firebase:firebase-crash:9.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -46,4 +46,4 @@ dependencies {
     implementation 'com.edwardvanraak:MaterialBarcodeScanner:0.0.6-ALPHA'
 
 }
-apply plugin: 'com.google.gms.google-services'
+//apply plugin: 'com.google.gms.google-services'

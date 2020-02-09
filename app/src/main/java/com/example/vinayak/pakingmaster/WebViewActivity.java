@@ -8,13 +8,13 @@ import android.webkit.WebView;
 public class WebViewActivity extends AppCompatActivity {
 
     WebView webView;
-    String data = "http://packing.vishwanet.in/web/displaySlipsByUser.php";
-
+    //String data = "http://packing.vishwanet.in/web/displaySlipsByUser.php";
+    String data = "http://satvyk.vishwanet.in/web/displaySlipsByUser.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
-        getSupportActionBar().setTitle("Packing Web Panel");
+        getSupportActionBar().setTitle("Satvyk Web Panel");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         assignView();
         webView.loadUrl(data);

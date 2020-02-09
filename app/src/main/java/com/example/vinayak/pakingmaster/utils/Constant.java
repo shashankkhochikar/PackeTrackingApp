@@ -5,8 +5,8 @@ public class Constant {
     //public static final String BASE_URL = "http://packing.vishwanet.in/";
     //public static final String BASE_URL = "http://satvyk.vishwanet.in/";
 
-    //public static final String BASE_URL = "http://192.168.29.12/satvyk/";
-    public static final String BASE_URL = "http://172.20.10.2/satvyk/";
+    public static final String BASE_URL = "http://192.168.29.180/satvyk/";
+    //public static final String BASE_URL = "http://172.20.10.2/satvyk/";
 
 
     public static final String ADD_NEW_USER = BASE_URL.concat("adduser.php");

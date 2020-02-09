@@ -288,6 +288,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:text="@string/Link"
+                android:textColor="@color/colorAccent"
                 android:textSize="16dp" />
 
         </LinearLayout>

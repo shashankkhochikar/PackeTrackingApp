@@ -723,7 +723,17 @@ public class CustomerDetailsActivity extends BaseActivity {
                     } else if (Integer.parseInt(str_itemBoxNo) <= 0) {
                         showToast("Please Fill Proper Box No");
                     } else {
-                        Item item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
+                        Item item = null;
+                        if(modeOfOpration.equals("1")){
+                            Log.e("Inn ","mode of opration 1 ");
+                            String str_id = "0";
+                            item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
+                            item.setId(str_id);
+                        }else{
+                            Log.e("Out ","mode of opration 1 ");
+                            item = new Item(str_itemName, str_itemBarcode, str_itemQty, str_itemBoxNo, str_slipNo, str_itemUmo);
+                        }
+
                         items.add(0,item);//items.add(item);
                         setAdapter(items);
                         dialogBuilder.dismiss();
