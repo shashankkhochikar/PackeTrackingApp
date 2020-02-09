@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "769449637353",
+    "firebase_url": "https://satvky-43bce.firebaseio.com",
+    "project_id": "satvky-43bce",
+    "storage_bucket": "satvky-43bce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769449637353:android:e02099fdf64b94a0648778",
+        "android_client_info": {
+          "package_name": "com.example.vinayak.pakingmaster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "769449637353-n7k656vb80uccdene30eblak88nmq0qa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vinayak.pakingmaster",
+            "certificate_hash": "5053d1f9159c2852214e107a34fc8969ac39a3fe"
+          }
+        },
+        {
+          "client_id": "769449637353-4ehqdbpv5s9m07gsnct9vjnhrnsjpi00.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYTOsDVDhF1z1iOzXi5pPQLBJ0Zkljf0E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "769449637353-4ehqdbpv5s9m07gsnct9vjnhrnsjpi00.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
