@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "769449637353-sjru7q32ke2tlkd9h7lstoofc219d3oq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vinayak.pakingmaster",
+            "certificate_hash": "d08995ea1b691bb5aea728d4d16bf615b5aa5265"
+          }
+        },
+        {
           "client_id": "769449637353-n7k656vb80uccdene30eblak88nmq0qa.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

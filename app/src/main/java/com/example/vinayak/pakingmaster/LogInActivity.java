@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.crashlytics.android.Crashlytics;
 import com.example.vinayak.pakingmaster.baseclasses.BaseActivity;
 import com.example.vinayak.pakingmaster.pojo.UserLoginResponseData;
 import com.example.vinayak.pakingmaster.utils.Constant;
@@ -56,6 +58,18 @@ public class LogInActivity extends BaseActivity {
         //FirebaseCrash.report(new Exception("My first Android non-fatal error"));
         //I'm also creating a log message, which we'll look at in more detail later//
         //FirebaseCrash.log("MainActivity started");
+        //throw new RuntimeException("This is a crash");
+       /* Button crashButton = new Button(this);
+        crashButton.setText("Crash!");
+        crashButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+
+            }
+        });
+
+        addContentView(crashButton, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));*/
 
         sessionManager = new SessionManager(LogInActivity.this);
     }

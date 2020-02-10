@@ -3,9 +3,9 @@ package com.example.vinayak.pakingmaster.utils;
 public class Constant {
 
     //public static final String BASE_URL = "http://packing.vishwanet.in/";
-    //public static final String BASE_URL = "http://satvyk.vishwanet.in/";
+    public static final String BASE_URL = "http://satvyk.vishwanet.in/";
 
-    public static final String BASE_URL = "http://192.168.29.180/satvyk/";
+    //public static final String BASE_URL = "http://192.168.29.180/satvyk/";
     //public static final String BASE_URL = "http://172.20.10.2/satvyk/";
 
 

@@ -62,9 +62,13 @@
             android:name=".SlipListActivity"
             android:screenOrientation="portrait" />
 
-        <meta-data
+        <!--<meta-data
             android:name="io.fabric.ApiKey"
-            android:value="4533e2579f7dc9d3da7564e96fdb6941f606a3e3" />
+            android:value="4533e2579f7dc9d3da7564e96fdb6941f606a3e3" />-->
+
+        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="true"/>
+        <meta-data android:name="firebase_crash_collection_enabled" android:value="true"/>
+        <!--<meta-data android:name="io.fabric.ApiKey" tools:node="remove"/>-->
 
         <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".WebViewActivity"></activity>
